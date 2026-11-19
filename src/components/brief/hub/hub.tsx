@@ -15,7 +15,6 @@ import { DOT_ORDER } from "@/lib/brief/dot-layout";
 import {
   HUB_TOP,
   MARK_TEXT,
-  NAMED_MAX,
   namesConcentration,
   pairInOrder,
   sideLevel,
@@ -185,11 +184,11 @@ export function Hub({
   const reviewLimit = concentration.concentrated
     ? Math.min(REVIEW_MAX, Math.max(HUB_TOP, concentration.top.length))
     : HUB_TOP;
-  // The strongest alignments list every target the map names (up to eight),
-  // so each name on the map has its row.
+  // The strongest alignments are listed as the potential misalignments are:
+  // every target their sentence counts (up to eight), so each name on the
+  // map has its row.
   const strong = data.strongConcentration;
-  const strongLimit =
-    strong.concentrated && strong.top.length <= NAMED_MAX ? Math.max(HUB_TOP, strong.top.length) : HUB_TOP;
+  const strongLimit = strong.concentrated ? Math.min(REVIEW_MAX, Math.max(HUB_TOP, strong.top.length)) : HUB_TOP;
   // The targets with pairs on each side: a picked target the selection
   // leaves without any is let go.
   const onSide = useMemo(() => {
@@ -667,7 +666,19 @@ export function Hub({
                 {data.strongConcentration.total === 0 && <p className="brief-hub-none">{tb("aligned.headlineEmpty")}</p>}
                 {keeps("aligned") && hasStrong && (
                   <>
-                    <h3 className="brief-hub-sub">{ts("aligned")}</h3>
+                    {/* As the other side: where few targets carry half of the
+                        strong alignments, the list opens on that figure, while
+                        it (and the map) can show every target it counts. */}
+                    <h3 className="brief-hub-sub">
+                      {namesConcentration(strong)
+                        ? tb("aligned.headlineConcentrated", {
+                            pct: pct(strong.share),
+                            total: strong.total,
+                            top: strong.top.length,
+                            targets: data.scope.commitments.length,
+                          })
+                        : ts("aligned")}
+                    </h3>
                     <StrongestList
                       data={data}
                       limit={strongLimit}

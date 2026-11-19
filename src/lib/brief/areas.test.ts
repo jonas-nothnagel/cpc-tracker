@@ -3,11 +3,15 @@ import { scopeOf } from "./compute";
 import { briefFixture } from "./test-fixture";
 import type { BriefSource } from "./source";
 import {
+  areaDocuments,
   areaFocus,
+  areaHeadline,
   areaInks,
+  areaInvolvement,
   areaPairDetail,
   areaPairs,
   lensAreas,
+  targetsHeadline,
   OTHER_AREA,
   partnersByArea,
   rowCounts,
@@ -167,6 +171,111 @@ describe("areaPairs", () => {
     const pairs = areaPairs(lensAreas(source, scope, "globe"), scope, "apart", "b6");
     expect(pairs.top.map((p) => p.key)).toEqual(["a1|b6", "b6|c1", "b6|c2", "b6|c3", "b6|c4", "b6|c5", "b6|c6"]);
     expect(pairs.rest).toEqual({ groups: 1, pairs: 5, count: 0 });
+  });
+});
+
+describe("targetsHeadline", () => {
+  it("says how few areas, most targets first, hold at least half of the targets the lens places", () => {
+    // 9 placed, 3 in each of three areas: two of them hold 6.
+    expect(targetsHeadline(lensAreas(SOURCE, ALL, "globe"))).toEqual({ kind: "top", share: 6 / 9, areas: 2, of: 3, placed: 9 });
+  });
+
+  it("names the area that holds half on its own", () => {
+    const source = withPrimary({ A1: "g5", A2: "g5", B4: "g5", B5: "g5", A3: "g1", B6: "g2", C1: "g2" });
+    expect(targetsHeadline(lensAreas(source, scopeOf(source, ["A", "B", "C"]), "globe"))).toEqual({
+      kind: "one",
+      share: 4 / 7,
+      area: "g5",
+      placed: 7,
+    });
+  });
+
+  it("says nothing with fewer than three areas", () => {
+    expect(targetsHeadline(lensAreas(SOURCE, scopeOf(SOURCE, ["B", "C"]), "globe"))).toEqual({ kind: "none" });
+    expect(targetsHeadline(lensAreas(SOURCE, ALL, "ipcc"))).toEqual({ kind: "none" });
+  });
+});
+
+describe("areaPairs' concentration", () => {
+  const lens = lensAreas(SOURCE, ALL, "globe");
+
+  it("counts every pair of areas and the fewest, most first, that hold half of the side's target pairs", () => {
+    // 15 potential misalignments: Agriculture with targets outside the lens holds 9.
+    const apart = areaPairs(lens, ALL, "apart");
+    expect([apart.groups, apart.half]).toEqual([6, { groups: 1, count: 9 }]);
+    // 36 strong alignments: 10 and 9 in the first two pairs of areas.
+    const strong = areaPairs(lens, ALL, "reinforce");
+    expect([strong.groups, strong.half]).toEqual([6, { groups: 2, count: 19 }]);
+  });
+});
+
+describe("areaHeadline", () => {
+  const lens = lensAreas(SOURCE, ALL, "globe");
+
+  it("says how few pairs of areas hold at least half of the side's target pairs, of all of them", () => {
+    expect(areaHeadline(areaPairs(lens, ALL, "reinforce"))).toEqual({ kind: "top", share: 19 / 36, groups: 2, of: 6 });
+  });
+
+  it("names the pair of areas that holds half on its own: an area with the targets outside the lens", () => {
+    expect(areaHeadline(areaPairs(lens, ALL, "apart"))).toEqual({ kind: "outside", share: 0.6, a: "g2", b: OTHER_AREA });
+  });
+
+  it("says between two areas", () => {
+    const primary: Record<string, string> = {};
+    for (const i of [1, 2, 3, 4, 5, 6]) {
+      primary[`B${i}`] = "g2";
+      primary[`C${i}`] = "g5";
+    }
+    const source = withPrimary(primary);
+    const scope = scopeOf(source, ["A", "B", "C"]);
+    expect(areaHeadline(areaPairs(lensAreas(source, scope, "globe"), scope, "apart"))).toEqual({
+      kind: "between",
+      share: 0.6,
+      a: "g2",
+      b: "g5",
+    });
+  });
+
+  it("says within one area", () => {
+    const primary: Record<string, string> = { A1: "g1", A2: "g1", A3: "g1", A4: "g5", A5: "g5", A6: "g5" };
+    for (const i of [1, 2, 3, 4, 5, 6]) {
+      primary[`B${i}`] = "g2";
+      primary[`C${i}`] = "g2";
+    }
+    const source = withPrimary(primary);
+    const scope = scopeOf(source, ["A", "B", "C"]);
+    expect(areaHeadline(areaPairs(lensAreas(source, scope, "globe"), scope, "apart"))).toEqual({
+      kind: "within",
+      share: 0.6,
+      a: "g2",
+      b: "g2",
+    });
+  });
+
+  it("says nothing with fewer than three pairs of areas, or without any of the side's target pairs", () => {
+    const one = withPrimary(Object.fromEntries(SOURCE.commitments.map((c) => [c.id, "g2"])));
+    const scope = scopeOf(one, ["A", "B", "C"]);
+    expect(areaHeadline(areaPairs(lensAreas(one, scope, "globe"), scope, "apart"))).toEqual({ kind: "none" });
+    const twoDocs = scopeOf(SOURCE, ["A", "C"]);
+    expect(areaHeadline(areaPairs(lensAreas(SOURCE, twoDocs, "globe"), twoDocs, "apart"))).toEqual({ kind: "none" });
+  });
+});
+
+describe("a picked area's readings", () => {
+  const lens = lensAreas(SOURCE, ALL, "globe");
+
+  it("counts the documents an area's targets come from, of the brief's documents", () => {
+    expect(areaDocuments(lens.areas[0], ALL)).toEqual({ docs: 1, of: 3 });
+    const source = withPrimary({ A1: "g5", A2: "g5", B4: "g5", B5: "g5", A3: "g1", B6: "g2", C1: "g2" });
+    const scope = scopeOf(source, ["A", "B", "C"]);
+    expect(areaDocuments(lensAreas(source, scope, "globe").areas[0], scope)).toEqual({ docs: 2, of: 3 });
+  });
+
+  it("takes an area's part in the side: every one of the side's target pairs involving it, of all of them", () => {
+    expect(areaInvolvement(areaPairs(lens, ALL, "apart", "g2"))).toEqual({ count: 12, share: 12 / 15 });
+    expect(areaInvolvement(areaPairs(lens, ALL, "apart", "g5"))).toEqual({ count: 3, share: 3 / 15 });
+    // None involves Protected areas: nothing to say.
+    expect(areaInvolvement(areaPairs(lens, ALL, "apart", "g1"))).toBeNull();
   });
 });
 

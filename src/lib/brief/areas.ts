@@ -1,5 +1,6 @@
 import type { Scope, ScopedComparison } from "./compute";
 import { sideLevel, type HubTone } from "./hub";
+import { INSIGHT_MIN_UNITS, insightHalf } from "./insight";
 import type { BriefSource, LensId } from "./source";
 
 /**
@@ -112,6 +113,13 @@ export interface AreaPairs {
   outside: number;
   /** All the side's target pairs in scope, placed or not. */
   total: number;
+  /** Every pair of areas the brief's target pairs fall between, on either
+   *  side (for a picked area, its own). */
+  groups: number;
+  /** The fewest pairs of areas, most first, that hold at least half of the
+   *  side's target pairs (of `total`), and how many they hold; null where a
+   *  sentence would say nothing (`insightHalf`). */
+  half: { groups: number; count: number } | null;
 }
 
 export interface Placing {
@@ -188,6 +196,10 @@ export function areaPairs(lens: LensAreas, scope: Scope, side: AreaSide, area: s
   const top = area === null ? held.slice(0, TOP_AREA_PAIRS) : held;
   const shown = new Set(top.map((g) => g.key));
   const others = ranked.filter((g) => !shown.has(g.key));
+  const half = insightHalf(
+    ranked.map((g) => g.count),
+    total,
+  );
   return {
     side,
     top,
@@ -198,7 +210,63 @@ export function areaPairs(lens: LensAreas, scope: Scope, side: AreaSide, area: s
     },
     outside: unplaced,
     total,
+    groups: ranked.length,
+    half: half && { groups: half.units, count: half.count },
   };
+}
+
+/** What the sentence beside the targets says: how few areas, most targets
+ *  first, hold at least half of the targets the lens places; the area by
+ *  name where it holds half on its own. */
+export type TargetsHeadline =
+  | { kind: "none" }
+  | { kind: "top"; share: number; areas: number; of: number; placed: number }
+  | { kind: "one"; share: number; area: string; placed: number };
+
+export function targetsHeadline(lens: LensAreas): TargetsHeadline {
+  const half = insightHalf(
+    lens.areas.map((a) => a.targets.length),
+    lens.placed,
+  );
+  if (!half) return { kind: "none" };
+  const share = half.count / lens.placed;
+  // The lens's areas come most targets first: the first holds half on its own.
+  return half.units === 1
+    ? { kind: "one", share, area: lens.areas[0].id, placed: lens.placed }
+    : { kind: "top", share, areas: half.units, of: lens.areas.length, placed: lens.placed };
+}
+
+/** What the sentence beside the pairs of areas says: how few of them hold at
+ *  least half of the side's target pairs, as a share of all of those; the
+ *  pair by name where it holds half on its own. */
+export type AreaHeadline =
+  | { kind: "none" }
+  | { kind: "top"; share: number; groups: number; of: number }
+  | { kind: "between" | "within" | "outside"; share: number; a: string; b: string };
+
+export function areaHeadline(pairs: AreaPairs): AreaHeadline {
+  const half = pairs.half;
+  if (!half) return { kind: "none" };
+  const share = half.count / pairs.total;
+  if (half.groups > 1) return { kind: "top", share, groups: half.groups, of: pairs.groups };
+  // The list's first row holds the most.
+  const lead = pairs.top[0];
+  const kind = lead.a === lead.b ? "within" : lead.b === OTHER_AREA ? "outside" : "between";
+  return { kind, share, a: lead.a, b: lead.b };
+}
+
+/** The documents a picked area's targets come from, of the brief's documents. */
+export function areaDocuments(area: LensArea, scope: Scope): { docs: number; of: number } {
+  const docOf = new Map(scope.commitments.map((c) => [c.id, c.doc]));
+  return { docs: new Set(area.targets.map((id) => docOf.get(id))).size, of: scope.docs.length };
+}
+
+/** A picked area's part in the side: the side's target pairs its pairs of
+ *  areas hold (each involves it), as a share of all of them; null when it has
+ *  none, or the side too few to count. */
+export function areaInvolvement(pairs: AreaPairs): { count: number; share: number } | null {
+  const count = pairs.top.reduce((sum, p) => sum + p.count, pairs.rest.count);
+  return count > 0 && pairs.total >= INSIGHT_MIN_UNITS ? { count, share: count / pairs.total } : null;
 }
 
 /** What the picture shows: every target at rest, one area picked by its

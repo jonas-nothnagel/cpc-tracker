@@ -1318,6 +1318,104 @@
   scroll-margin-top: 1rem;
 }
 
+/* A section's head (SectionHead), on the overview's column split: the title,
+   its source and the section's choices top left; one insight sentence top
+   right, then what stands under it. */
+[data-brief] .brief-sec-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1.5rem, 3.2vw, 3.5rem);
+}
+
+[data-brief] .brief-sec-head-main,
+[data-brief] .brief-sec-head-side {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  min-width: 0;
+}
+
+[data-brief] .brief-sec-head-main {
+  gap: 0.25rem;
+}
+
+[data-brief] .brief-sec-head-side {
+  gap: 0.75rem;
+}
+
+[data-brief] .brief-sec-head-side > .brief-hub-headline {
+  margin: 0;
+}
+
+/* The section-title step, the one size a section's name takes. */
+[data-brief] .brief-sec-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.1vw, 1.875rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+[data-brief] .brief-sec-source {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-sec-controls {
+  margin-top: 0.5rem;
+}
+
+@media screen and (max-width: 820px) {
+  [data-brief] .brief-sec-head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+}
+
+/* A target's rating in its country's 7th National Report (RatingWord): a
+   mark and a word. A rating is the country's own statement, not an alignment
+   reading, so it stays in ink: green and red belong to alignment, blue to
+   money (DESIGN.md). Never colour alone. */
+[data-brief] .n7-mark {
+  display: inline-block;
+  flex: none;
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid var(--brief-ink);
+}
+
+[data-brief] .n7-mark[data-status="on_track"] {
+  background: var(--brief-ink);
+}
+
+[data-brief] .n7-mark[data-status="limited"] {
+  background: linear-gradient(90deg, var(--brief-ink) 50%, transparent 50%);
+}
+
+[data-brief] .n7-mark[data-status="unknown"] {
+  border-style: dotted;
+  border-color: var(--brief-muted);
+}
+
+[data-brief] .n7-word {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  white-space: nowrap;
+}
+
+/* The rating where the explorer shows a target (RatingTag): the report's
+   name in grey, the rating in ink. */
+[data-brief] .brief-rating-tag {
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-rating-tag .n7-word {
+  color: var(--brief-ink);
+}
+
 [data-brief] .brief-flow .brief-sec {
   height: auto;
 }
@@ -3217,13 +3315,18 @@
   }
 }
 
-/* The component: the picture beside its headline, choices and list. The
-   list side stays in view beside a tall picture. */
+/* The component, on the overview's column split: the title above the
+   picture; beside them the sentence, the choices and the list. The list side
+   stays in view beside a tall picture. */
 [data-brief] .brief-av {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
   gap: clamp(1.5rem, 3.2vw, 3.5rem);
   align-items: start;
+}
+
+[data-brief] .brief-av-picture > .brief-sec-title {
+  margin-bottom: 1.25rem;
 }
 
 /* The list side stays in view beside a taller picture and is never taller

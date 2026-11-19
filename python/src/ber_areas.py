@@ -37,7 +37,7 @@ from pathlib import Path
 from typing import Any
 
 from .classify import RELEVANCE_THRESHOLD, parse_rank_response
-from .config import CACHE_DIR
+from .config import CACHE_DIR, DATA_DIR
 from .llm import call_llm_batch
 
 logger = logging.getLogger(__name__)
@@ -77,6 +77,64 @@ Order the array from highest score to lowest.
 
 # CATEGORIES
 {catalogue}"""
+
+
+ALL_COUNTRIES = ("mongolia", "panama", "sri-lanka")
+
+# The lenses a line can be placed in: where each lens's areas come from, the
+# countries it serves, and the name the prompt gives it ("in a {lens}
+# taxonomy" in SYSTEM_TEMPLATE). GLOBE's name is as it was approved on 23
+# October 2026, so its answers stay cached. The climate lenses (18 November
+# 2026) lead with a project-defined label, the brief's own lens name in lower
+# case ("climate mitigation", "climate adaptation"); the words in brackets are
+# their sources' own, as python/data/categories.json `_sources` (IPCC sectors,
+# GGA) and the `tooltip` of Sri Lanka's adaptation taxonomy
+# (python/data/sri-lanka-taxonomies.json) state them. The areas are those the
+# targets are classified with; Sri Lanka's own adaptation lens replaces the GGA
+# there, as it does in the brief.
+BER_LENSES: dict[str, dict[str, Any]] = {
+    "globe": {
+        "categories": "globe_categories",
+        "countries": ALL_COUNTRIES,
+        "name": "GLOBE (BIOFIN's Global Biodiversity Expenditure taxonomy)",
+    },
+    "sector": {
+        "categories": "ipcc_sectors",
+        "countries": ALL_COUNTRIES,
+        "name": (
+            "climate mitigation (sectors after the IPCC 2006 Guidelines for National "
+            "GHG Inventories)"
+        ),
+    },
+    "gga": {
+        "categories": "gga_categories",
+        "countries": ("mongolia", "panama"),
+        "name": (
+            "climate adaptation (the thematic targets of the UAE Framework for Global Climate "
+            "Resilience, UNFCCC decision 2/CMA.5)"
+        ),
+    },
+    "adaptation": {
+        "taxonomy": "adaptation",
+        "countries": ("sri-lanka",),
+        "name": (
+            "climate adaptation (Sri Lanka's adaptation sectors, as set by the UNDP country office "
+            "from the country's NDC 3.0 and the Global Goal on Adaptation)"
+        ),
+    },
+}
+
+
+def lens_categories(lens: str, country: str) -> list[dict[str, Any]]:
+    """The areas of a lens for a country: python/data/categories.json, or the
+    country's own taxonomy file. A lens the country is not read in raises."""
+    spec = BER_LENSES[lens]
+    if country not in spec["countries"]:
+        raise ValueError(f"The {lens} lens does not serve {country}")
+    if "categories" in spec:
+        return json.loads((DATA_DIR / "categories.json").read_text())[spec["categories"]]
+    taxonomies = json.loads((DATA_DIR / f"{country}-taxonomies.json").read_text())["taxonomies"]
+    return next(t for t in taxonomies if t["taxonomyType"] == spec["taxonomy"])["categories"]
 
 
 def system_prompt(lens_name: str, categories: Sequence[dict[str, Any]]) -> str:

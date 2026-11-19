@@ -223,7 +223,7 @@ describe("Explore", () => {
       .getAllByTestId("explore-browse-row")
       .find((row) => row.textContent?.includes("Agriculture"))!;
     fireEvent.click(within(agriculture).getByRole("button", { name: /^Agriculture/ }));
-    expect(within(side()).getByText("Policy area · Biodiversity")).toBeInTheDocument();
+    expect(within(side()).getByText("Thematic area · Biodiversity")).toBeInTheDocument();
     expect(within(side()).getByRole("heading", { name: "Agriculture" })).toBeInTheDocument();
   });
 
@@ -589,9 +589,39 @@ describe("Explore with finance and implementation", () => {
     expect(within(side()).queryByRole("heading", { name: "Budget lines" })).toBeNull();
   });
 
-  it("states the country's own rating of a target without any layer on", () => {
+  it("tags a target with its country's own rating under its document's name, without any layer on", () => {
     renderLayered({ focus: "A1" });
-    expect(within(side()).getByText("Limited progress")).toBeInTheDocument();
+    const tag = side().querySelector(".brief-rating-tag") as HTMLElement;
+    expect(tag.textContent).toBe("7th National Report: Limited progress");
+    // Under the document's name, above the target's own words.
+    expect(side().querySelector(".ex-focus-doc")?.nextElementSibling).toBe(tag.closest(".ex-focus-rating"));
+    // In ink: a mark and a word, never a colour of its own.
+    expect(tag.querySelector(".n7-mark")?.getAttribute("data-status")).toBe("limited");
+    // No second line at the foot of the column.
+    expect(document.querySelector(".ex-nr7")).toBeNull();
+    expect(within(side()).getAllByText("Limited progress")).toHaveLength(1);
+    // The centre's card carries it too.
+    expect(document.querySelector(".ex-centre-card .brief-rating-tag")?.textContent).toBe("7th National Report: Limited progress");
+  });
+
+  it("tags a target's hover card with its country's own rating", () => {
+    const sizes = [
+      vi.spyOn(HTMLElement.prototype, "clientWidth", "get").mockReturnValue(800),
+      vi.spyOn(HTMLElement.prototype, "clientHeight", "get").mockReturnValue(600),
+    ];
+    try {
+      renderLayered();
+      // At rest the ring holds the targets alone, laid out over every item.
+      const model = buildExploreModel(DATA.scope, LAYERS);
+      const layout = layoutRing(groupByDocument(model, DATA.scope.docs), model.items.length, 800, 600, { labelHeight: 72 });
+      const at = (id: string) => ({ clientX: layout.x[model.index.get(id)!], clientY: layout.y[model.index.get(id)!] });
+      fireEvent.pointerMove(screen.getByRole("application"), at("A1"));
+      expect(document.querySelector(".ex-tip")?.textContent).toContain("7th National Report: Limited progress");
+      fireEvent.pointerMove(screen.getByRole("application"), at("B1"));
+      expect(document.querySelector(".ex-tip")?.textContent).not.toContain("7th National Report");
+    } finally {
+      sizes.forEach((s) => s.mockRestore());
+    }
   });
 
   it("shows a target's reported actions, budget lines and NR7 status beside the ring", () => {

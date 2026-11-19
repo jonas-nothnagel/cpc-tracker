@@ -17,6 +17,9 @@ import { defaultSelection } from "@/lib/brief/selection";
 import { TOUR_STEPS } from "@/components/dashboard/coherence-briefing/tour/steps";
 import type { BriefSource } from "@/lib/brief/source";
 import { briefFixture } from "@/lib/brief/test-fixture";
+import { parseBerAreas } from "@/lib/brief/ber-areas";
+import { spendingSetup } from "@/lib/brief/spending";
+import { levelsPayload } from "@/lib/brief/spending-fixture";
 import { contractsSetup } from "@/lib/brief/contracts/setup";
 import { contractsFixture } from "@/lib/brief/contracts/test-fixture";
 import type { GeoFile } from "@/lib/brief/contracts/geo";
@@ -141,7 +144,7 @@ describe("BriefApp", () => {
   it("keeps method text and document lists off the title block", () => {
     renderApp();
     const title = screen.getByTestId("brief-title");
-    expect(within(title).queryByText(/AI model|Documents in this brief|Policy areas/)).toBeNull();
+    expect(within(title).queryByText(/AI model|Documents in this brief|Thematic areas/)).toBeNull();
   });
 
   it("keeps at least two documents", () => {
@@ -335,7 +338,7 @@ describe("BriefApp screen and print", () => {
   });
 
   it("the walkthrough's menu stop names only what the menu offers", () => {
-    expect(en.briefing.tour.brief.steps.builder.body).not.toMatch(/policy areas/i);
+    expect(en.briefing.tour.brief.steps.builder.body).not.toMatch(/thematic areas/i);
   });
 
   it("the walkthrough reads the map by its edges: rows named at the left, columns under it", () => {
@@ -424,7 +427,7 @@ describe("BriefApp screen and print", () => {
     const flow = screen.getByTestId("brief-flow");
     expect(flow.querySelector('[data-section="areas"]')).not.toBeNull();
     const sections = screen.getByRole("group", { name: "In the brief" });
-    fireEvent.click(within(sections).getByRole("checkbox", { name: /By policy area/ }));
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /By thematic area/ }));
     expect(flow.querySelector('[data-section="areas"]')).toBeNull();
   });
 
@@ -433,7 +436,7 @@ describe("BriefApp screen and print", () => {
     const hub = screen.getByTestId("brief-hub");
     const areas = screen.getByTestId("brief-areas");
     expect(hub.compareDocumentPosition(areas) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(within(areas).getByRole("heading", { level: 2 }).textContent).toBe("Targets and alignment by policy area");
+    expect(within(areas).getByRole("heading", { level: 2 }).textContent).toBe("Targets and alignment by thematic area");
   });
 
   it("chooses the policy areas in the component only, and prints them by the same lens", () => {
@@ -449,12 +452,38 @@ describe("BriefApp screen and print", () => {
     // The menu offers the documents and the sections, no lens.
     const menu = screen.getByRole("complementary", { name: "Customize the brief" });
     expect(within(menu).queryAllByRole("radio")).toHaveLength(0);
-    expect(within(menu).queryByText("Policy areas")).toBeNull();
+    expect(within(menu).queryByText("Thematic areas")).toBeNull();
     const areas = screen.getByTestId("brief-areas");
     fireEvent.click(within(areas).getByRole("button", { name: "Climate mitigation" }));
     expect(within(areas).getByRole("button", { name: "Climate mitigation" }).getAttribute("aria-pressed")).toBe("true");
     expect(window.location.search).toContain("lens=ipcc");
-    expect(sheets().querySelector('[data-section="areas"]')?.textContent).toContain("Policy areas: Climate mitigation");
+    expect(sheets().querySelector('[data-section="areas"]')?.textContent).toContain("Thematic areas: Climate mitigation");
+  });
+
+  it("reads the reviewed spending's areas in the brief's lens, and a lens chosen there is the brief's", () => {
+    const base = briefFixture();
+    const source = {
+      ...base,
+      spending: true,
+      lenses: [
+        ...base.lenses,
+        { id: "ipcc" as const, taxonomyType: "sector", categories: [{ id: "s1", name: "Energy" }], primary: { A1: "s1" } },
+      ],
+    };
+    const placed = (lens: string, area: string) => parseBerAreas({ lines: [{ code: "71405", area, status: "second-agrees" }] }, null, lens);
+    const spending = spendingSetup(levelsPayload(), source, { areas: { globe: placed("globe", "g1"), ipcc: placed("sector", "s1") } })!;
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <BriefApp source={source} initialSelection={defaultSelection(source)} preparedOn="2026-09-23T10:00:00.000Z" spending={spending} />
+      </NextIntlClientProvider>,
+    );
+    const section = screen.getByTestId("brief-spending");
+    fireEvent.click(within(section).getByRole("button", { name: "Climate mitigation" }));
+    expect(window.location.search).toContain("lens=ipcc");
+    expect(within(section).getByRole("button", { name: "Climate mitigation" }).getAttribute("aria-pressed")).toBe("true");
+    // The thematic areas follow the same lens.
+    const areas = screen.getByTestId("brief-areas");
+    expect(within(areas).getByRole("button", { name: "Climate mitigation" }).getAttribute("aria-pressed")).toBe("true");
   });
 
   it("opens a pair of policy areas' target pairs in a panel", () => {
@@ -468,7 +497,7 @@ describe("BriefApp screen and print", () => {
     const second = within(areas).getAllByTestId("brief-area-pair")[1];
     fireEvent.click(within(second).getByRole("button", { expanded: false }));
     fireEvent.click(within(areas).getByRole("button", { name: "See the 3 target pairs" }));
-    expect(screen.getByRole("dialog", { name: "Target pairs between policy areas" })).toBeTruthy();
+    expect(screen.getByRole("dialog", { name: "Target pairs between thematic areas" })).toBeTruthy();
   });
 });
 
@@ -533,7 +562,7 @@ describe("BriefApp walkthrough", () => {
       "Strongest alignments",
       "Recurring themes",
       "Targets to review first",
-      "By policy area",
+      "By thematic area",
       "Customize the brief",
     ]);
   });
@@ -628,6 +657,13 @@ describe("BriefApp public contracts", () => {
     expect(screen.getByText("Prints on 3 pages")).toBeTruthy();
   });
 
+  it("names the national report's section Implementation in the menu", () => {
+    renderApp({ ...SOURCE, nr7: true });
+    const menu = screen.getByRole("group", { name: "In the brief" });
+    expect(within(menu).getByRole("checkbox", { name: /^Implementation/ })).toBeTruthy();
+    expect(within(menu).queryByRole("checkbox", { name: /National biodiversity targets/ })).toBeNull();
+  });
+
   it("never offers them where the country has no contract record", () => {
     renderApp();
     expect(within(screen.getByRole("group", { name: "In the brief" })).queryByRole("checkbox", { name: /Public contracts/ })).toBeNull();
@@ -676,7 +712,7 @@ describe("BriefApp public contracts", () => {
   it("keeps the contracts' policy areas and the policy-area component's choice as one", () => {
     renderWith();
     const purpose = section()!.querySelector<HTMLElement>('[data-step="purpose"]')!;
-    const contractLenses = () => within(within(purpose).getByRole("group", { name: "Policy areas" }));
+    const contractLenses = () => within(within(purpose).getByRole("group", { name: "Thematic areas" }));
     fireEvent.click(contractLenses().getByRole("button", { name: "Climate mitigation" }));
     expect(window.location.search).toContain("lens=ipcc");
     const areas = screen.getByTestId("brief-areas");

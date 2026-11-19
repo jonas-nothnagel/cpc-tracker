@@ -5,10 +5,11 @@ import { useFormatter, useTranslations } from "next-intl";
 import { keepCurrencyInLink } from "@/components/brief/contracts/currency-switch";
 import type { Currency } from "@/components/brief/contracts/money";
 import { moneyParts, per100 } from "@/lib/brief/contracts/money";
-import type { BriefSource } from "@/lib/brief/source";
+import type { BriefSource, LensId } from "@/lib/brief/source";
 import {
-  percentLabel,
+  itemOpens,
   spendingAreas,
+  spendingLens,
   spendingRecord,
   type BudgetType,
   type SeriesId,
@@ -18,29 +19,45 @@ import {
   type SpendingRecord,
   type SpendingSetup,
 } from "@/lib/brief/spending";
+import { useNumbers } from "../ink";
+import { lensNameOf, lensTooltip } from "../lens-tooltip";
+import { SectionHead } from "../section-head";
 import "./spending.css";
 
 /** Squares in the record's field: one per unit of every hundred. */
 const FIELD = 100;
-/** Budget lines listed under an opened area, and review lines before "show all". */
+/** Budget lines listed under an opened area. */
 const LINES_MAX = 8;
-const ITEMS_MAX = 8;
+/** The review's own lines before "show all". */
+const ITEMS_MAX = 6;
+
+/** What the lines with no area lack, as the copy names it: in a climate lens
+ *  an area of climate mitigation or adaptation, in Biodiversity a specific one. */
+type ApartIn = "mitigation" | "adaptation" | "other";
+
+function apartIn(lens: LensId): ApartIn {
+  return lens === "ipcc" ? "mitigation" : lens === "gga" || lens === "adaptation" ? "adaptation" : "other";
+}
 
 /**
  * Reviewed public biodiversity spending in the brief, as the country's
- * expenditure review records it, in three steps that read as one: how much of
- * all public spending it is, year by year (each year's total first, the parts
- * the review keeps apart within it); the review's own lines; and what the
- * money is for, each area's share of the spending beside its share of the
- * targets. Amounts are in US$ (each year at its own rate) or in the review's
- * own currency, as the page's currency says. Money is UNDP blue; green and red
- * stay with alignment. What the section knows but does not say on its face is
- * kept in ./DISCLAIMERS.md.
+ * expenditure review records it, in two components on the page's two
+ * columns: the record (a hundred squares and its two figures beside each
+ * year's spending, the parts the review keeps apart within it); then what the
+ * money is for (each area's share of the spending beside its share of the
+ * targets, in the brief's lens where the lines are placed in it, else in
+ * Biodiversity), beside a sentence on how few areas hold half of the targets
+ * and the review's own lines. Amounts are in US$ (each year at its own rate) or in
+ * the review's own currency, as the page's currency says. Money is UNDP blue;
+ * green and red stay with alignment. What the section knows but does not say
+ * on its face is kept in ./DISCLAIMERS.md.
  */
 export function SpendingSection({
   setup,
   source,
   docs,
+  lens = null,
+  onLens,
   currency = "usd",
   onCurrency,
   onExploreArea,
@@ -49,16 +66,53 @@ export function SpendingSection({
   source: BriefSource;
   /** The brief's documents: the targets are read from these. */
   docs: string[];
+  /** The brief's lens: the areas are read in it where the lines are placed
+   *  in it, else in Biodiversity. */
+  lens?: LensId | null;
+  onLens?: (next: LensId) => void;
   /** The page's currency: US$, or the review's own ("mnt" names it). */
   currency?: Currency;
   onCurrency?: (next: Currency) => void;
-  /** Puts a biodiversity area in the centre of the ring, budget lines on. */
-  onExploreArea?: (areaId: string) => void;
+  /** Puts an area of the lens shown in the centre of the ring, budget lines on. */
+  onExploreArea?: (areaId: string, lens: LensId) => void;
 }) {
   const t = useTranslations("brief.spending");
+  const tl = useTranslations("briefing.lens");
   const money = useMoney(setup, currency);
+  const { pct } = useNumbers();
   const record = useMemo(() => spendingRecord(setup), [setup]);
-  const reading = useMemo(() => spendingAreas(setup, source, docs), [setup, source, docs]);
+  const shownLens = spendingLens(setup, lens);
+  const reading = useMemo(() => spendingAreas(setup, source, docs, shownLens), [setup, source, docs, shownLens]);
+  // The area row open in the table, in the lens it was opened in: the
+  // sentence beside it follows it, and another lens closes it.
+  const [openIn, setOpenIn] = useState<{ lens: LensId; id: string } | null>(null);
+  const openArea = openIn?.lens === shownLens ? openIn.id : null;
+  const setOpenArea = (id: string | null) => setOpenIn(id === null ? null : { lens: shownLens, id });
+  const opened = reading.areas.find((a) => a.id === openArea);
+  // The lenses the lines are placed in, offered where there is a choice.
+  const lensChoice =
+    onLens && setup.lenses.length > 1
+      ? setup.lenses.map((id) => {
+          const known = source.lenses.find((l) => l.id === id);
+          return { id, name: lensNameOf(source.lenses, id, tl), tooltip: known ? lensTooltip(known, tl) : undefined };
+        })
+      : null;
+  const areasSentence = opened
+    ? t("areas.insightArea", {
+        area: opened.name,
+        spend: pct(opened.spendShare),
+        targets: pct(opened.targetShare),
+        total: reading.placed,
+      })
+    : reading.half
+      ? t("areas.insight", {
+          count: reading.half.areas,
+          of: reading.half.of,
+          targets: pct(reading.half.targetShare),
+          total: reading.placed,
+          spend: pct(reading.half.spendShare),
+        })
+      : null;
 
   const span = (years: string[]) => (years.length > 1 ? `${years[0]}–${years[years.length - 1]}` : (years[0] ?? ""));
   const shown = span(setup.years.map((y) => y.year));
@@ -72,55 +126,71 @@ export function SpendingSection({
 
   return (
     <div className="sp-brief" data-testid="brief-spending">
-      <header className="sp-head">
-        <h2 id="brief-spending-title" className="sp-title" tabIndex={-1}>
-          {t("title")}
-        </h2>
-        <p className="sp-source">
-          {t("source", { years: shown })}
-          {setup.illustrative && <span className="sp-note-inline">{t("illustrative")}</span>}
-        </p>
-        {money.local && onCurrency && (
-          <div className="sp-switch" role="group" aria-label={t("currency")}>
-            <span className="sp-switch-label">{t("currency")}</span>
-            {(["usd", "mnt"] as const).map((c) => (
-              <button key={c} type="button" className="sp-option" aria-pressed={currency === c} onClick={() => choose(c)}>
-                {c === "usd" ? "US$" : money.localSign.trim()}
-              </button>
-            ))}
-          </div>
-        )}
-      </header>
+      <SectionHead
+        title={t("title")}
+        titleId="brief-spending-title"
+        source={
+          <>
+            {t("source", { years: shown })}
+            {setup.illustrative && <span className="sp-note-inline">{t("illustrative")}</span>}
+          </>
+        }
+        controls={
+          money.local && onCurrency ? (
+            <div className="sp-switch" role="group" aria-label={t("currency")}>
+              <span className="sp-switch-label">{t("currency")}</span>
+              {(["usd", "mnt"] as const).map((c) => (
+                <button key={c} type="button" className="sp-option" aria-pressed={currency === c} onClick={() => choose(c)}>
+                  {c === "usd" ? "US$" : money.localSign.trim()}
+                </button>
+              ))}
+            </div>
+          ) : undefined
+        }
+        insight={t("record.headline", { sign: money.sign, every: money.n(every), scope, years: complete })}
+      />
 
-      <section className="sp-step" aria-labelledby="sp-record-headline">
-        <div className="sp-step-head">
-          <h3 id="sp-record-headline" className="brief-hub-headline">
-            {t("record.headline", { sign: money.sign, every: money.n(every), scope, years: complete })}
-          </h3>
+      <div className="sp-record">
+        <div className="sp-record-side">
+          <Field filled={every} label={t("fieldLabel", { sign: money.sign, every: money.n(every), scope })} />
+          <dl className="sp-figures">
+            <div>
+              <dt>{t("record.reviewed", { years: complete })}</dt>
+              <dd className="sp-figure" data-ink="blue">
+                {money.amount(record.reviewed, record.reviewedUsd)}
+              </dd>
+            </div>
+            <div>
+              <dt>{t("record.public", { scope, years: complete })}</dt>
+              <dd className="sp-figure">{money.amount(record.public, record.publicUsd)}</dd>
+            </div>
+          </dl>
         </div>
-        <div className="sp-record">
-          <div className="sp-record-side">
-            <Field filled={every} label={t("fieldLabel", { sign: money.sign, every: money.n(every), scope })} />
-            <dl className="sp-figures">
-              <div>
-                <dt>{t("record.reviewed", { years: complete })}</dt>
-                <dd className="sp-figure" data-ink="blue">
-                  {money.amount(record.reviewed, record.reviewedUsd)}
-                </dd>
-              </div>
-              <div>
-                <dt>{t("record.public", { scope, years: complete })}</dt>
-                <dd className="sp-figure">{money.amount(record.public, record.publicUsd)}</dd>
-              </div>
-            </dl>
-          </div>
-          <YearChart setup={setup} record={record} money={money} scope={scope} />
+        <YearChart setup={setup} record={record} money={money} scope={scope} />
+      </div>
+
+      <div className="sp-pair">
+        <AreasStep
+          setup={setup}
+          reading={reading}
+          money={money}
+          lensName={lensNameOf(source.lenses, shownLens, tl)}
+          lenses={lensChoice}
+          shownLens={shownLens}
+          onLens={onLens}
+          open={openArea}
+          onOpen={setOpenArea}
+          onExploreArea={onExploreArea ? (id) => onExploreArea(id, shownLens) : undefined}
+        />
+        <div className="sp-pair-side">
+          {areasSentence && (
+            <p className="brief-hub-headline" aria-live="polite">
+              {areasSentence}
+            </p>
+          )}
+          <ItemsStep setup={setup} money={money} years={complete} />
         </div>
-      </section>
-
-      <AreasStep setup={setup} reading={reading} money={money} onExploreArea={onExploreArea} />
-
-      <ItemsStep setup={setup} money={money} years={complete} />
+      </div>
     </div>
   );
 }
@@ -394,9 +464,9 @@ function ItemsStep({ setup, money, years }: { setup: SpendingSetup; money: Money
     setAll(false);
   };
   return (
-    <section className="sp-step" aria-labelledby="sp-items-title">
+    <section className="sp-step sp-step-items" aria-labelledby="sp-items-title">
       <div className="sp-step-head">
-        <h3 id="sp-items-title" className="brief-hub-headline">
+        <h3 id="sp-items-title" className="sp-chart-title">
           {t("title", { unit: institutions ? "both" : unit, years })}
         </h3>
         {institutions && (
@@ -411,24 +481,41 @@ function ItemsStep({ setup, money, years }: { setup: SpendingSetup; money: Money
       </div>
       <ol className="sp-items" aria-label={t("listLabel", { unit })}>
         {shown.map((item) => {
-          const isOpen = open === item.code;
+          // A row opens only where the review says more about it; else it is plain.
+          const opens = itemOpens(item);
+          const isOpen = opens && open === item.code;
           const panel = `sp-item-${item.code}`;
+          const content = (
+            <>
+              <span className="sp-item-name" title={item.original}>
+                {withBudget(item, t)}
+                {itemSub(item, t) && <span className="sp-item-sub">{itemSub(item, t)}</span>}
+              </span>
+              <span className="sp-cell" aria-hidden="true">
+                <span className="sp-bar-line" data-ink="spend">
+                  <span style={{ width: `${max > 0 ? Math.min(100, (money.whole(item.total, item.totalUsd) / max) * 100) : 0}%` }} />
+                </span>
+                <span className="sp-pct" data-ink="spend">
+                  {money.amount(item.total, item.totalUsd)}
+                </span>
+              </span>
+            </>
+          );
           return (
             <li key={item.code} className="sp-item" data-open={isOpen ? "true" : undefined}>
-              <button type="button" className="sp-row sp-item-row" aria-expanded={isOpen} aria-controls={panel} onClick={() => setOpen(isOpen ? null : item.code)}>
-                <span className="sp-item-name" title={item.original}>
-                  {withBudget(item, t)}
-                  {itemSub(item, t) && <span className="sp-item-sub">{itemSub(item, t)}</span>}
-                </span>
-                <span className="sp-cell" aria-hidden="true">
-                  <span className="sp-bar-line" data-ink="spend">
-                    <span style={{ width: `${max > 0 ? Math.min(100, (money.whole(item.total, item.totalUsd) / max) * 100) : 0}%` }} />
-                  </span>
-                  <span className="sp-pct" data-ink="spend">
-                    {money.amount(item.total, item.totalUsd)}
-                  </span>
-                </span>
-              </button>
+              {opens ? (
+                <button
+                  type="button"
+                  className="sp-row sp-item-row"
+                  aria-expanded={isOpen}
+                  aria-controls={panel}
+                  onClick={() => setOpen(isOpen ? null : item.code)}
+                >
+                  {content}
+                </button>
+              ) : (
+                <div className="sp-row sp-item-row">{content}</div>
+              )}
               {isOpen && (
                 <div className="sp-open" id={panel}>
                   <ItemDetail item={item} money={money} />
@@ -484,6 +571,7 @@ function itemSub(item: SpendingItem, t: ReturnType<typeof useTranslations>): str
 
 function ItemDetail({ item, money }: { item: SpendingItem; money: Money }) {
   const t = useTranslations("brief.spending.items");
+  const { pct } = useNumbers();
   return (
     <>
       {item.rates && item.rates.length > 0 && (
@@ -527,7 +615,7 @@ function ItemDetail({ item, money }: { item: SpendingItem; money: Money }) {
       )}
       {item.pays && item.pays.length > 0 && (
         <p className="sp-open-line">
-          {t("pays", { list: item.pays.map((p) => `${inSentence(p.name)} ${percentLabel(p.share)}`).join("; ") })}
+          {t("pays", { list: item.pays.map((p) => `${inSentence(p.name)} ${pct(p.share)}`).join("; ") })}
         </p>
       )}
       {item.parts && item.parts.length > 0 && (
@@ -560,15 +648,34 @@ function AreasStep({
   setup,
   reading,
   money,
+  lensName,
+  lenses,
+  shownLens,
+  onLens,
+  open,
+  onOpen,
   onExploreArea,
 }: {
   setup: SpendingSetup;
   reading: ReturnType<typeof spendingAreas>;
   money: Money;
+  /** The lens the areas are read in, naming the area column. */
+  lensName: string;
+  /** The lenses the lines are placed in, where there is a choice. */
+  lenses: { id: LensId; name: string; tooltip?: string }[] | null;
+  shownLens: LensId;
+  onLens?: (next: LensId) => void;
+  /** The row open: an area's id, "apart", or none. The section's sentence follows it. */
+  open: string | null;
+  onOpen: (next: string | null) => void;
   onExploreArea?: (areaId: string) => void;
 }) {
   const t = useTranslations("brief.spending.areas");
-  const [open, setOpen] = useState<string | null>(null);
+  const { pct } = useNumbers();
+  const setOpen = (toggle: (cur: string | null) => string | null) => onOpen(toggle(open));
+  // The lines with no area are named after the lens: in a climate lens,
+  // biodiversity spending with no area of that lens.
+  const lacking = apartIn(shownLens);
   // Shares by default; amounts on request, the bars still drawn by share so
   // both columns stay on one scale.
   const [mode, setMode] = useState<"share" | "amount">("share");
@@ -577,7 +684,7 @@ function AreasStep({
   return (
     <section className="sp-step sp-step-areas" aria-labelledby="sp-areas-title">
       <div className="sp-step-head">
-        <h3 id="sp-areas-title" className="brief-hub-headline">
+        <h3 id="sp-areas-title" className="sp-chart-title">
           {t("title")}
         </h3>
         <div className="sp-switch" role="group" aria-label={t("switch")}>
@@ -589,8 +696,17 @@ function AreasStep({
           </button>
         </div>
       </div>
+      {lenses && onLens && (
+        <p className="brief-av-choice" role="group" aria-label={t("lensGroup")}>
+          {lenses.map((l) => (
+            <button key={l.id} type="button" aria-pressed={l.id === shownLens} title={l.tooltip} onClick={() => onLens(l.id)}>
+              {l.name}
+            </button>
+          ))}
+        </p>
+      )}
       <div className="sp-row sp-row-head" aria-hidden="true">
-        <span>{t("colArea")}</span>
+        <span>{lensName}</span>
         <span>{mode === "amount" ? t("colTargetsCount") : t("colTargets")}</span>
         <span>{mode === "amount" ? t("colSpendAmount") : t("colSpend")}</span>
       </div>
@@ -604,6 +720,7 @@ function AreasStep({
             open={open === a.id}
             onToggle={() => setOpen((cur) => (cur === a.id ? null : a.id))}
             money={money}
+            lacking={lacking}
             showMatches={setup.showMatches}
             // The ring centres an area on its targets: none here, nothing to centre.
             onExplore={onExploreArea && a.targets.length > 0 ? () => onExploreArea(a.id) : undefined}
@@ -618,19 +735,19 @@ function AreasStep({
               aria-controls="sp-area-apart"
               onClick={() => setOpen((cur) => (cur === "apart" ? null : "apart"))}
             >
-              <span className="sp-area-name">{t("apartRow")}</span>
+              <span className="sp-area-name">{t("apartRow", { lens: lacking })}</span>
               <span className="sp-cell" aria-hidden="true" />
               <Bar
                 share={apart.spendShare}
                 max={maxShare}
                 ink="apart"
-                label={mode === "amount" ? money.amount(apart.spend, apart.spendUsd) : percentLabel(apart.spendShare)}
+                label={mode === "amount" ? money.amount(apart.spend, apart.spendUsd) : pct(apart.spendShare)}
               />
-              <span className="brief-sr-only">{t("apartLabel", { spend: percentLabel(apart.spendShare) })}</span>
+              <span className="brief-sr-only">{t("apartLabel", { spend: pct(apart.spendShare), lens: lacking })}</span>
             </button>
             {open === "apart" && (
               <div className="sp-open" id="sp-area-apart">
-                <LineList lines={apart.lines} money={money} label={t("linesLabel")} />
+                <LineList lines={apart.lines} money={money} lacking={lacking} label={t("linesLabel")} />
               </div>
             )}
           </li>
@@ -647,6 +764,7 @@ function AreaRow({
   open,
   onToggle,
   money,
+  lacking,
   showMatches,
   onExplore,
 }: {
@@ -656,13 +774,15 @@ function AreaRow({
   open: boolean;
   onToggle: () => void;
   money: Money;
+  lacking: ApartIn;
   showMatches: boolean;
   onExplore?: () => void;
 }) {
   const t = useTranslations("brief.spending.areas");
+  const { pct } = useNumbers();
   const panel = `sp-area-${area.id}`;
-  const targetsLabel = mode === "amount" ? t("targetsCount", { count: area.targets.length }) : percentLabel(area.targetShare);
-  const spendLabel = area.spend > 0 ? (mode === "amount" ? money.amount(area.spend, area.spendUsd) : percentLabel(area.spendShare)) : t("noSpend");
+  const targetsLabel = mode === "amount" ? t("targetsCount", { count: area.targets.length }) : pct(area.targetShare);
+  const spendLabel = area.spend > 0 ? (mode === "amount" ? money.amount(area.spend, area.spendUsd) : pct(area.spendShare)) : t("noSpend");
   return (
     <li className="sp-area" data-open={open ? "true" : undefined}>
       <button type="button" className="sp-row" aria-expanded={open} aria-controls={panel} onClick={onToggle}>
@@ -687,15 +807,15 @@ function AreaRow({
             <p className="sp-open-line">
               {area.coherence.rated
                 ? t("coherence", {
-                    aligned: percentLabel(area.coherence.reinforce / area.coherence.total),
-                    apart: percentLabel(area.coherence.apart / area.coherence.total),
+                    aligned: pct(area.coherence.reinforce / area.coherence.total),
+                    apart: pct(area.coherence.apart / area.coherence.total),
                     total: area.coherence.total,
                   })
                 : t("coherenceFew", { total: area.coherence.total })}
             </p>
           )}
           {area.lines.length > 0 ? (
-            <LineList lines={area.lines} money={money} label={t("linesLabel")} />
+            <LineList lines={area.lines} money={money} lacking={lacking} label={t("linesLabel")} />
           ) : (
             <p className="sp-open-line">{t("noLines")}</p>
           )}
@@ -710,7 +830,7 @@ function AreaRow({
   );
 }
 
-function LineList({ lines, money, label }: { lines: SpendingLine[]; money: Money; label: string }) {
+function LineList({ lines, money, lacking, label }: { lines: SpendingLine[]; money: Money; lacking: ApartIn; label: string }) {
   const t = useTranslations("brief.spending.areas");
   // A line the review describes opens to its own words: its tag and its description.
   const [open, setOpen] = useState<string | null>(null);
@@ -733,7 +853,7 @@ function LineList({ lines, money, label }: { lines: SpendingLine[]; money: Money
                     <span title={l.original}>{l.name}</span>
                   )}
                   <span className="sp-line-status" data-status={l.areaStatus}>
-                    {l.areaStatus === "checked" ? t("checked") : l.areaStatus === "ai" ? t("aiSuggested") : t("apartWhy")}
+                    {l.areaStatus === "checked" ? t("checked") : l.areaStatus === "ai" ? t("aiSuggested") : t("apartWhy", { lens: lacking })}
                   </span>
                   {isOpen && l.reviewTag && <span className="sp-line-detail">{t(`reviewTag.${l.reviewTag}`)}</span>}
                   {isOpen && l.description && <span className="sp-line-detail sp-quote">{t("reviewDescription", { text: l.description })}</span>}

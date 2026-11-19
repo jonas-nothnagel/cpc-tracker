@@ -79,10 +79,18 @@ function renderSection(
 const rowNames = () => screen.getAllByRole("button", { expanded: false }).map((b) => b.textContent);
 
 describe("Nr7Section", () => {
-  it("leads with how many targets the report rates behind schedule, in numbers", () => {
-    renderSection();
-    expect(screen.getByRole("heading", { level: 3 }).textContent).toContain("rates 1 of 2 national targets behind schedule");
-    expect(screen.getByText(/published February 28, 2026/)).toBeTruthy();
+  it("leads with how many targets the report rates behind schedule, in numbers, beside its title", () => {
+    const { container } = renderSection();
+    const sentence = screen.getByText(/rates 1 of 2 national targets behind schedule/);
+    // The title is the section's one heading; the sentence and the ratings stand beside it.
+    expect(sentence.tagName).toBe("P");
+    expect(screen.getAllByRole("heading").map((h) => h.textContent)).toEqual([
+      "Implementation of the national biodiversity targets",
+    ]);
+    const side = container.querySelector(".brief-sec-head-side")!;
+    expect(side.firstElementChild).toBe(sentence);
+    expect(side.querySelector(".n7-strip")).toBeTruthy();
+    expect(container.querySelector(".brief-sec-head-main")?.textContent).toMatch(/published February 28, 2026/);
   });
 
   it("reads down the report's scale, on track first", () => {

@@ -2,7 +2,8 @@
 line's area, and each line's expenditure type of the official chain.
 
   build   python/output/<country>/ber_areas_<lens>.json (both models' readings)
-          -> one workbook, a sheet per country: every line with its money, each
+          -> one workbook per lens, marked with its lens, a sheet per country:
+          every line with its money, each
           model's area and reason, and empty columns for the call. Claude Opus
           decides a line's area, so it is model 1; GPT-5.4 is the second
           opinion. The lines a person should look at first lead (the second
@@ -11,12 +12,14 @@ line's area, and each line's expenditure type of the official chain.
           filled in. Where python/output/<country>/ber_types_globe.json
           exists, a "<Country> types" sheet does the same for the types.
   import  the filled workbook -> python/data/<country>-ber-areas.json (and
-          <country>-ber-types.json): each call with who made it and when. Only
-          these count as checked; until then the brief marks a line's area or
-          type "AI-suggested, not reviewed".
+          <country>-ber-types.json): each call with who made it and when,
+          under the lens the workbook was built for. A row showing an area
+          that is not its lens's stops the import before any file is written.
+          Only these calls count as checked; until then the brief marks a
+          line's area or type "AI-suggested, not reviewed".
 
 Run from python/:
-    .venv/bin/python scripts/ber_review_sheet.py build [--out PATH]
+    .venv/bin/python scripts/ber_review_sheet.py build [--lens LENS] [--out PATH]
     .venv/bin/python scripts/ber_review_sheet.py import PATH --by "Name"
 """
 
@@ -24,6 +27,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from datetime import date
 from pathlib import Path
@@ -36,12 +40,22 @@ from openpyxl.worksheet.datavalidation import DataValidation
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from src.ber_areas import BER_LENSES, lens_categories  # noqa: E402
+
 from src.config import DATA_DIR, OUTPUT_DIR  # noqa: E402
 
 COUNTRIES = {"mongolia": "Mongolia", "panama": "Panama", "sri-lanka": "Sri Lanka"}
-LENS_KEYS = {"globe": "globe_categories"}
-DEFAULT_OUT = Path(__file__).resolve().parent.parent / "tmp" / "ber" / "BER review sheet - GLOBE.xlsx"
+# A lens as the sheet names it to the review team: one workbook per lens.
+SHEET_LENS = {
+    "globe": "GLOBE",
+    "sector": "climate mitigation",
+    "gga": "climate adaptation (GGA)",
+    "adaptation": "climate adaptation (Sri Lanka)",
+}
 CALLS = {"Accept": "accept", "Change": "change", "None fits": "none"}
+# The lens a workbook was built for, kept in its properties so its calls go
+# back to that lens on import.
+LENS_MARK = "ber-review-lens:"
 
 COLUMNS = [
     ("Line", 16),
@@ -92,9 +106,31 @@ def sheet_order(status: str, money: float, code: str) -> tuple[int, float, str]:
     return (rank, -money, code)
 
 
-def area_names(lens: str) -> dict[str, str]:
-    categories = json.loads((DATA_DIR / "categories.json").read_text())[LENS_KEYS[lens]]
-    return {c["id"]: c["name"] for c in categories}
+def area_names(lens: str, country: str) -> dict[str, str]:
+    return {c["id"]: c["name"] for c in lens_categories(lens, country)}
+
+
+def mark_lens(wb: Any, lens: str) -> None:
+    """Record in a workbook the lens it is built for."""
+    wb.properties.keywords = f"{LENS_MARK}{lens}"
+
+
+def sheet_lens(wb: Any, asked: str | None) -> str:
+    """The lens a filled workbook's calls belong to: the one it was built for,
+    which a lens asked for must match; GLOBE for a workbook built before the
+    lens was recorded."""
+    match = re.search(re.escape(LENS_MARK) + r"(\w+)", wb.properties.keywords or "")
+    built = match.group(1) if match and match.group(1) in BER_LENSES else None
+    if built and asked and asked != built:
+        raise SystemExit(
+            f"This workbook is the {SHEET_LENS[built]} lens's sheet: import it with --lens {built}."
+        )
+    return built or asked or "globe"
+
+
+def default_out(lens: str) -> Path:
+    name = f"BER review sheet - {SHEET_LENS[lens]}.xlsx"
+    return Path(__file__).resolve().parent.parent / "tmp" / "ber" / name
 
 
 def money(record: dict[str, Any], line: dict[str, Any]) -> tuple[float, float, str]:
@@ -113,14 +149,25 @@ def money(record: dict[str, Any], line: dict[str, Any]) -> tuple[float, float, s
 
 
 def build(lens: str, out: Path, countries: tuple[str, ...] = tuple(COUNTRIES), types: bool = True) -> None:
-    names = area_names(lens)
     wb = Workbook()
     guide = wb.active
     guide.title = "How to use"
     for row in [
         ["One row per budget line of the expenditure review, a sheet per country."],
-        ["Two AI models placed each line in a GLOBE area from the review's own description of it, without its amounts."],
-        ["Model 1 (Claude Opus) decides: a line takes its area at a score of 0.5 or more, else it is general biodiversity spending with no specific area. Model 2 (GPT-5.4) is a second opinion."],
+        [
+            f"Two AI models placed each line in an area of the {SHEET_LENS[lens]} lens "
+            "from the review's own description of it, without its amounts."
+        ],
+        [
+            "Model 1 (Claude Opus) decides: a line takes its area at a score of 0.5 "
+            "or more, else it "
+            + (
+                "is general biodiversity spending with no specific area."
+                if lens == "globe"
+                else f"has no area of the {SHEET_LENS[lens]} lens."
+            )
+            + " Model 2 (GPT-5.4) is a second opinion."
+        ],
         ["The review's call that a line is biodiversity spending stands in every case: the question here is only which area it serves."],
         ["Rows where model 2 reads the line differently, or no area is clear, come first, largest money first; then the rest."],
         ["Your call: Accept (the line's area as shown: model 1's area, or no specific area where none is clear), Change (pick the area in the next column) or None fits (no specific area)."],
@@ -130,13 +177,14 @@ def build(lens: str, out: Path, countries: tuple[str, ...] = tuple(COUNTRIES), t
         guide.append(row)
     guide.column_dimensions["A"].width = 120
 
-    area_list = list(names.values())
     for country, title in COUNTRIES.items():
-        if country not in countries:
+        if country not in countries or country not in BER_LENSES[lens]["countries"]:
             continue
         path = OUTPUT_DIR / country / f"ber_areas_{lens}.json"
         if not path.exists():
             continue
+        names = area_names(lens, country)
+        area_list = list(names.values())
         readings = json.loads(path.read_text())
         record = json.loads((DATA_DIR / f"{country}-ber.json").read_text())["record"]
         by_code = {l["code"]: l for l in record["lines"]}
@@ -202,8 +250,10 @@ def build(lens: str, out: Path, countries: tuple[str, ...] = tuple(COUNTRIES), t
         ws.add_data_validation(areas)
         calls.add(f"N2:N{last}")
         areas.add(f"O2:O{last}")
-    if types:
+    # The expenditure types belong to GLOBE (the official chain).
+    if types and lens == "globe":
         build_type_sheets(wb, countries)
+    mark_lens(wb, lens)
     out.parent.mkdir(parents=True, exist_ok=True)
     wb.save(out)
     print(f"Wrote {out}")
@@ -352,8 +402,17 @@ def kept(earlier: dict[str, Any] | None, entry: dict[str, Any]) -> dict[str, Any
     return earlier if earlier and decision(earlier) == decision(entry) else entry
 
 
-def import_type_calls(wb: Any, by: str) -> None:
+def write_calls(writes: list[tuple[str, Path, dict[str, Any], int, int]]) -> None:
+    for title, target, stored, changed, count in writes:
+        target.write_text(json.dumps(stored, indent=2, ensure_ascii=False) + "\n")
+        print(f"{title}: {changed} calls new or changed, {count} in all -> {target}")
+
+
+def read_type_calls(wb: Any, by: str) -> list[tuple[str, Path, dict[str, Any], int, int]]:
+    """The type sheets' calls, each country's file as it is to be written;
+    nothing is written here, so a row that stops the import stops it whole."""
     types = {t["id"] for t in json.loads((DATA_DIR / "globe-expenditure-types.json").read_text())["types"]}
+    writes: list[tuple[str, Path, dict[str, Any], int, int]] = []
     for country, title in COUNTRIES.items():
         sheet = type_sheet_title(title)
         if sheet not in wb.sheetnames:
@@ -396,8 +455,8 @@ def import_type_calls(wb: Any, by: str) -> None:
             "plan, the official chain); written by python/scripts/ber_review_sheet.py import. Only these count as checked."
         )
         stored["types"] = dict(sorted(calls.items()))
-        target.write_text(json.dumps(stored, indent=2, ensure_ascii=False) + "\n")
-        print(f"{sheet}: {changed} calls new or changed, {len(calls)} in all -> {target}")
+        writes.append((sheet, target, stored, changed, len(calls)))
+    return writes
 
 
 def calls_path(country: str) -> Path:
@@ -411,13 +470,17 @@ def load_calls(country: str, lens: str) -> dict[str, dict[str, Any]]:
     return json.loads(path.read_text()).get(lens, {})
 
 
-def import_calls(path: Path, lens: str, by: str) -> None:
-    names = area_names(lens)
-    by_name = {v: k for k, v in names.items()}
+def import_calls(path: Path, lens: str | None, by: str) -> None:
     wb = load_workbook(path, data_only=True)
+    lens = sheet_lens(wb, lens)
+    # Every sheet, the type sheets too, is read before any file is written,
+    # so a sheet that stops the import leaves every country's calls as they were.
+    writes: list[tuple[str, Path, dict[str, Any], int, int]] = []
     for country, title in COUNTRIES.items():
-        if title not in wb.sheetnames:
+        if title not in wb.sheetnames or country not in BER_LENSES[lens]["countries"]:
             continue
+        names = area_names(lens, country)
+        by_name = {v: k for k, v in names.items()}
         ws = wb[title]
         target = calls_path(country)
         stored = json.loads(target.read_text()) if target.exists() else {}
@@ -425,9 +488,20 @@ def import_calls(path: Path, lens: str, by: str) -> None:
         changed = 0
         for row in ws.iter_rows(min_row=2, values_only=True):
             raw, call, area, note = row[0], row[13], row[14], row[15]
-            if not raw or not call:
+            if not raw:
                 continue
             code = line_code(raw)
+            # The areas a row shows are its lens's: a sheet built for another
+            # lens would otherwise store its calls under this one.
+            for shown in (row[7], row[10]):
+                if shown and shown not in by_name:
+                    raise SystemExit(
+                        f"{title}, line {code}: {shown!r} is not an area of the "
+                        f"{SHEET_LENS[lens]} lens. Is this that lens's sheet? "
+                        "Name its lens with --lens."
+                    )
+            if not call:
+                continue
             kind = CALLS.get(str(call).strip())
             if kind is None:
                 raise SystemExit(f"{title}, line {code}: unknown call {call!r}")
@@ -440,7 +514,11 @@ def import_calls(path: Path, lens: str, by: str) -> None:
             if kind == "change":
                 decided = by_name[area]
             elif kind == "accept" and row[12] not in NO_AREA_WORDS:
-                decided = by_name.get(row[7])
+                if row[7] not in by_name:
+                    raise SystemExit(
+                        f"{title}, line {code}: Accept needs the area the row shows, found {row[7]!r}"
+                    )
+                decided = by_name[row[7]]
             entry = {
                 "call": kind,
                 "area": decided,
@@ -456,26 +534,33 @@ def import_calls(path: Path, lens: str, by: str) -> None:
             "written by python/scripts/ber_review_sheet.py import. Only these count as checked."
         )
         stored[lens] = dict(sorted(calls.items()))
-        target.write_text(json.dumps(stored, indent=2, ensure_ascii=False) + "\n")
-        print(f"{title}: {changed} calls new or changed, {len(calls)} in all -> {target}")
-    import_type_calls(wb, by)
+        writes.append((title, target, stored, changed, len(calls)))
+    type_writes = read_type_calls(wb, by)
+    write_calls(writes)
+    write_calls(type_writes)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
     b = sub.add_parser("build")
-    b.add_argument("--lens", default="globe", choices=sorted(LENS_KEYS))
-    b.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    b.add_argument("--lens", default="globe", choices=sorted(BER_LENSES))
+    b.add_argument("--out", type=Path, help="Default: tmp/ber/BER review sheet - <lens>.xlsx")
     b.add_argument("--country", choices=[*COUNTRIES, "all"], default="all", help="One country's sheet only, e.g. to send to its review team")
     b.add_argument("--areas-only", action="store_true", help="Leave out the expenditure-type sheets")
     i = sub.add_parser("import")
     i.add_argument("sheet", type=Path)
-    i.add_argument("--lens", default="globe", choices=sorted(LENS_KEYS))
+    i.add_argument(
+        "--lens", choices=sorted(BER_LENSES), help="Default: the lens the workbook was built for"
+    )
     i.add_argument("--by", required=True, help="Who made the calls, as the brief should name them")
     args = parser.parse_args()
     if args.command == "build":
-        build(args.lens, args.out, tuple(COUNTRIES) if args.country == "all" else (args.country,), types=not args.areas_only)
+        if args.country != "all" and args.country not in BER_LENSES[args.lens]["countries"]:
+            serves = ", ".join(BER_LENSES[args.lens]["countries"])
+            raise SystemExit(f"The {args.lens} lens serves {serves}, not {args.country}.")
+        out = args.out or default_out(args.lens)
+        build(args.lens, out, tuple(COUNTRIES) if args.country == "all" else (args.country,), types=not args.areas_only)
     else:
         import_calls(args.sheet, args.lens, args.by)
 

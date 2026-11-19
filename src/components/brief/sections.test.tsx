@@ -197,6 +197,12 @@ describe("brief sections", () => {
     expect(screen.queryByText(/mostly with/)).toBeNull();
   });
 
+  it("aligned: leads with how few of all the targets carry half of the strong alignments", () => {
+    const strongConcentration = { ...DATA.strongConcentration, total: 36, share: 0.5, top: ["C1", "C3"], concentrated: true };
+    wrap(<AlignedSection data={{ ...DATA, strongConcentration }} />);
+    expect(screen.getByRole("heading", { name: "50% of the 36 strong alignments involve 2 of the 18 targets." })).toBeTruthy();
+  });
+
   it("aligned: lists the strongest alignments by their strong links", () => {
     wrap(<AlignedSection data={DATA} />);
     expect(
@@ -271,7 +277,7 @@ describe("brief sections", () => {
     };
     wrap(<AreasSection data={calm} lensName="Biodiversity" />);
     expect(
-      screen.getByRole("heading", { name: "No rated policy area shows potential misalignment." }),
+      screen.getByRole("heading", { name: "No rated thematic area shows potential misalignment." }),
     ).toBeTruthy();
   });
 });

@@ -3,8 +3,11 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import {
+  areaDocuments,
   areaFocus,
+  areaHeadline,
   areaInks,
+  areaInvolvement,
   areaPairs,
   lensAreas,
   OTHER_AREA,
@@ -14,6 +17,7 @@ import {
   sideCounts,
   sideLinks,
   targetInks,
+  targetsHeadline,
   type AreaFocus,
   type AreaPair,
   type AreaSide,
@@ -358,6 +362,74 @@ export function AreasView({
     if (byKey) moveFocus.current = "pair";
   };
 
+  // The sentence beside the title: how few areas, or pairs of areas, hold
+  // half; for a picked area, where its targets come from or its share of the
+  // side. A name in it opens what it names. With nothing to state, the title
+  // stands alone.
+  const nameOpens = (rows: string[], open: () => void) => {
+    const NameLink = (chunks: ReactNode) => (
+      <AreaName
+        onPoint={(on) => setPointedRows(on ? rows : [])}
+        onOpen={(byKey) => {
+          open();
+          revealPair.current = true;
+          setPicked(null);
+          setPointedTarget(null);
+          setFullText(false);
+          if (byKey) moveFocus.current = "pair";
+        }}
+      >
+        {chunks}
+      </AreaName>
+    );
+    return NameLink;
+  };
+  const targetsSentence = () => {
+    const opened = pickedArea ? area(pickedArea) : undefined;
+    if (opened) {
+      const { docs, of } = areaDocuments(opened, data.scope);
+      return t("headlineAreaDocs", { count: opened.targets.length, area: opened.name, docs, of });
+    }
+    const head = targetsHeadline(areas);
+    if (head.kind === "none") return null;
+    if (head.kind === "top") {
+      return t("headlineTargetsTop", { pct: pct(head.share), placed: head.placed, areas: head.areas, of: head.of });
+    }
+    return t.rich("headlineTargets", {
+      pct: pct(head.share),
+      placed: head.placed,
+      area: nameOf(head.area),
+      first: nameOpens([head.area], () => {
+        setAreaPick(head.area);
+        setAllTargets(false);
+      }),
+    });
+  };
+  const pairsSentence = () => {
+    if (pickedArea) {
+      const part = areaInvolvement(listed);
+      return part && t("headlineArea", { pct: pct(part.share), total: listed.total, side, area: nameOf(pickedArea) });
+    }
+    const head = areaHeadline(pairs);
+    if (head.kind === "none") return null;
+    if (head.kind === "top") {
+      return t("headlinePairsTop", { pct: pct(head.share), total: pairs.total, side, groups: head.groups, of: head.of });
+    }
+    // The pair it names is the list's first: its names open it.
+    const lead = pairs.top[0];
+    const link = nameOpens(rowsOf(lead), () => setOpen(lead.key));
+    return t.rich(head.kind === "within" ? "headlineWithin" : head.kind === "outside" ? "headlineOutside" : "headlineBetween", {
+      pct: pct(head.share),
+      total: pairs.total,
+      side,
+      areaA: nameOf(head.a),
+      areaB: head.kind === "between" ? nameOf(head.b) : "",
+      first: link,
+      second: link,
+    });
+  };
+  const sentence = byTargets ? targetsSentence() : pairsSentence();
+
   const card = (backLabel: string) => {
     if (!focusId) return null;
     const c = commitment(focusId);
@@ -615,6 +687,9 @@ export function AreasView({
   return (
     <div className="brief-av" data-testid="brief-areas" data-tour="brief-areas" ref={root}>
       <div className="brief-av-picture">
+        <h2 className="brief-sec-title" tabIndex={-1}>
+          {t("title")}
+        </h2>
         <div className="brief-av-head">
           <span className="brief-av-lens">{lensNameOf(source.lenses, active, tl)}</span>
           {sortHead(t("colTargets"), "targets")}
@@ -637,9 +712,11 @@ export function AreasView({
         />
       </div>
       <div className="brief-av-side">
-        <h2 className="brief-hub-headline" tabIndex={-1}>
-          {t("title")}
-        </h2>
+        {sentence && (
+          <p className="brief-hub-headline" aria-live="polite">
+            {sentence}
+          </p>
+        )}
         <p className="brief-av-choice" role="group" aria-label={t("lensGroup")}>
           {source.lenses.map((l) => (
             <button

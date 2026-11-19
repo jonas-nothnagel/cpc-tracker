@@ -86,7 +86,7 @@ describe("ContractsSection", () => {
 
   it("reads by the brief's policy areas, and hands a lens chosen here to the brief", () => {
     const { onLens } = renderSection({ lens: "ipcc" });
-    const lenses = within(step("purpose")).getByRole("group", { name: "Policy areas" });
+    const lenses = within(step("purpose")).getByRole("group", { name: "Thematic areas" });
     expect(within(lenses).getByRole("button", { name: "Climate mitigation" })).toHaveAttribute("aria-pressed", "true");
     fireEvent.click(within(lenses).getByRole("button", { name: "Biodiversity" }));
     expect(onLens).toHaveBeenCalledWith("globe");
@@ -94,13 +94,13 @@ describe("ContractsSection", () => {
 
   it("reads by Biodiversity while the brief reads by a lens no contract carries", () => {
     renderSection({ lens: "hr" });
-    const lenses = within(step("purpose")).getByRole("group", { name: "Policy areas" });
+    const lenses = within(step("purpose")).getByRole("group", { name: "Thematic areas" });
     expect(within(lenses).getByRole("button", { name: "Biodiversity" })).toHaveAttribute("aria-pressed", "true");
   });
 
   it("lets the policy area in focus go when the brief's lens changes, for good", () => {
     const { rerenderWith } = renderSection();
-    const areas = within(step("purpose")).getByRole("list", { name: "By policy area" });
+    const areas = within(step("purpose")).getByRole("list", { name: "By thematic area" });
     fireEvent.click(within(areas).getByRole("button", { name: /Restoration/ }));
     expect(focusLine()).toContain("Restoration");
     rerenderWith({ lens: "ipcc" });

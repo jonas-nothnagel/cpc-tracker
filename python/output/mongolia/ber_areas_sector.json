@@ -1,0 +1,1234 @@
+{
+  "_provenance": "Built by python/scripts/place_ber_lines.py on 2026-11-18 from python/data/mongolia-ber.json. AI-estimated: each area is a model's reading of the review's description of the line, to be checked by a person (python/data/<country>-ber-areas.json holds the checks).",
+  "lens": "sector",
+  "promptVersion": 1,
+  "system": "You place one line of a government budget in a climate mitigation (sectors after the IPCC 2006 Guidelines for National GHG Inventories) taxonomy. The line comes from the country's Biodiversity Expenditure Review, which counted it as spending relevant to biodiversity. You are given what the review and the budget say about the line: its name, what it is for, what it pays for and who spends it. You are not given its amounts: the size of a line has no bearing on where it belongs.\n\n# TASK\nScore every category for how well it describes what the money of this budget line is spent on, on a 0.0-1.0 scale:\n- 1.0 = the line is spent primarily and explicitly on this category\n- 0.7-0.9 = a major part of what the line pays for falls in this category\n- 0.4-0.6 = the line partly serves this category, as one of several purposes\n- 0.1-0.3 = a weak or indirect connection\n- 0.0 = no connection (omit the category)\n\nJudge the purpose the money serves, from all the information given, not from words in the name alone. Running costs (wages, offices, administration) belong with the purpose of the body or programme they keep running: the wages of protected-area staff serve protected areas. When the information does not say enough to place the line with confidence, give low scores; an empty list is a correct answer.\n\nFor the two highest-scoring categories, give the reason in one short sentence that points to the information it rests on. Do not add facts about the line that you were not given.\n\n# RESPONSE FORMAT\nReturn ONLY a JSON object, no markdown:\n{\"ranked\": [{\"id\": \"<categoryId>\", \"score\": <0.0-1.0>, \"reasoning\": \"<one short sentence>\"}]}\nOrder the array from highest score to lowest.\n\n# CATEGORIES\n- sector_energy: Energy -- The energy sector mainly comprises: exploration and exploitation of primary energy sources, conversion of primary energy sources into more useable energy forms in refineries and power plants, transmission and distribution of fuels, use of fuels in stationary and mobile applications. Emissions arise from these activities by combustion and as fugitive emissions, or escape without combustion.\n- sector_transport: Transport -- Mobile sources produce direct greenhouse gas emissions of carbon dioxide (CO2), methane (CH4) and nitrous oxide (N2O) from the combustion of various fuel types. Greenhouse gas emissions from mobile combustion are most easily estimated by major transport activity, i.e., road, off-road, air, railways, and water-borne navigation. (1A3 TRANSPORT: Emissions from the combustion and evaporation of fuel for all transport activity, excluding military transport, regardless of the sector, specified by sub-categories below.) Reported as IPCC code 1A3, a sub-category of Energy, but tracked separately here for policy purposes.\n- sector_ippu: Industrial processes and product use -- This volume, Industrial Processes and Product Use (IPPU), covers greenhouse gas emissions occurring from industrial processes, from the use of greenhouse gases in products, and from non-energy uses of fossil fuel carbon. The main emission sources are releases from industrial processes that chemically or physically transform materials (for example, the blast furnace in the iron and steel industry, ammonia and other chemical products manufactured from fossil fuels used as chemical feedstock and the cement industry are notable examples of industrial processes that release a significant amount of CO2). During these processes, many different greenhouse gases, including carbon dioxide (CO2), methane (CH4), nitrous oxide (N2O), hydrofluorocarbons (HFCs) and perfluorocarbons (PFCs), can be produced.\n- sector_agriculture: Agriculture -- Sub-sector of AFOLU (Agriculture, Forestry and Other Land Use) covering, per the AFOLU Sector Guidance and methods enumeration: CH4 emission from livestock (enteric fermentation); CH4 and N2O emissions from manure management systems; CH4 emissions from rice cultivation; N2O emissions from all managed soils; CO2 emissions associated with liming and urea application to managed soils.\n- sector_lulucf: Land use, land-use change and forestry (LULUCF) -- Sub-sector of AFOLU covering, per the 2006 Guidelines: CO2 emissions and removals resulting from C stock changes in biomass, dead organic matter and mineral soils, for all managed lands; CO2 and non-CO2 emissions from fire on all managed land; CO2 and N2O emissions from cultivated organic soils; CO2 and N2O emissions from managed wetlands; C stock change associated with harvested wood products. Six land-use categories used in GPG-LULUCF (i.e., Forest Land, Cropland, Grassland, Wetlands, Settlements, and Other Land), further sub-divided into land remaining in the same category and land converted from one category to another.\n- sector_waste: Waste -- The Waste volume gives methodological guidance for estimation of carbon dioxide (CO2), methane (CH4) and nitrous oxide (N2O) emissions from following categories: Solid waste disposal (Chapter 3); Biological treatment of solid waste (Chapter 4); Incineration and open burning of waste (Chapter 5); Wastewater treatment and discharge (Chapter 6).\n- sector_other: Other / Cross-cutting -- Project-defined catch-all (NOT an IPCC sector) for policy measures that span multiple IPCC sectors or do not fit any single sector. Used for cross-cutting frameworks, institutional capacity, education, gender mainstreaming, finance mechanisms, and health- or water-related climate measures.",
+  "models": {
+    "first": "gpt-5.4",
+    "second": "claude-opus-5-5 (effort high)"
+  },
+  "rule": "The second model (Claude Opus) decides: a line takes its top area at the threshold, else no specific area. The first model is a second opinion.",
+  "threshold": 0.5,
+  "counts": {
+    "no-clear-area": 8,
+    "second-agrees": 19,
+    "second-differs": 1
+  },
+  "lines": [
+    {
+      "code": "71408",
+      "description": "Name: Meteorology\nKind: a programme of Mongolia's national budget (code 71408), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to hydrological and meteorological research and monitoring; dissemination of weather forecasts, early warnings, and information on potential hazards and natural disasters to the public; prevention of weather-related risks and severe environmental pollution; activities influencing weather and climate conditions; and the effective utilization of weather and climate resources.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 74%; Social insurance contributions paid by employers 10%; Furniture, current repair expenses 10%; Fixed expenses related to office building 3%; Work, service payment, fee performed by others 1%\nWho spends it (2021): 7 spending units, among them Center for Water, Meteorology and Environmental Research; Center for Meteorology and Environmental Research; Information And Research Institute Of Meteorology, Hydrology And Environment; Flight meteorological center; Central Laboratory of Environmental Analysis; Investment in the Nature, Environment and Tourism",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_other",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.8,
+            "reasoning": "The programme funds meteorological and hydrological monitoring, forecasts, early warnings, and weather-related risk prevention, which are cross-cutting public services rather than one IPCC emissions s"
+          },
+          {
+            "id": "sector_lulucf",
+            "score": 0.2,
+            "reasoning": "Its hydrological and meteorological research and monitoring can indirectly inform management of land, water, and climate conditions relevant to LULUCF."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_other",
+        "score": 0.4,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.4,
+            "reasoning": "The programme funds hydro-meteorological research, monitoring, forecasts and early warnings, which are cross-cutting climate information services rather than any single emitting sector."
+          },
+          {
+            "id": "sector_transport",
+            "score": 0.1,
+            "reasoning": "One of the spending units is a Flight meteorological center, a weak and indirect link to aviation."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "71405",
+      "description": "Name: Security of protected areas\nKind: a programme of Mongolia's national budget (code 71405), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to the implementation of policies and protection regimes for protected areas, implementation and monitoring of protected area management plans, promotion and awareness-raising activities related to protected areas, and the establishment and maintenance of protected area information databases.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 61%; Work, service payment, fee performed by others 22%; Social insurance contributions paid by employers 8%; Office supplies and inventory 6%; Fixed expenses related to office building 3%\nWho spends it (2021): 31 spending units, among them Administration of Khan Khentii SSPA's security department; Administration of BogdKhan Mountain SPA; Administration of Khuvsgul SSPA's security department; Ulaan Taiga Strictly Protected Area Administration; Gobi Gurvan Saikhan National park’s administration; Administration of Onon Balj NP's security depatment",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.9,
+            "reasoning": "The programme funds implementation, monitoring, and protection regimes for protected areas through park and strictly protected area administrations."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.2,
+            "reasoning": "It also supports awareness-raising and protected area information databases, which are broader institutional activities around protected area management."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.6,
+            "reasoning": "The line funds protection regimes and management plans for protected areas, run by the administrations of strictly protected areas and national parks, which conserves forest, grassland and wetland car"
+          },
+          {
+            "id": "sector_other",
+            "score": 0.15,
+            "reasoning": "Part of the spending covers awareness-raising and protected-area information databases, which are cross-cutting institutional activities."
+          }
+        ]
+      },
+      "area": "sector_lulucf",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71404",
+      "description": "Name: Water resource, lake and river management\nKind: a programme of Mongolia's national budget (code 71404), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes expenditures related to the core functions of state institutions responsible for water resources, including the Water Authority, Freshwater Resources and Nature Conservation Center, and River Basin Administrations, covering water resource management, improvement and enforcement of water-related legislation, coordination, regulation, and provision of professional and methodological guidance.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 62%; Work, service payment, fee performed by others 15%; Social insurance contributions paid by employers 8%; Fixed expenses related to office building 5%; Office supplies and inventory 4%\nWho spends it (2021): 23 spending units, among them Water department; Freshwater Resources Conservation Center; Tuul River Basin Administration; Orkhon-Chuluut river basin administration; Onon-Ulz River Basin Administration; Buir Lake-Menen steppe basin administration",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_other",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.8,
+            "reasoning": "The programme funds the core institutional functions of water authorities and river basin administrations for regulation, coordination, enforcement, and guidance, which is cross-cutting rather than a "
+          },
+          {
+            "id": "sector_lulucf",
+            "score": 0.3,
+            "reasoning": "Its focus on water resources, lakes, rivers, and basin management has an indirect link to managed wetlands and land-water systems covered under LULUCF."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_other",
+        "score": 0.5,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.5,
+            "reasoning": "The line funds the core functions of water institutions (Water Authority, River Basin Administrations) for water management, legislation and guidance, which fits the cross-cutting water-related catego"
+          },
+          {
+            "id": "sector_lulucf",
+            "score": 0.15,
+            "reasoning": "Lake and river basin management may indirectly touch wetlands and land, but no land-use or carbon-stock activity is described."
+          },
+          {
+            "id": "sector_waste",
+            "score": 0.05,
+            "reasoning": "Water regulation could marginally touch wastewater discharge, though this is not stated."
+          }
+        ]
+      },
+      "area": "sector_other",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71403",
+      "description": "Name: Afforestation\nKind: a programme of Mongolia's national budget (code 71403), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes expenditures related to the core functions of state institutions responsible for forestry, including the Forestry Agency and inter-Soum forest units, covering the establishment of sustainable forest management systems, improvement and implementation of forest legislation, coordination, regulation, and provision of professional and methodological guidance.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 39%; Wages and salaries, bonuses 35%; Other investments 13%; Social insurance contributions paid by employers 4%; Office supplies and inventory 3%\nWho spends it (2021): 41 spending units, among them Forest Research and Development Center; Um.Forest Department; Ga.Game class; Se.Mandal Forest Department; Za.Game class; Or. Inter-soum forest department",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.9,
+            "reasoning": "The programme funds forestry institutions to establish sustainable forest management systems and implement forest legislation and guidance."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.2,
+            "reasoning": "A smaller share supports coordination, regulation, and institutional functions that are cross-cutting rather than direct land-use activity."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 0.95,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.95,
+            "reasoning": "The programme funds the Forestry Agency and inter-soum forest units for afforestation and sustainable forest management, which governs carbon stocks on forest land."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.15,
+            "reasoning": "Part of the spending covers institutional functions such as forest legislation, coordination and methodological guidance."
+          }
+        ]
+      },
+      "area": "sector_lulucf",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71411",
+      "description": "Name: Environment policy and administration\nKind: a programme of Mongolia's national budget (code 71411), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to the core functions of government institutions responsible for environmental governance, including improvement of the legal and regulatory framework, development and implementation of legislation and development policies, budget management and oversight, and ensuring integrated coordination and administration.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 44%; Purchase of other goods and services 27%; Work, service payment, fee performed by others 14%; Social insurance contributions paid by employers 6%; Building and facilities 3%\nWho spends it (2021): 48 spending units, among them Ministry of Nature, Environment and Tourism; Bu.Zasag darga; National Park; Capital City Department of Environment; Za.Nature and tourism department; Khu.Nature and tourism department",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_other",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.9,
+            "reasoning": "It funds core environmental governance functions such as legal and regulatory development, policy implementation, budget oversight, and integrated coordination across many institutions."
+          },
+          {
+            "id": "sector_lulucf",
+            "score": 0.4,
+            "reasoning": "Some spending units are national parks and environment departments, so part of the administration likely supports managed land, forests, and protected areas."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_other",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.6,
+            "reasoning": "The line funds core environmental governance functions (legal framework, policy development, budget oversight, coordination), which is cross-cutting institutional capacity."
+          },
+          {
+            "id": "sector_lulucf",
+            "score": 0.2,
+            "reasoning": "Spending units include nature departments and a National Park, giving a weak indirect link to land and forest management."
+          },
+          {
+            "id": "sector_waste",
+            "score": 0.1,
+            "reasoning": "Environmental administration bodies such as the Capital City Department of Environment may touch on waste oversight, but this is not stated."
+          }
+        ]
+      },
+      "area": "sector_other",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71407",
+      "description": "Name: Air pollution abatement, climate change\nKind: a programme of Mongolia's national budget (code 71407), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for activities related to the implementation of the National Program on Air and Environmental Pollution Reduction and climate change policies and plans, aimed at ensuring a healthy and safe living environment for citizens.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 46%; Purchase of other goods and services 20%; Subsidy to private sector 18%; Office supplies and inventory 16%\nWho spends it (2021): 4 spending units, among them Ministry of Nature, Environment and Tourism; Ub. Air Pollution Control Authority; Hovd. The governor; Ub. Department of housing and infrastructure",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_other",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.8,
+            "reasoning": "It finances implementation of both air/environmental pollution reduction and climate change policies and plans, which is cross-cutting rather than tied to one IPCC sector."
+          },
+          {
+            "id": "sector_energy",
+            "score": 0.5,
+            "reasoning": "Air pollution abatement in Ulaanbaatar and spending by housing and infrastructure bodies likely includes stationary fuel-use measures linked to energy use, but the description is not specific."
+          },
+          {
+            "id": "sector_transport",
+            "score": 0.2,
+            "reasoning": "Air pollution reduction could partly involve transport sources, but the line gives no explicit transport activities."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_other",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.6,
+            "reasoning": "The line funds a combined National Program on Air and Environmental Pollution Reduction and general climate change policies and plans, which span several sectors."
+          },
+          {
+            "id": "sector_energy",
+            "score": 0.5,
+            "reasoning": "Air pollution abatement, with private-sector subsidies and spending by the Ulaanbaatar Air Pollution Control Authority and housing department, likely targets fuel combustion emissions, though the sour"
+          },
+          {
+            "id": "sector_transport",
+            "score": 0.15,
+            "reasoning": "Air pollution reduction may partly address vehicle emissions, but this is not stated."
+          },
+          {
+            "id": "sector_waste",
+            "score": 0.1,
+            "reasoning": "Environmental pollution reduction may touch on waste, but only indirectly."
+          }
+        ]
+      },
+      "area": "sector_other",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71412",
+      "description": "Name: R&D Environment\nKind: a programme of Mongolia's national budget (code 71412), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to research activities aimed at preventing environmental pollution and degradation, reducing pollution, and mitigating environmental impacts.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 100%\nWho spends it (2021): 1 spending units, among them Ministry of Nature, Environment and Tourism",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_other",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.6,
+            "reasoning": "The programme funds environmental research to prevent pollution and mitigate environmental impacts, which is a cross-cutting purpose not tied to one IPCC sector."
+          },
+          {
+            "id": "sector_lulucf",
+            "score": 0.2,
+            "reasoning": "Because it sits in the environment function under the Ministry of Nature, Environment and Tourism, it may weakly relate to land and ecosystem management research."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_other",
+        "score": 0.5,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.5,
+            "reasoning": "The line funds general environmental research on pollution prevention and impact mitigation, run by the environment ministry, with no single emission sector named."
+          },
+          {
+            "id": "sector_lulucf",
+            "score": 0.15,
+            "reasoning": "The stated aim of preventing environmental degradation may touch land and ecosystem carbon stocks, but only indirectly."
+          },
+          {
+            "id": "sector_waste",
+            "score": 0.1,
+            "reasoning": "Pollution-reduction research could cover waste or wastewater, but the information does not say so."
+          }
+        ]
+      },
+      "area": "sector_other",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71406",
+      "description": "Name: Environmental pollution and degradation\nKind: a programme of Mongolia's national budget (code 71406), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to reducing air pollution and conducting quality control; developing alternative products to replace pollution sources; cleaning, collection, transport, disposal, and recycling of waste from public roads, spaces, and facilities; establishment and maintenance of waste recycling services and facilities; and other support measures aimed at reducing environmental pollution.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 85%; Purchase of other goods and services 15%\nWho spends it (2021): 6 spending units, among them Governor's office; Dd. The governor; BU. Nature and tourism department; Bayan-Ulgii Deluun Collateral; BU. Buyant Collateral; BU. Sagsai Collateral",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_waste",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "sector_waste",
+            "score": 0.9,
+            "reasoning": "The programme explicitly funds cleaning, collection, transport, disposal, recycling, and waste recycling services and facilities."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.6,
+            "reasoning": "It also covers broader pollution reduction measures such as air pollution control, quality control, and alternative products that are not clearly tied to one IPCC sector."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_waste",
+        "score": 0.7,
+        "ranked": [
+          {
+            "id": "sector_waste",
+            "score": 0.7,
+            "reasoning": "The description centres on cleaning, collection, transport, disposal and recycling of waste and on waste recycling facilities, and most spending is contracted work and services suited to waste service"
+          },
+          {
+            "id": "sector_energy",
+            "score": 0.3,
+            "reasoning": "The line also covers reducing air pollution and developing alternative products to replace pollution sources, which in Mongolia's context may involve fuel and heating combustion, though this is not st"
+          },
+          {
+            "id": "sector_other",
+            "score": 0.2,
+            "reasoning": "Includes air quality control and other general pollution-reduction support measures."
+          }
+        ]
+      },
+      "area": "sector_waste",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71401",
+      "description": "Name: Waste management\nKind: a programme of Mongolia's national budget (code 71401), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for activities related to the implementation of the Law on Waste and national and local waste management programs, aimed at reducing the negative impacts of waste on human health and the environment.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 100%\nWho spends it (2021): 1 spending units, among them Su.Bar-Urt Landscaping Service",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_waste",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "sector_waste",
+            "score": 1.0,
+            "reasoning": "It finances implementation of the Law on Waste and waste management programs to reduce the impacts of waste on health and the environment."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.1,
+            "reasoning": "The stated aim includes reducing negative impacts on human health and the environment, giving a weak cross-cutting environmental connection beyond waste management itself."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_waste",
+        "score": 0.95,
+        "ranked": [
+          {
+            "id": "sector_waste",
+            "score": 0.95,
+            "reasoning": "The programme finances implementation of the Law on Waste and national and local waste management programmes, paid as contracted work and services."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.1,
+            "reasoning": "The stated aim includes reducing waste impacts on human health, a weak cross-cutting element."
+          }
+        ]
+      },
+      "area": "sector_waste",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71402",
+      "description": "Name: Biodiversity conservation\nKind: a programme of Mongolia's national budget (code 71402), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for activities related to the implementation of the National Biodiversity Program and related policy documents, aimed at conserving biodiversity at ecosystem, species, and genetic levels, promoting sustainable use, and ensuring fair and equitable sharing of benefits arising from the use of biological resources.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.6,
+            "reasoning": "Conserving biodiversity at ecosystem level and promoting sustainable use of biological resources partly involves management of forests and other land ecosystems."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.4,
+            "reasoning": "The programme implements the National Biodiversity Program broadly across ecosystem, species, and genetic conservation rather than targeting one IPCC emissions sector."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 0.4,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.4,
+            "reasoning": "The programme funds conservation of ecosystems and sustainable use of biological resources, which bears on carbon stocks of forest, grassland and wetland land."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.3,
+            "reasoning": "It finances implementation of the National Biodiversity Program and related policy documents, a broad framework including access and benefit-sharing that spans several sectors."
+          },
+          {
+            "id": "sector_agriculture",
+            "score": 0.1,
+            "reasoning": "Genetic-level conservation and sustainable use may touch livestock and crop resources only indirectly."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "71409",
+      "description": "Name: Protection of endangered animals, plants and species\nKind: a programme of Mongolia's national budget (code 71409), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for activities related to the implementation of the National Program for the Protection of Endangered and Rare Species, the Program for the Conservation and Sustainable Use of Rare Plants of Mongolia, and objectives of the National Biodiversity Program, covering protection, restoration, and sustainable use of endangered and rare animal and plant species.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.8,
+            "reasoning": "The programme funds protection, restoration, and sustainable use of rare plant species, which directly relates to managed land and vegetation."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.5,
+            "reasoning": "It broadly implements national biodiversity and species-protection programmes covering both animals and plants rather than a single IPCC emissions source."
+          },
+          {
+            "id": "sector_agriculture",
+            "score": 0.2,
+            "reasoning": "The sustainable use and conservation of rare plants and species may weakly overlap with managed lands and biological resources relevant to AFOLU."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 0.2,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.2,
+            "reasoning": "The line funds protection, restoration and sustainable use of rare animal and plant species, which touches land and vegetation carbon only indirectly."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.1,
+            "reasoning": "Implementing national biodiversity and species programmes is a cross-cutting conservation activity with no clear link to any single emission sector."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "71413",
+      "description": "Name: Environment protection, recovery\nKind: a programme of Mongolia's national budget (code 71413), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to environmental protection and restoration activities, including: prevention of water pollution, sustainable use of water resources, improvement of water supply levels, protection against water scarcity, expansion of water sources, construction of reservoirs; forest protection and restoration activities such as afforestation, reforestation, seedling preparation and propagation, pest control, forest fire prevention and damage compensation, and forest cleaning; protection of plants from diseases, harmful rodents, pests, and chemical or biological impacts, establishment of quarantine measures, studies on plant distribution and resources, ecological and economic valuation, restoration and cultivation of rare plants; wildlife protection, breeding, sustainable use, reintroduction of endangered species, captive breeding, creation of sustainable use reserves, research, training and awareness-raising, biotechnology measures, monitoring of hunting activities, and prevention of illegal hunting; research, documentation, protection, and regulation of traditional knowledge associated with plant and animal genetic resources, promotion of bioprospecting, innovation research and product development related to genetic resources and associated traditional knowledge, and public awareness and legal outreach related to genetic resources.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 48%; Wages and salaries, bonuses 27%; Purchase of other goods and services 17%; Social insurance contributions paid by employers 4%; Office supplies and inventory 1%\nWho spends it (2021): 83 spending units, among them Capital City Department of Environment; Se.Nature and tourism department; Dd.Nature and tourism department; National Park; Khe.Nature and tourism department; Bkh.Nature and tourism department",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.8,
+            "reasoning": "The programme explicitly funds forest protection and restoration activities such as afforestation, reforestation, forest fire prevention, and forest cleaning."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.6,
+            "reasoning": "Much of the programme covers broad environmental protection, wildlife, water resources, genetic resources, research, training, and institutional spending across many themes."
+          },
+          {
+            "id": "sector_agriculture",
+            "score": 0.2,
+            "reasoning": "It includes plant protection from diseases, pests, rodents, and quarantine measures, which has a weak link to managed land and agricultural systems."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.6,
+            "reasoning": "A major listed component is forest protection and restoration (afforestation, reforestation, seedlings, forest fire prevention), which affects carbon stocks on managed forest land."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.4,
+            "reasoning": "The programme also covers water resources and reservoirs, wildlife and plant protection, genetic resources, research and awareness, which span several areas outside a single IPCC sector."
+          },
+          {
+            "id": "sector_waste",
+            "score": 0.1,
+            "reasoning": "Prevention of water pollution is listed but not tied to wastewater treatment."
+          }
+        ]
+      },
+      "area": "sector_lulucf",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71410",
+      "description": "Name: Reduce land degradation and prevent from desertification\nKind: a programme of Mongolia's national budget (code 71410), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for projects and measures related to the implementation of the National Action Program to Combat Desertification and related policy documents, aimed at protecting soil and land resources from degradation, reducing the spread of desertification, and restoring degraded land.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 70%; Wages and salaries, bonuses 19%; Social insurance contributions paid by employers 3%; Furniture, current repair expenses 2%; Purchase of other goods and services 2%\nWho spends it (2021): 2 spending units, among them Environmental research and analysis center; Ministry of Nature, Environment and Tourism",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 1.0,
+            "reasoning": "The programme funds measures to protect soil and land resources, reduce desertification, and restore degraded land."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.1,
+            "reasoning": "Some spending supports the responsible environmental institutions through wages, services, and operating costs, but for this land-focused programme."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.8,
+            "reasoning": "The programme funds protecting soil and land from degradation, curbing desertification and restoring degraded land, which concerns carbon stocks in biomass and soils on managed land."
+          },
+          {
+            "id": "sector_agriculture",
+            "score": 0.2,
+            "reasoning": "Land degradation in Mongolia is tied to grazing and managed soils, but the description does not name agricultural measures, so the link is indirect."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.1,
+            "reasoning": "Part of the funds support policy implementation and research capacity at the ministry and a research center."
+          }
+        ]
+      },
+      "area": "sector_lulucf",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81707",
+      "description": "Name: Air pollution reduction\nKind: a purpose code of Mongolia's national budget (81707), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to reducing and preventing air pollution.\nWhat it pays for (2020-2021): Standard cost 100%\nWho spends it (2020): 2 spending units, among them Ministry of Health; Khu. The governor",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_other",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.6,
+            "reasoning": "It is a broad purpose code for reducing and preventing air pollution and appears across programmes outside the environment function."
+          },
+          {
+            "id": "sector_energy",
+            "score": 0.3,
+            "reasoning": "Air pollution reduction can indirectly involve cleaner fuel use or stationary combustion sources, but the line gives no specific sectoral activity."
+          },
+          {
+            "id": "sector_transport",
+            "score": 0.2,
+            "reasoning": "Air pollution reduction can partly relate to vehicle emissions, but no transport-specific spending is stated."
+          },
+          {
+            "id": "sector_ippu",
+            "score": 0.1,
+            "reasoning": "Some air pollution measures could touch industrial emissions, but the description does not mention industrial processes."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_other",
+        "score": 0.4,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.4,
+            "reasoning": "The line covers reducing and preventing air pollution in general, and the Ministry of Health is one of its spenders, which points to a health-related, cross-cutting measure."
+          },
+          {
+            "id": "sector_energy",
+            "score": 0.3,
+            "reasoning": "Air pollution reduction usually targets fuel combustion, but the information given does not name any energy-specific activity."
+          },
+          {
+            "id": "sector_transport",
+            "score": 0.1,
+            "reasoning": "Vehicle emissions may be a minor source addressed, but this is not stated."
+          },
+          {
+            "id": "sector_waste",
+            "score": 0.05,
+            "reasoning": "Open burning of waste is a possible but unstated air pollution source."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "82212",
+      "description": "Name: Solid waste and environmental pollution removal and cleaning services\nKind: a purpose code of Mongolia's national budget (82212), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to environmental cleaning services, cleaning of public roads and areas, and waste removal.\nWhat it pays for (2020-2021): Office supplies and inventory 72%; Work, service payment, fee performed by others 25%; Subsidy to State owned enterprises (SOE) 1%\nWho spends it (2021): 173 spending units, among them CHD.AAT Organization; BZD.AAT Organization; KHUD.Non budgetary organisations; Songinokhairkhan district; SBD.AAT Organization; Bright. Convenient service department",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_waste",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "sector_waste",
+            "score": 0.8,
+            "reasoning": "The description explicitly includes waste removal as a core purpose of the spending."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.6,
+            "reasoning": "It also funds environmental cleaning and cleaning of public roads and public areas, which goes beyond waste treatment alone."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_waste",
+        "score": 0.85,
+        "ranked": [
+          {
+            "id": "sector_waste",
+            "score": 0.85,
+            "reasoning": "The line pays for waste removal and environmental cleaning services, including cleaning of public roads and areas, mostly run by district-level units."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.15,
+            "reasoning": "General pollution cleaning of public areas is partly cross-cutting rather than strictly waste disposal or treatment."
+          }
+        ]
+      },
+      "area": "sector_waste",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81708",
+      "description": "Name: Afforestation\nKind: a purpose code of Mongolia's national budget (81708), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to establishing plantation forests and forest funds, forest restoration and propagation, and conducting forest inventories in accordance with the Law on Afforestation. Exclusions: expenditures related to tree planting in urban streets, parks, and green spaces are not recorded under this category and are instead recorded under code 82207.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 1.0,
+            "reasoning": "It funds plantation forest establishment, forest restoration and propagation, and forest inventories under the Law on Afforestation, all directly tied to managed forest land."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.1,
+            "reasoning": "Forest inventories add a minor cross-cutting information function, but the spending is mainly on afforestation and forest restoration."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 1.0,
+            "reasoning": "The line pays for establishing plantation forests, forest restoration and propagation, and forest inventories under the Law on Afforestation, all of which change forest-land carbon stocks."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.1,
+            "reasoning": "The forest inventory work carries a minor monitoring and institutional element beyond direct planting."
+          }
+        ]
+      },
+      "area": "sector_lulucf",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81709",
+      "description": "Name: Control of forest pests and harmful insects\nKind: a purpose code of Mongolia's national budget (81709), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to controlling forest pests and harmful insects.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 1.0,
+            "reasoning": "The line is explicitly for controlling forest pests and harmful insects, which directly serves forest land management."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.8,
+            "reasoning": "The line pays for controlling forest pests and harmful insects, which protects forest biomass and carbon stocks on forest land."
+          },
+          {
+            "id": "sector_agriculture",
+            "score": 0.1,
+            "reasoning": "Control of harmful insects may touch on pasture or crop land, but the description refers to forest pests, so the link is weak."
+          }
+        ]
+      },
+      "area": "sector_lulucf",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81702",
+      "description": "Name: Forest fire prevention and damage mitigation\nKind: a purpose code of Mongolia's national budget (81702), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to forest fire prevention, fire suppression, and mitigation of damage caused by forest fires.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 1.0,
+            "reasoning": "The line explicitly funds forest fire prevention, suppression, and damage mitigation on forest land, which directly concerns managed forest carbon stocks and fire emissions."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.1,
+            "reasoning": "Fire prevention and suppression can involve general emergency or institutional activities, but the stated purpose is still mainly forest-land management."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.9,
+            "reasoning": "The line pays for forest fire prevention, suppression and damage mitigation, which falls under LULUCF emissions from fire on managed forest land and carbon stock changes."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.1,
+            "reasoning": "Damage mitigation may include some cross-cutting disaster-response elements beyond the land sector."
+          }
+        ]
+      },
+      "area": "sector_lulucf",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81705",
+      "description": "Name: Forest inventory\nKind: a purpose code of Mongolia's national budget (81705), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to conducting forest inventories in accordance with forest legislation.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 1.0,
+            "reasoning": "The line funds conducting forest inventories, which directly concerns forest land covered under land use, land-use change and forestry."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.1,
+            "reasoning": "As a purpose code used across programmes, it may have a minor cross-cutting administrative aspect, but the stated spending purpose is still forest inventory."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.9,
+            "reasoning": "The line pays for forest inventories under forest legislation, which measure forest land and its carbon stocks, the core of LULUCF."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.15,
+            "reasoning": "Forest inventory is partly a cross-cutting monitoring and data capacity function rather than a direct mitigation measure."
+          }
+        ]
+      },
+      "area": "sector_lulucf",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81703",
+      "description": "Name: Plant protection and restoration\nKind: a purpose code of Mongolia's national budget (81703), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to the protection and restoration of natural vegetation.\nWhat it pays for (2020-2021): Purchase of other goods and services 100%\nWho spends it (2020): 1 spending units, among them Dd. Bayantumen Soum Development Fund",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.9,
+            "reasoning": "It is explicitly for the protection and restoration of natural vegetation, which directly concerns managed land and biomass carbon stocks."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.1,
+            "reasoning": "As a purpose code used across programmes outside the environment function, it may weakly reflect broader non-sector-specific spending contexts."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 0.7,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.7,
+            "reasoning": "The line pays for protection and restoration of natural vegetation, which maintains carbon stocks in biomass on grassland and forest land."
+          },
+          {
+            "id": "sector_agriculture",
+            "score": 0.15,
+            "reasoning": "It is spent by a rural soum development fund, where vegetation restoration may weakly relate to pasture and grazing land, though agriculture is not stated."
+          }
+        ]
+      },
+      "area": "sector_lulucf",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81710",
+      "description": "Name: Hydrological and meteorological research\nKind: a purpose code of Mongolia's national budget (81710), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to hydrological and meteorological research and analysis activities.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_other",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.6,
+            "reasoning": "The line funds hydrological and meteorological research and analysis, which is general knowledge-building rather than spending in a specific emitting sector."
+          },
+          {
+            "id": "sector_lulucf",
+            "score": 0.2,
+            "reasoning": "Hydrological research can indirectly inform land and water management, but the description does not tie it to managed lands or forestry activities."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_other",
+        "score": 0.3,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.3,
+            "reasoning": "Hydrological and meteorological research and analysis is cross-cutting climate/water knowledge work that fits no single emitting sector."
+          },
+          {
+            "id": "sector_lulucf",
+            "score": 0.05,
+            "reasoning": "Hydrological research may touch on wetlands and water-related land, but the description gives no land-use focus."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "81713",
+      "description": "Name: Waste processing\nKind: a purpose code of Mongolia's national budget (81713), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to waste separation and processing.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_waste",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "sector_waste",
+            "score": 1.0,
+            "reasoning": "The line is explicitly for expenditures related to waste separation and processing."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_waste",
+        "score": 0.95,
+        "ranked": [
+          {
+            "id": "sector_waste",
+            "score": 0.95,
+            "reasoning": "The line covers expenditures on waste separation and processing, which falls directly under waste treatment."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.1,
+            "reasoning": "The line is a purpose code counted across many programmes, giving only a weak cross-cutting link."
+          }
+        ]
+      },
+      "area": "sector_waste",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81714",
+      "description": "Name: Support for substitute pollution sources and green product producers\nKind: a purpose code of Mongolia's national budget (81714), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes budgetary support and incentives provided to producers of products aimed at reducing air and environmental pollution.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_ippu",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "sector_ippu",
+            "score": 0.6,
+            "reasoning": "It supports producers of green products that reduce air and environmental pollution, which partly aligns with cleaner industrial production and product use."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.5,
+            "reasoning": "The description is broad budgetary support for pollution-reducing producers without specifying a single emitting sector, so it is cross-cutting."
+          },
+          {
+            "id": "sector_energy",
+            "score": 0.2,
+            "reasoning": "Some supported substitute pollution sources could involve cleaner energy sources, but the description does not say this explicitly."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_energy",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "sector_energy",
+            "score": 0.6,
+            "reasoning": "Support for substitute pollution sources aimed at reducing air pollution points mainly to cleaner fuels and heating alternatives, which fall under stationary fuel combustion."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.4,
+            "reasoning": "Incentives to producers of green products aimed at reducing environmental pollution in general span several sectors and act as a cross-cutting finance mechanism."
+          },
+          {
+            "id": "sector_ippu",
+            "score": 0.15,
+            "reasoning": "Support to green product producers may touch industrial production."
+          },
+          {
+            "id": "sector_waste",
+            "score": 0.1,
+            "reasoning": "Reducing environmental pollution could indirectly touch waste."
+          },
+          {
+            "id": "sector_transport",
+            "score": 0.1,
+            "reasoning": "Air pollution reduction could indirectly involve vehicle emissions."
+          }
+        ]
+      },
+      "area": "sector_energy",
+      "status": "second-differs"
+    },
+    {
+      "code": "81715",
+      "description": "Name: Protection, use, and restoration of water and mineral water resources\nKind: a purpose code of Mongolia's national budget (81715), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to protection and restoration of water and mineral water resources, construction of reservoirs, sustainable use of water resources, and wastewater recycling and treatment.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_other",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.8,
+            "reasoning": "The line combines water protection, reservoir construction, sustainable water use, and wastewater activities, so it spans multiple areas rather than one IPCC sector."
+          },
+          {
+            "id": "sector_waste",
+            "score": 0.7,
+            "reasoning": "It explicitly includes wastewater recycling and treatment, which fits the waste sector."
+          },
+          {
+            "id": "sector_lulucf",
+            "score": 0.3,
+            "reasoning": "Protection and restoration of water resources can indirectly involve managed wetlands and land-use management."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_waste",
+        "score": 0.4,
+        "ranked": [
+          {
+            "id": "sector_waste",
+            "score": 0.4,
+            "reasoning": "The description explicitly includes wastewater recycling and treatment, a Waste-sector category."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.4,
+            "reasoning": "Most of the line covers water resource protection, reservoirs and sustainable water use, which are water-related measures that fit the cross-cutting category."
+          },
+          {
+            "id": "sector_lulucf",
+            "score": 0.2,
+            "reasoning": "Protection and restoration of water resources may indirectly touch wetlands, but no land management is stated."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "81716",
+      "description": "Name: Reduction of land degradation and desertification prevention\nKind: a purpose code of Mongolia's national budget (81716), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to restoration of degraded land, mitigation of desertification, protection against sand movement, fencing and protection of pastureland, and restoration of vegetation cover.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.9,
+            "reasoning": "It funds restoration of degraded land, protection of pastureland, and restoration of vegetation cover, all of which directly concern managed land and carbon stocks."
+          },
+          {
+            "id": "sector_agriculture",
+            "score": 0.5,
+            "reasoning": "Fencing and protection of pastureland links part of the spending to grazing land management within the agriculture-related AFOLU domain."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 0.85,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.85,
+            "reasoning": "The line pays for restoring degraded land, mitigating desertification and restoring vegetation cover, which changes carbon stocks in land biomass and soils."
+          },
+          {
+            "id": "sector_agriculture",
+            "score": 0.35,
+            "reasoning": "Fencing and protection of pastureland ties part of the spending to grazing land used for livestock."
+          }
+        ]
+      },
+      "area": "sector_lulucf",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81717",
+      "description": "Name: Protection and restoration of wildlife resources\nKind: a purpose code of Mongolia's national budget (81717), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to wildlife protection, captive breeding and reintroduction of endangered and rare species, and implementation of biotechnological measures.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.8,
+            "reasoning": "The line funds wildlife protection and restoration activities tied to managing ecosystems and habitats on land."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.2,
+            "reasoning": "Captive breeding, reintroduction, and biotechnological measures are biodiversity actions that are not explicitly framed around a single IPCC emissions source sector."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 0.2,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.2,
+            "reasoning": "Wildlife protection and reintroduction of endangered species relates only indirectly to managed land and its carbon stocks; no habitat or forest work is mentioned."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.1,
+            "reasoning": "The captive breeding and biotechnological measures for rare species fit no IPCC emission sector, leaving only a weak cross-cutting link."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "81718",
+      "description": "Name: Genetic resources of wild plants and animals\nKind: a purpose code of Mongolia's national budget (81718), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to research, assessment, registration, and conservation of genetic resources of wild plants and animals.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 0.8,
+            "reasoning": "The line funds conservation and assessment of genetic resources of wild plants and animals, which is closely tied to managing forest and other land ecosystems."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.4,
+            "reasoning": "Research, assessment, and registration of genetic resources are also cross-cutting institutional and knowledge activities rather than a single emissions source category."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_other",
+        "score": 0.3,
+        "ranked": [
+          {
+            "id": "sector_other",
+            "score": 0.3,
+            "reasoning": "The line pays for research, assessment, registration and conservation of wild genetic resources, which is cross-cutting biodiversity science rather than any emitting sector."
+          },
+          {
+            "id": "sector_lulucf",
+            "score": 0.2,
+            "reasoning": "Conservation of wild plants and animals relates only indirectly to land and ecosystem carbon stocks."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "81719",
+      "description": "Name: Forest restoration\nKind: a purpose code of Mongolia's national budget (81719), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to forest restoration activities aimed at increasing forest resources, including preparation and propagation of seedlings and plantation forest establishment, in accordance with the Law on Afforestation.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "sector_lulucf",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 1.0,
+            "reasoning": "It funds forest restoration, seedling propagation, and plantation establishment to increase forest resources, which directly concerns managed forest land carbon stocks."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "sector_lulucf",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "sector_lulucf",
+            "score": 1.0,
+            "reasoning": "The line pays for forest restoration, seedling propagation and plantation forest establishment to increase forest resources, which is carbon stock change on forest land."
+          },
+          {
+            "id": "sector_other",
+            "score": 0.05,
+            "reasoning": "Only a marginal cross-cutting link, as the stated purpose is entirely forest restoration."
+          }
+        ]
+      },
+      "area": "sector_lulucf",
+      "status": "second-agrees"
+    }
+  ]
+}

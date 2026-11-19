@@ -1,13 +1,16 @@
-/* Reviewed biodiversity spending in the brief: how much of all public
-   spending it is (a hundred squares beside each year's total), what it is
-   for (each area's share of the targets beside its share of the spending),
-   then the review's own lines. Money is UNDP blue; green and red stay with
-   alignment (DESIGN.md). Scoped to [data-brief].
+/* Reviewed biodiversity spending in the brief, in two components on the
+   page's two columns (the overview's split, as SectionHead): how much of all
+   public spending it is (a hundred squares and its figures, beside each
+   year's spending); then what it is for (each area's share of the targets
+   beside its share of the spending), beside a sentence and the review's own
+   lines. Money is UNDP blue; green and red stay with alignment (DESIGN.md).
+   Scoped to [data-brief].
 
-   One rhythm, one grid: steps sit 48px apart, a step's words 16px above its
-   picture; the record, the areas and the lines share three columns (a name,
-   then two for quantities), so every bar starts at one edge and every amount
-   ends at one edge. Spacing comes from the tokens below only. */
+   One rhythm: components sit 48px apart, a step's words 16px above its
+   picture. Rows share three columns (a name, then two for quantities), so
+   every bar starts at one edge and every amount ends at one edge; a step
+   narrower than its rows need sets the name on its own line. Spacing comes
+   from the tokens below only. */
 
 [data-brief] .sp-brief {
   /* The second part of a record (Mongolia's local budgets, Sri Lanka's
@@ -21,7 +24,10 @@
   --sp-6: 1.5rem;
   --sp-8: 2rem;
   --sp-12: 3rem;
-  /* The three columns, and the width an amount's label takes. */
+  /* The page's two columns and their gap (.brief-hub, .brief-sec-head). */
+  --sp-split: minmax(0, 1.08fr) minmax(0, 1fr);
+  --sp-split-gap: clamp(1.5rem, 3.2vw, 3.5rem);
+  /* A row's three columns, and the width an amount's label takes. */
   --sp-cols: minmax(12rem, 1.1fr) minmax(0, 1fr) minmax(0, 1fr);
   --sp-label: 8rem;
 }
@@ -30,39 +36,14 @@
   margin-top: var(--sp-12);
 }
 
-[data-brief] .sp-brief > .sp-head + * {
+[data-brief] .sp-brief > .brief-sec-head + * {
   margin-top: var(--sp-6);
 }
 
-/* ── The section's head: title, source, currency ──────────────────── */
-
-[data-brief] .sp-head {
-  display: grid;
-  gap: var(--sp-1);
-  justify-items: start;
-}
-
-[data-brief] .sp-title {
-  margin: 0;
-  font-family: var(--font-display);
-  /* The brief's own section-title step (.brief-sec-headline). */
-  font-size: clamp(1.5rem, 2.1vw, 1.875rem);
-  font-weight: 500;
-  line-height: 1.2;
-}
-
-[data-brief] .sp-source {
-  margin: 0;
-  font-size: 0.8125rem;
-  color: var(--brief-muted);
-}
+/* ── The section's head (SectionHead): its source, then the currency ── */
 
 [data-brief] .sp-note-inline::before {
   content: " · ";
-}
-
-[data-brief] .sp-head > .sp-switch {
-  margin-top: var(--sp-2);
 }
 
 /* Plain text choices, the chosen one underlined: currency, amount or share. */
@@ -103,7 +84,7 @@
   outline-offset: 2px;
 }
 
-/* ── A step: its heading, then its picture ───────────────────────────── */
+/* ── A step: its picture title and choice, then its picture ──────────── */
 
 [data-brief] .sp-step {
   display: grid;
@@ -111,12 +92,77 @@
   min-width: 0;
 }
 
-[data-brief] .sp-step-head .brief-hub-headline {
+/* The title in the sans of a picture's title (.sp-chart-title); the choice
+   at the end of its line, or under it where the title takes the width. */
+[data-brief] .sp-step-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-2) var(--sp-6);
+}
+
+/* ── Two components on the page's two columns ─────────────────────────── */
+
+[data-brief] .sp-record,
+[data-brief] .sp-pair {
+  display: grid;
+  grid-template-columns: var(--sp-split);
+  gap: var(--sp-8) var(--sp-split-gap);
+  align-items: start;
+}
+
+/* What the money is for, under a rule from the record. */
+[data-brief] .sp-pair {
+  padding-top: var(--sp-8);
+  border-top: 1px solid var(--brief-hairline);
+}
+
+/* Beside the areas: their sentence, then the review's own lines. */
+[data-brief] .sp-pair-side {
+  display: grid;
+  gap: var(--sp-6);
+  align-content: start;
+  min-width: 0;
+}
+
+[data-brief] .sp-pair-side > .brief-hub-headline {
   margin: 0;
 }
 
-[data-brief] .sp-step-head > .sp-switch {
-  margin-top: var(--sp-3);
+/* Each step sets its rows by its own width: the columns narrow while the
+   menu is open. */
+[data-brief] .sp-step-areas {
+  container: sp-areas / inline-size;
+}
+
+[data-brief] .sp-step-items {
+  container: sp-items / inline-size;
+}
+
+/* Too narrow for a name and two bars with their amounts: the name on its
+   own line, the bars under it. */
+@container sp-areas (max-width: 40rem) {
+  [data-brief] .sp-areas,
+  [data-brief] .sp-step-areas .sp-row-head {
+    --sp-cols: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  [data-brief] .sp-area-name,
+  [data-brief] .sp-step-areas .sp-row-head > span:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@container sp-items (max-width: 26rem) {
+  [data-brief] .sp-items {
+    --sp-cols: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  [data-brief] .sp-item-name,
+  [data-brief] .sp-item-row > .sp-cell {
+    grid-column: 1 / -1;
+  }
 }
 
 [data-brief] .sp-ai {
@@ -126,23 +172,14 @@
   color: var(--brief-muted);
 }
 
-/* ── How much: the squares and figures, then the years ──────────────── */
+/* ── How much: the squares and figures, beside the years ────────────── */
 
-[data-brief] .sp-record {
-  display: grid;
-  grid-template-columns: var(--sp-cols);
-  gap: var(--sp-8) var(--sp-6);
-  align-items: start;
-}
-
+/* The hundred squares and, beside them, the two figures. */
 [data-brief] .sp-record-side {
   display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: var(--sp-6);
-  align-content: start;
-}
-
-[data-brief] .sp-record > .sp-chart {
-  grid-column: 2 / -1;
+  align-items: start;
 }
 
 /* A hundred squares, ten by ten: every square one of every hundred. */
@@ -195,9 +232,11 @@
 
 /* ── The record by year ────────────────────────────────────────────── */
 
+/* It sets its years by its own width (the right column, or the page's). */
 [data-brief] .sp-chart {
   position: relative;
   min-width: 0;
+  container: sp-chart / inline-size;
 }
 
 [data-brief] .sp-chart-head {
@@ -255,10 +294,33 @@
    No scrolling box: it would clip the hover card above a bar. */
 [data-brief] .sp-plot {
   display: grid;
-  grid-template-columns: repeat(var(--sp-years), minmax(2.75rem, 7rem));
+  grid-template-columns: repeat(var(--sp-years), minmax(1.5rem, 7rem));
   justify-content: start;
   column-gap: var(--sp-4);
   padding-top: var(--sp-8);
+}
+
+/* A narrower chart: ten years still fit, closer together. */
+@container sp-chart (max-width: 36rem) {
+  [data-brief] .sp-plot {
+    column-gap: var(--sp-2);
+  }
+}
+
+/* A narrow chart: the first and last figure kept, as on a phone. */
+@container sp-chart (max-width: 26rem) {
+  [data-brief] .sp-plot {
+    column-gap: var(--sp-1);
+  }
+
+  [data-brief] .sp-stack-value:not([data-edge]),
+  [data-brief] .sp-bar-value:not([data-edge]) {
+    visibility: hidden;
+  }
+
+  [data-brief] .sp-year-label {
+    font-size: 0.75rem;
+  }
 }
 
 [data-brief] .sp-year {
@@ -461,11 +523,12 @@
   color: var(--brief-muted);
 }
 
-[data-brief] .sp-row:hover .sp-item-name,
-[data-brief] .sp-row:focus-visible .sp-item-name,
+/* Only a row that opens marks its name: a plain row has nothing behind it. */
+[data-brief] button.sp-row:hover .sp-item-name,
+[data-brief] button.sp-row:focus-visible .sp-item-name,
 [data-brief] .sp-item[data-open] .sp-item-name,
-[data-brief] .sp-row:hover .sp-area-name,
-[data-brief] .sp-row:focus-visible .sp-area-name,
+[data-brief] button.sp-row:hover .sp-area-name,
+[data-brief] button.sp-row:focus-visible .sp-area-name,
 [data-brief] .sp-area[data-open] .sp-area-name {
   background: var(--brief-highlight);
 }
@@ -618,39 +681,26 @@
 
 /* ── Narrow screens ────────────────────────────────────────────────── */
 
+/* The two components stack: the record, its years, the areas, their
+   sentence and the review's lines. */
+@media (max-width: 960px) {
+  [data-brief] .sp-record,
+  [data-brief] .sp-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 820px) {
   [data-brief] .sp-brief {
     --sp-cols: minmax(0, 1fr) minmax(0, 1fr);
     --sp-label: 6.5rem;
   }
 
-  [data-brief] .sp-record > .sp-chart,
   [data-brief] .sp-item-name,
   [data-brief] .sp-area-name,
   [data-brief] .sp-row-head > span:first-child,
   [data-brief] .sp-item-row > .sp-cell {
     grid-column: 1 / -1;
-  }
-
-  [data-brief] .sp-record-side {
-    grid-column: 1 / -1;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: start;
-  }
-
-  /* Ten years fit a phone: narrow columns, the first and last figure kept. */
-  [data-brief] .sp-plot {
-    grid-template-columns: repeat(var(--sp-years), minmax(1.5rem, 1fr));
-    column-gap: var(--sp-1);
-  }
-
-  [data-brief] .sp-stack-value:not([data-edge]),
-  [data-brief] .sp-bar-value:not([data-edge]) {
-    visibility: hidden;
-  }
-
-  [data-brief] .sp-year-label {
-    font-size: 0.75rem;
   }
 }
 

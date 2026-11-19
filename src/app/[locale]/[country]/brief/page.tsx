@@ -14,7 +14,7 @@ import { contractsSetup } from "@/lib/brief/contracts/setup";
 import { packSetup } from "@/lib/brief/contracts/pack";
 import { geoFor } from "@/lib/brief/contracts/geo-data";
 import { spendingSetup } from "@/lib/brief/spending";
-import { loadBerAreas } from "@/lib/brief/ber-areas";
+import { loadBerAreasByLens } from "@/lib/brief/ber-areas";
 import { nr7Setup } from "@/lib/brief/nr7";
 import { BriefApp } from "@/components/brief/brief-app";
 
@@ -55,7 +55,7 @@ const load = cache((locale: string, country: string) => {
   // for Country X, states the public spending it is part of) also shows its
   // reviewed spending, with each line's area as AI-suggested or checked.
   const spending =
-    spendingSetup(data, base, { areas: loadBerAreas(entry.id), names: loadBerNames(entry.id), locale }) ?? undefined;
+    spendingSetup(data, base, { areas: loadBerAreasByLens(entry.id), names: loadBerNames(entry.id), locale }) ?? undefined;
   const nr7 = nr7Setup(data, spending) ?? undefined;
   const source = { ...base, contracts: file !== null, spending: spending !== undefined, nr7: nr7 !== undefined };
   // The record travels as columns, a quarter lighter (lib/brief/contracts/pack.ts).

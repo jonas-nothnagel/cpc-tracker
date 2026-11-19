@@ -62,11 +62,11 @@
       },
       "step2": {
         "title": "Análisis automatizado",
-        "body": "La IA clasifica cada meta por área de política y la compara con cada meta de los demás documentos para identificar ámbitos de alineación y de posible desalineación."
+        "body": "La IA clasifica cada meta por área temática y la compara con cada meta de los demás documentos para identificar ámbitos de alineación y de posible desalineación."
       },
       "step3": {
         "title": "Leer la nota",
-        "body": "La nota de cada país muestra dónde las metas están alineadas y dónde muestran una posible desalineación, por documento y por área de política. Puede imprimirse o explorarse meta por meta."
+        "body": "La nota de cada país muestra dónde las metas están alineadas y dónde muestran una posible desalineación, por documento y por área temática. Puede imprimirse o explorarse meta por meta."
       }
     },
     "abbr": {
@@ -184,8 +184,8 @@
       "gga": "Adaptación climática",
       "adaptation": "Adaptación climática",
       "lossDamage": "Pérdidas y daños",
-      "own": "Áreas de política propias",
-      "ownTooltip": "Áreas de política aportadas con estos documentos.",
+      "own": "Áreas temáticas propias",
+      "ownTooltip": "Áreas temáticas aportadas con estos documentos.",
       "hr": "Derechos humanos",
       "ggaTooltip": "Objetivo Mundial de Adaptación: las siete metas temáticas del Marco de los Emiratos Árabes Unidos para la Resiliencia Climática Mundial (decisión 2/CMA.5 de la CMNUCC)",
       "hrTooltip": "Nueve temas de derechos humanos de la orientación del PNUD para esta herramienta, basada en la orientación del Grupo de Gestión Ambiental de las Naciones Unidas sobre la integración de los derechos humanos en la planificación nacional de la biodiversidad. Muestra qué temas abordan los documentos revisados. Borrador en revisión por personas expertas."
@@ -517,8 +517,8 @@
             "body": "Los mismos puntos, un bloque por cada par de documentos: cada fila es un documento nombrado a la izquierda, cada columna un documento nombrado bajo el mapa, y cada punto se sitúa donde se cruzan sus dos metas. Al señalar un bloque se nombran sus dos documentos y se dan sus cifras; al seleccionar un bloque se abre ese par de documentos, y al seleccionar un nombre ese documento pasa al centro, más abajo."
           },
           "areas": {
-            "title": "Por área de política",
-            "body": "Cada fila es un área de política de la lente elegida, con un punto por cada una de sus metas. Su barra reúne todos los pares de metas del área: la posible desalineación desde la izquierda, la alineación desde la derecha. Los nombres de las columnas sobre las filas las ordenan, primero de mayor a menor y luego de menor a mayor. Al lado, cada área de política con su número de metas; al abrir una, o al seleccionar su nombre a la izquierda, se listan sus metas. Las otras dos opciones listan los pares de áreas de política que reúnen más posibles desalineaciones o alineaciones fuertes; al abrir uno se conservan solo las metas que participan, y al seleccionar una meta se muestran sus contrapartes en cada fila."
+            "title": "Por área temática",
+            "body": "Cada fila es un área temática de la lente elegida, con un punto por cada una de sus metas. Su barra reúne todos los pares de metas del área: la posible desalineación desde la izquierda, la alineación desde la derecha. Los nombres de las columnas sobre las filas las ordenan, primero de mayor a menor y luego de menor a mayor. Al lado, cada área temática con su número de metas; al abrir una, o al seleccionar su nombre a la izquierda, se listan sus metas. Las otras dos opciones listan los pares de áreas temáticas que reúnen más posibles desalineaciones o alineaciones fuertes; al abrir uno se conservan solo las metas que participan, y al seleccionar una meta se muestran sus contrapartes en cada fila."
           }
         }
       },
@@ -526,11 +526,11 @@
         "steps": {
           "ring": {
             "title": "Todas las metas en un anillo",
-            "body": "Cada punto es una meta de los documentos seleccionados, situada en el arco de su documento. «Agrupar por» dispone los arcos por área de política, con las metas que pertenecen a alguna. Al señalar un punto se nombra la meta; al seleccionarlo, pasa al centro. Con una meta en el centro, la primera selección abre la comparación entre ambas y la segunda pasa el punto al centro."
+            "body": "Cada punto es una meta de los documentos seleccionados, situada en el arco de su documento. «Agrupar por» dispone los arcos por área temática, con las metas que pertenecen a alguna. Al señalar un punto se nombra la meta; al seleccionarlo, pasa al centro. Con una meta en el centro, la primera selección abre la comparación entre ambas y la segunda pasa el punto al centro."
           },
           "centre": {
             "title": "El centro",
-            "body": "En reposo, el centro muestra cada par de metas entre los puntos del anillo y cómo se lee. Con una meta en el centro, cada uno de los demás puntos toma el color de cómo se lee frente a ella: verde alineado, gris parcialmente alineado, rojo posible desalineación, ordenados dentro de cada documento. Al seleccionar el nombre de un documento o de un área de política, todas sus metas pasan al centro. Un punto se vuelve rojo donde sus posibles desalineaciones con esas metas destacan: al menos dos, y al menos el doble de frecuentes que en el conjunto del centro. El nombre de otro documento abre ambos, uno junto al otro; un espacio vacío o «Todas las metas» vuelve a todas las metas."
+            "body": "En reposo, el centro muestra cada par de metas entre los puntos del anillo y cómo se lee. Con una meta en el centro, cada uno de los demás puntos toma el color de cómo se lee frente a ella: verde alineado, gris parcialmente alineado, rojo posible desalineación, ordenados dentro de cada documento. Al seleccionar el nombre de un documento o de un área temática, todas sus metas pasan al centro. Un punto se vuelve rojo donde sus posibles desalineaciones con esas metas destacan: al menos dos, y al menos el doble de frecuentes que en el conjunto del centro. El nombre de otro documento abre ambos, uno junto al otro; un espacio vacío o «Todas las metas» vuelve a todas las metas."
           },
           "lines": {
             "title": "Líneas",
@@ -1458,7 +1458,7 @@
     "steps": {
       "documents": "Documentos de política",
       "targets": "Metas",
-      "areas": "Áreas de política",
+      "areas": "Áreas temáticas",
       "start": "Inicio"
     },
     "documents": {
@@ -1514,13 +1514,13 @@
       "add": "Añadir una meta",
       "addButton": "Añadir",
       "over": "{count, plural, one {Quite # meta para comenzar.} other {Quite # metas para comenzar.}}",
-      "continue": "Continuar con las áreas de política"
+      "continue": "Continuar con las áreas temáticas"
     },
     "areas": {
-      "title": "Áreas de política",
+      "title": "Áreas temáticas",
       "included": "Incluidas en todo análisis",
       "count": "{count, plural, one {# área} other {# áreas}}",
-      "add": "Añadir áreas de política propias",
+      "add": "Añadir áreas temáticas propias",
       "name": "Nombre",
       "namePlaceholder": "Prioridades nacionales",
       "source": "Fuente",
@@ -1534,9 +1534,9 @@
       "pasteLabel": "Dos columnas: nombre y descripción",
       "pasteAdd": "Añadir estas áreas",
       "removeArea": "Quitar",
-      "remove": "Quitar las áreas de política propias",
+      "remove": "Quitar las áreas temáticas propias",
       "problems": {
-        "name": "Las áreas de política necesitan un nombre.",
+        "name": "Las áreas temáticas necesitan un nombre.",
         "source": "La fuente admite como máximo 300 caracteres.",
         "count": "Se necesitan entre 1 y 30 áreas.",
         "areaName": "Cada área necesita un nombre.",
@@ -1557,7 +1557,7 @@
         "country": "Se necesita el nombre de un país.",
         "documents": "Se necesitan metas de al menos 2 documentos.",
         "reading": "Algunos documentos se están leyendo todavía.",
-        "ownLens": "Las áreas de política propias necesitan atención.",
+        "ownLens": "Las áreas temáticas propias necesitan atención.",
         "unread": "Algunos documentos aún no se han leído."
       },
       "start": "Iniciar el análisis",
@@ -2846,7 +2846,7 @@
       "page": "Página {page, number} de {total, number}",
       "footer": "Preparada el {date} con PACE (Explorador de Alineación y Coherencia de Políticas). Análisis asistido por IA, para validación por personas expertas nacionales.",
       "title": "Nota de coherencia de políticas",
-      "lensScope": "Áreas de política: {lens}",
+      "lensScope": "Áreas temáticas: {lens}",
       "translatedMachine": "Los textos de las metas en esta página son traducciones automáticas.",
       "translatedSource": "Los textos de las metas en esta página son traducciones de los documentos originales.",
       "figures": {
@@ -2861,11 +2861,11 @@
       "apart": "Posible desalineación",
       "commitments": "Metas que conviene revisar primero",
       "documents": "Alineación por documento",
-      "areas": "Por área de política",
+      "areas": "Por área temática",
       "aligned": "Alineaciones más fuertes",
       "spending": "Gasto revisado",
       "contracts": "Contratos públicos",
-      "nr7": "Metas nacionales de biodiversidad"
+      "nr7": "Implementación"
     },
     "tone": {
       "reinforce": "alineados",
@@ -2925,11 +2925,11 @@
     },
     "areas": {
       "headline": "{area} muestra la mayor proporción de posible desalineación: {pct}.",
-      "headlineEmpty": "Hay muy pocos pares de metas calificados en las áreas de política para compararlas.",
+      "headlineEmpty": "Hay muy pocos pares de metas calificados en las áreas temáticas para compararlas.",
       "commitmentsCount": "{count, plural, one {# meta} other {# metas}}",
       "tooFew": "muy pocos pares de metas",
       "row": "{area}: {pct} de posible desalineación en {comparisons, number} pares de metas",
-      "headlineNone": "Ningún área de política calificada muestra posible desalineación."
+      "headlineNone": "Ningún área temática calificada muestra posible desalineación."
     },
     "panel": {
       "back": "Volver",
@@ -3018,7 +3018,7 @@
     "aligned": {
       "headlineEmpty": "Ninguna meta está fuertemente alineada con otra en esta selección.",
       "row": "{count, plural, one {# alineación fuerte} other {# alineaciones fuertes}}",
-      "headlineConcentrated": "De las {total, number} alineaciones fuertes, el {pct} involucra {top, plural, one {una meta} other {# metas}}.",
+      "headlineConcentrated": "El {pct} de las {total, number} alineaciones fuertes involucra {top, plural, one {una} other {#}} de las {targets, number} metas.",
       "headlineSpread": "Las alineaciones fuertes se reparten entre {contested, plural, one {# meta} other {# metas}}.",
       "partner": "{count, number} con {doc}"
     },
@@ -3064,6 +3064,7 @@
       "finding": "Alineada con {aligned, number} de las {total, number} metas con las que se comparó.",
       "findingApart": "Posible desalineación con {apart, number}.",
       "findingNone": "No se comparó con ninguna meta de los demás documentos.",
+      "rating": "Séptimo Informe Nacional: <word></word>",
       "apartList": "Posible desalineación ({count, number})",
       "strongList": "Alineaciones fuertes ({count, number})",
       "back": "Volver",
@@ -3080,10 +3081,10 @@
       "lines": "Líneas",
       "inCentre": "En el centro",
       "kindDoc": "Documento",
-      "kindArea": "Área de política · {lens}",
+      "kindArea": "Área temática · {lens}",
       "groupFigures": "{targets, plural, one {# meta} other {# metas}}, {pairs, plural, one {# par de metas} other {# pares de metas}} con los demás documentos",
       "withDocs": "Con los demás documentos",
-      "withAreas": "Con las demás áreas de política",
+      "withAreas": "Con las demás áreas temáticas",
       "browseDocs": "Documentos",
       "targetsCount": "{count, plural, one {# meta} other {# metas}}",
       "tipWith": "Con {name}:",
@@ -3159,7 +3160,7 @@
       "linesCount": "{count, plural, one {# línea presupuestaria} other {# líneas presupuestarias}}",
       "actionsCount": "{count, plural, one {# acción reportada} other {# acciones reportadas}}",
       "withDocsCoverage": "Por documento",
-      "withAreasCoverage": "Por área de política",
+      "withAreasCoverage": "Por área temática",
       "gapBudget": "Sin línea presupuestaria correspondiente ({count, number})",
       "gapActions": "Sin acción reportada fuertemente alineada ({count, number})",
       "rankedBudget": "Líneas presupuestarias que corresponden a más metas",
@@ -3197,7 +3198,7 @@
         "record": "Todos los contratos públicos",
         "purpose": "Contratos para la naturaleza y el clima",
         "places": "Contratos por ubicación",
-        "areas": "Contratos por área de política"
+        "areas": "Contratos por área temática"
       },
       "record": {
         "headline": "{value} en {count} contratos públicos desde {year}",
@@ -3211,7 +3212,7 @@
         "second": "{sign}{per100} más para trabajos en los que la naturaleza o el clima son un beneficio secundario.",
         "tag": "Lectura de la IA del título de cada contrato",
         "focusLine": "{name}: {first} en {firstYear}, {last} en {lastYear}.",
-        "byArea": "Por área de política"
+        "byArea": "Por área temática"
       },
       "set": {
         "all": "Los {count} contratos · {value}",
@@ -3220,15 +3221,15 @@
         "of": "de {value}"
       },
       "areas": {
-        "lens": "Áreas de política",
+        "lens": "Áreas temáticas",
         "headline": "{area} reúne el {tshare} de {targets} y el {mshare} del dinero contratado principalmente para la naturaleza o el clima{place}",
         "headlineTop": "{area} recibe el {mshare} del dinero contratado principalmente para la naturaleza o el clima{place}, con el {tshare} de {targets}",
-        "headlineEmpty": "Ningún dinero contratado principalmente para la naturaleza o el clima corresponde a estas áreas de política",
+        "headlineEmpty": "Ningún dinero contratado principalmente para la naturaleza o el clima corresponde a estas áreas temáticas",
         "second": "{area} recibe el {mshare}, con el {tshare} de las metas.",
         "targetsAll": "las metas",
         "targetsOf": "las metas de {doc}",
         "inPlace": " en {place}",
-        "none": "Sin área de política",
+        "none": "Sin área temática",
         "headMoney": "Principalmente para la naturaleza o el clima",
         "headTargets": "Metas",
         "headTargetsOf": "Metas de {doc}",
@@ -3236,7 +3237,7 @@
         "tableRed": "licitaciones con posible desalineación",
         "tableGreen": "un contrato con correspondencia fuerte",
         "of": "{green} de {total}",
-        "back": "Todas las áreas de política",
+        "back": "Todas las áreas temáticas",
         "facts": "{value} en {count, plural, one {# contrato} other {# contratos}} principalmente para la naturaleza o el clima · {targets, plural, one {# meta} other {# metas}}",
         "synergy": "El {share} de sus contratos con correspondencia fuerte sirve a 3 o más documentos a la vez (todas las áreas: {base})",
         "rowsHead": "{count, plural, one {# meta} other {# metas}}",
@@ -3257,8 +3258,8 @@
         "switch": "Dinero mostrado",
         "switchMoney": "Principalmente para la naturaleza o el clima",
         "switchAll": "Todos los contratos",
-        "area": "Área de política",
-        "areaAll": "Todas las áreas de política",
+        "area": "Área temática",
+        "areaAll": "Todas las áreas temáticas",
         "doc": "Documento",
         "docAll": "Todos",
         "noPlace": "Ningún lugar concreto",
@@ -3280,8 +3281,8 @@
           "doc": "metas de {doc}",
           "area": "metas de {area}",
           "both": "metas de {doc} en {area}",
-          "noArea": "metas sin área de política",
-          "bothNoArea": "metas de {doc} sin área de política"
+          "noArea": "metas sin área temática",
+          "bothNoArea": "metas de {doc} sin área temática"
         },
         "headlineMatch": "{count, plural, one {# licitación corresponde fuertemente a} other {# licitaciones corresponden fuertemente a}} {what}; el {pctNone} no nombra ningún lugar concreto y el {pctTop} está en {top}",
         "headlineMatchOver": "{place} reúne el {share} de {count, plural, one {la # licitación} other {las # licitaciones}} con correspondencia fuerte con {what}, frente al {base} de todas las licitaciones con correspondencia fuerte",
@@ -3296,7 +3297,7 @@
         "facts": "{all} en {count, plural, one {# contrato} other {# contratos}} · {green} en {greenCount, plural, one {# contrato} other {# contratos}} principalmente para la naturaleza o el clima, {sign}{per100} de cada {sign}100",
         "factsFocus": "{all} en {count, plural, one {# contrato} other {# contratos}} · {green} en {greenCount, plural, one {# contrato} other {# contratos}} principalmente para la naturaleza o el clima {focus}",
         "factsTenders": "{count, plural, one {# licitación} other {# licitaciones}} {kind, select, mis {con posible desalineación con} other {con correspondencia fuerte con}} {what} · {value}",
-        "byArea": "Por área de política ({lens})",
+        "byArea": "Por área temática ({lens})",
         "matched": "Sus contratos corresponden fuertemente a {count, plural, one {# meta} other {# metas}}",
         "seeContracts": "Ver {count, plural, one {su # contrato} other {sus # contratos}}",
         "listTitle": "Contratos en {place}",
@@ -3381,7 +3382,7 @@
           "significant": "La naturaleza o el clima como beneficio secundario",
           "none": "No para la naturaleza ni el clima"
         },
-        "areas": "Áreas de política",
+        "areas": "Áreas temáticas",
         "confidence": {
           "high": "Confianza alta",
           "medium": "Confianza media",
@@ -3427,7 +3428,7 @@
         "area": "para {area}",
         "doc": "que corresponde fuertemente a metas de {doc}",
         "place": "en {place}",
-        "noArea": "sin área de política",
+        "noArea": "sin área temática",
         "note": "Enfoque: {parts}"
       },
       "closer": {
@@ -3493,8 +3494,8 @@
         "series": {
           "central": "Presupuesto del Estado",
           "local": "Presupuestos locales",
-          "core": "Instituciones principales, contadas por completo",
-          "other": "Otras instituciones, contadas en parte",
+          "core": "Instituciones contadas por completo",
+          "other": "Instituciones contadas en parte",
           "all": "Gasto revisado"
         },
         "notInData": "no está en los datos",
@@ -3502,8 +3503,8 @@
         "held": {
           "central": "el presupuesto del Estado",
           "local": "los presupuestos locales",
-          "core": "las instituciones principales",
-          "other": "las otras instituciones",
+          "core": "las instituciones contadas por completo",
+          "other": "las instituciones contadas en parte",
           "all": "una parte"
         },
         "bar": "{series}, {year}",
@@ -3547,28 +3548,29 @@
         "showFewer": "Mostrar solo las mayores"
       },
       "areas": {
-        "title": "Metas y gasto revisado por área de biodiversidad",
-        "colArea": "Área de biodiversidad",
+        "title": "Metas y gasto revisado por área temática",
+        "insight": "{count, plural, one {# de las {of, number} áreas temáticas concentra} other {# de las {of, number} áreas temáticas concentran}} {targets} de las {total, number} metas y {spend} del gasto revisado en biodiversidad.",
+        "insightArea": "{area} concentra {spend} del gasto revisado en biodiversidad y {targets} de las {total, number} metas.",
         "colTargets": "Parte de las metas",
-        "colSpend": "Parte del gasto revisado",
+        "colSpend": "Parte del gasto revisado en biodiversidad",
         "colTargetsCount": "Metas",
-        "colSpendAmount": "Gasto revisado",
-        "listLabel": "Áreas de biodiversidad, su parte de las metas y del gasto revisado",
-        "rowLabel": "Metas: {targets}; gasto revisado: {spend}",
+        "colSpendAmount": "Gasto revisado en biodiversidad",
+        "listLabel": "Áreas temáticas, su parte de las metas y del gasto revisado en biodiversidad",
+        "rowLabel": "Metas: {targets}; gasto revisado en biodiversidad: {spend}",
         "noSpend": "Ninguno",
-        "apartRow": "Gasto general en biodiversidad, sin área específica",
-        "apartLabel": "{spend} del gasto revisado es gasto general en biodiversidad, sin área específica",
+        "apartRow": "{lens, select, mitigation {Gasto en biodiversidad sin área de mitigación climática} adaptation {Gasto en biodiversidad sin área de adaptación climática} other {Gasto general en biodiversidad, sin área específica}}",
+        "apartLabel": "{lens, select, mitigation {{spend} del gasto revisado en biodiversidad no tiene área de mitigación climática} adaptation {{spend} del gasto revisado en biodiversidad no tiene área de adaptación climática} other {{spend} del gasto revisado en biodiversidad es gasto general en biodiversidad, sin área específica}}",
         "targetsLine": "{count, plural, =0 {Ninguna meta en esta área.} one {# meta en esta área.} other {# metas en esta área.}}",
         "matched": "{matched, number} de las {total, number} tienen una línea presupuestaria coincidente.",
         "aiEstimated": "Estimado por IA",
         "coherence": "Coherencia de sus metas: {aligned} alineados, {apart} de posible desalineación, de {total, number} pares de metas.",
         "coherenceFew": "Coherencia de sus metas: {total, plural, one {# par de metas} other {# pares de metas}}, muy pocos para calificar.",
         "linesLabel": "Líneas presupuestarias de esta área",
-        "noLines": "Ninguna línea presupuestaria revisada en esta área.",
+        "noLines": "Sin gasto revisado en biodiversidad en esta área.",
         "explore": "Explorar esta área con sus líneas presupuestarias",
         "checked": "Área revisada",
         "aiSuggested": "Sugerido por IA, aún sin revisar",
-        "apartWhy": "Sin área específica",
+        "apartWhy": "{lens, select, mitigation {Sin área de mitigación climática} adaptation {Sin área de adaptación climática} other {Sin área específica}}",
         "reviewDescription": "Descripción de la revisión: {text}",
         "reviewTag": {
           "direct": "Etiquetado por la revisión como gasto directo en biodiversidad.",
@@ -3577,6 +3579,7 @@
         },
         "linesMore": "{count, plural, one {y # línea más} other {y # líneas más}}",
         "switch": "Mostrar proporciones o montos",
+        "lensGroup": "Áreas temáticas",
         "shares": "Proporción",
         "amounts": "Monto",
         "targetsCount": "{count, plural, =0 {Ninguna meta} one {# meta} other {# metas}}"
@@ -3584,15 +3587,23 @@
       "currency": "Importes en"
     },
     "areaView": {
-      "title": "Metas y alineación por área de política",
-      "noneTargets": "Ninguna meta se encuentra en estas áreas de política.",
-      "noneSide": "Ningún par de metas de estas áreas de política {side, select, apart {muestra una posible desalineación} other {está fuertemente alineado}}.",
+      "title": "Metas y alineación por área temática",
+      "headlineTargetsTop": "El {pct} de las {placed, number} metas se encuentra en {areas, number} de las {of, number} áreas temáticas.",
+      "headlineTargets": "El {pct} de las {placed, number} metas son metas de <first>{area}</first>.",
+      "headlineAreaDocs": "{count, plural, one {La # meta de {area} proviene} other {Las # metas de {area} provienen}} de {docs, number} de los {of, number} documentos.",
+      "headlinePairsTop": "El {pct} de las {total, number} {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa entre {groups, number} de los {of, number} pares de áreas temáticas.",
+      "headlineBetween": "El {pct} de las {total, number} {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa entre metas de <first>{areaA}</first> y metas de <second>{areaB}</second>.",
+      "headlineWithin": "El {pct} de las {total, number} {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa dentro de las metas de <first>{areaA}</first>.",
+      "headlineOutside": "El {pct} de las {total, number} {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa entre metas de <first>{areaA}</first> y metas fuera de estas áreas.",
+      "headlineArea": "El {pct} de las {total, number} {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} involucra metas de {area}.",
+      "noneTargets": "Ninguna meta se encuentra en estas áreas temáticas.",
+      "noneSide": "Ningún par de metas de estas áreas temáticas {side, select, apart {muestra una posible desalineación} other {está fuertemente alineado}}.",
       "noneArea": "Ninguna {side, select, apart {posible desalineación} other {alineación fuerte}} involucra metas de {area}.",
-      "lensGroup": "Áreas de política",
+      "lensGroup": "Áreas temáticas",
       "sideGroup": "Metas o pares de metas",
       "viewTargets": "Metas",
       "areaShareTargets": "el {pct} de las metas",
-      "areaList": "Áreas de política y sus metas",
+      "areaList": "Áreas temáticas y sus metas",
       "showAllTargets": "Mostrar las {count, number} metas",
       "showFewerTargets": "Mostrar menos",
       "sideApart": "Posible desalineación",
@@ -3614,7 +3625,7 @@
       "partnersOutside": "{count, number} fuera de estas áreas",
       "tip": "{side, select, apart {posible desalineación con} other {fuertemente alineada con}} {count, plural, one {# meta} other {# metas}}",
       "panelSub": "{count, number} de {pairs, number} pares de metas {side, select, apart {muestran una posible desalineación} other {están fuertemente alineados}}",
-      "panelDialog": "Pares de metas entre áreas de política",
+      "panelDialog": "Pares de metas entre áreas temáticas",
       "targets": "{count, plural, one {# meta} other {# metas}}",
       "outsidePairs": "{side, select, apart {{count, plural, one {# posible desalineación se sitúa} other {# posibles desalineaciones se sitúan}}} other {{count, plural, one {# alineación fuerte se sitúa} other {# alineaciones fuertes se sitúan}}}} entre metas fuera de estas áreas.",
       "partnersElsewhere": "{count, number} en otras partes",
@@ -3625,7 +3636,7 @@
       "rowShares": "{aligned} alineados, {partial} parcialmente alineados, {apart} posible desalineación, de {total, number} pares de metas"
     },
     "nr7": {
-      "title": "Metas nacionales de biodiversidad",
+      "title": "Implementación de las metas nacionales de biodiversidad",
       "source": "Según la calificación del Séptimo Informe Nacional al Convenio sobre la Diversidad Biológica, publicado el {date}",
       "headline": "El propio informe de {country} califica {behind} de {total} metas nacionales con retraso.",
       "headlineNone": "El propio informe de {country} no califica con retraso ninguna de sus {total} metas nacionales.",
