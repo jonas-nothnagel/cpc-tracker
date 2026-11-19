@@ -10,9 +10,10 @@ import { levelsPayload } from "@/lib/brief/spending-fixture";
 import { briefFixture } from "@/lib/brief/test-fixture";
 import { SpendingSection } from "./spending-section";
 
-// The documents under the years of the reviewed-spending chart: named by the
-// year each came out, and, once one is chosen, the chart's own bars and one
-// line saying what was spent before, in and after its year.
+// The documents on the reviewed-spending chart: each code over the year it
+// came out, a dashed line down onto that year's bar, those from outside the
+// charted years at the two ends; once one is chosen, the chart's own bars and
+// one line say what was spent before, in and after its year.
 
 const SOURCE = briefFixture();
 /** Tugrik billion, charting 2020 (₮4, US$2.0 million), 2021 (₮6, US$2.4
@@ -34,19 +35,34 @@ function section(source: BriefSource, { docs = ["A", "B", "C"], currency = "usd"
 
 afterEach(cleanup);
 
-const cells = (c: HTMLElement) => [...c.querySelectorAll(".sp-plot .sp-docs")].map((n) => n.textContent);
+/** Each year's codes over the bars, with the column they stand in and the line they are raised by. */
+const tags = (c: HTMLElement) =>
+  [...c.querySelectorAll<HTMLElement>(".sp-plot .sp-doc-cell")].map((cell) => [cell.style.gridColumn, cell.style.getPropertyValue("--lane"), cell.textContent]);
+const end = (c: HTMLElement, side: "before" | "after") => c.querySelector(`.sp-doc-end[data-side="${side}"]`)?.textContent ?? null;
 const choice = (c: HTMLElement, code: string) => [...c.querySelectorAll<HTMLButtonElement>(".sp-plot .sp-doc")].find((b) => b.textContent === code)!;
-const inks = (c: HTMLElement) => [...c.querySelectorAll<HTMLElement>(".sp-plot .sp-year:not(.sp-year-end)")].map((y) => y.dataset.when);
+const inks = (c: HTMLElement) => [...c.querySelectorAll<HTMLElement>(".sp-plot .sp-year")].map((y) => y.dataset.when);
 const figures = (c: HTMLElement) => [...c.querySelectorAll(".sp-docs-fig")].map((f) => f.textContent);
 
-describe("the documents under the years", () => {
-  it("names each document under the year it came out, below a title for the row", () => {
+describe("the documents on the chart of the years", () => {
+  it("sets each document's code over the year it came out, a year's own on lines of their own", () => {
     const { container } = render(section(dated({ A: "2020-05", B: "2022", C: "2020-01" })));
-    expect(container.querySelector(".sp-plot .sp-docs-title")?.textContent).toBe("Documents by year published");
     // Two came out in 2020, the earlier first; none in 2021.
-    expect(cells(container)).toEqual(["CA", "", "B"]);
-    expect(container.querySelector(".sp-docs-undated")).toBeNull();
-    expect(container.querySelectorAll(".sp-year-end")).toHaveLength(0);
+    expect(tags(container)).toEqual([
+      ["1", "0", "CA"],
+      ["3", "0", "B"],
+    ]);
+    expect(container.querySelector(".sp-plot")?.hasAttribute("data-tags")).toBe(true);
+    // The line from the codes onto the bar is named once, in the legend.
+    expect([...container.querySelectorAll(".sp-legend li")].map((li) => li.textContent)).toContain("Year a document came out");
+  });
+
+  it("raises a year's codes a line where the year before it carries codes too", () => {
+    const { container } = render(section(dated({ A: "2020", B: "2021", C: "2022" })));
+    expect(tags(container).map(([column, lane]) => [column, lane])).toEqual([
+      ["1", "0"],
+      ["2", "1"],
+      ["3", "0"],
+    ]);
   });
 
   it("gives a document's full name and date on pointing, the month where its config states one", () => {
@@ -54,35 +70,37 @@ describe("the documents under the years", () => {
     expect([...container.querySelectorAll<HTMLElement>(".sp-plot .sp-doc")].map((n) => n.title)).toEqual(["Document A, May 2020", "Document B, 2022"]);
   });
 
-  it("names a document from before or after the charted years at that end of the axis, with its year", () => {
+  it("points those from before the charted years off the left end and those after off the right, with their year", () => {
     const { container } = render(section(dated({ A: "2016", B: "2021-03", C: "2025-11" })));
-    expect(cells(container)).toEqual(["A 2016", "", "B", "", "C 2025"]);
-    // The two ends hold no bar: a column of their own, before and after the years.
-    const columns = [...container.querySelectorAll(".sp-plot > .sp-year")];
-    expect(columns).toHaveLength(5);
-    expect([columns[0], columns[4]].every((col) => col.classList.contains("sp-year-end") && col.childElementCount === 0)).toBe(true);
+    expect(end(container, "before")).toBe("←2016A");
+    expect(end(container, "after")).toBe("2025C→");
+    expect(tags(container)).toEqual([["2", "0", "B"]]);
+    // No column of their own: the years keep the width.
+    expect(container.querySelectorAll(".sp-plot .sp-year")).toHaveLength(3);
+  });
+
+  it("names each year once at an end, its documents after it", () => {
+    const { container } = render(section(dated({ A: "2025-03", B: "2025-09", C: "2026" })));
+    expect([...container.querySelectorAll('.sp-doc-end[data-side="after"] .sp-doc-group')].map((g) => g.textContent)).toEqual(["2025AB", "2026C"]);
+    expect(container.querySelector(".sp-plot")?.hasAttribute("data-tags")).toBe(false);
   });
 
   it("keeps the documents without a date on one grey line, and reads only the documents in the brief", () => {
     const all = render(section(dated({ A: "2021" })));
-    expect(cells(all.container)).toEqual(["", "A", ""]);
+    expect(tags(all.container)).toEqual([["2", "0", "A"]]);
     expect(all.container.querySelector(".sp-docs-undated")?.textContent).toBe("Date not in the data: B, C");
     cleanup();
     const some = render(section(dated({ A: "2021", B: "2020" }), { docs: ["A"] }));
-    expect(cells(some.container)).toEqual(["", "A", ""]);
+    expect(tags(some.container)).toEqual([["2", "0", "A"]]);
     expect(some.container.querySelector(".sp-docs-undated")).toBeNull();
   });
 
-  it("adds nothing to the chart where no document in the brief states a date", () => {
+  it("leaves the chart as it was where no document in the brief states a date", () => {
     const { container } = render(section(dated({ A: "2021" }), { docs: ["B", "C"] }));
-    expect(container.querySelector(".sp-docs-title")).toBeNull();
+    expect(container.querySelector(".sp-plot")?.hasAttribute("data-docs")).toBe(false);
     expect(container.querySelector(".sp-docs-foot")).toBeNull();
     expect(container.querySelectorAll(".sp-plot > *")).toHaveLength(3);
-  });
-
-  it("offers the same choices as a list, for a chart too narrow to hold a name under a year", () => {
-    const { container } = render(section(dated({ A: "2021-03", B: "2016" })));
-    expect([...container.querySelectorAll(".sp-docs-list .sp-doc")].map((b) => b.textContent)).toEqual(["2016 B", "2021 A"]);
+    expect([...container.querySelectorAll(".sp-legend li")].map((li) => li.textContent)).not.toContain("Year a document came out");
   });
 
   it("writes a Mongolian date itself, never by the browser's calendar", () => {
@@ -91,7 +109,7 @@ describe("the documents under the years", () => {
   });
 });
 
-describe("a document chosen under the years", () => {
+describe("a document chosen on the chart", () => {
   it("leaves the bars as they are while none is chosen", () => {
     const { container } = render(section(dated({ C: "2021-03" })));
     expect(inks(container)).toEqual([undefined, undefined, undefined]);
@@ -99,11 +117,16 @@ describe("a document chosen under the years", () => {
     expect(choice(container, "C").getAttribute("aria-pressed")).toBe("false");
   });
 
-  it("turns the chart's own bars pale before the document, hatched in its year, and leaves them blue after", () => {
-    const { container } = render(section(dated({ C: "2021-03" })));
+  it("turns the chart's own bars pale before the document, hatched in its year, and leaves them blue after; its line goes to ink", () => {
+    const { container } = render(section(dated({ A: "2020", C: "2021-03" })));
     fireEvent.click(choice(container, "C"));
     expect(inks(container)).toEqual(["before", "at", "after"]);
     expect(choice(container, "C").getAttribute("aria-pressed")).toBe("true");
+    expect(container.querySelector(".sp-plot")?.hasAttribute("data-chosen")).toBe(true);
+    expect([...container.querySelectorAll<HTMLElement>(".sp-doc-tag")].map((t) => [t.textContent, t.hasAttribute("data-chosen")])).toEqual([
+      ["A", false],
+      ["C", true],
+    ]);
   });
 
   it("states the document, then what was spent before, in and after its year, each beside its ink", () => {
@@ -121,12 +144,12 @@ describe("a document chosen under the years", () => {
     expect(figures(container)).toEqual(["Before ₮4 billion", "2021 ₮6 billion", "After at least ₮5 billion"]);
   });
 
-  it("states only the sides the review holds a year on", () => {
+  it("states only the sides the review holds a year on, for a document at either end", () => {
     const { container } = render(section(dated({ A: "2016", C: "2025-11" })));
-    fireEvent.click(choice(container, "C 2025"));
+    fireEvent.click(choice(container, "C"));
     expect(inks(container)).toEqual(["before", "before", "before"]);
     expect(figures(container)).toEqual(["Before at least US$6.1 million"]);
-    fireEvent.click(choice(container, "A 2016"));
+    fireEvent.click(choice(container, "A"));
     expect(inks(container)).toEqual(["after", "after", "after"]);
     expect(figures(container)).toEqual(["After at least US$6.1 million"]);
   });
@@ -149,8 +172,9 @@ describe("a document chosen under the years", () => {
   });
 
   it("keeps the choices outside what is hidden from a screen reader, the bars inside it", () => {
-    const { container } = render(section(dated({ C: "2021-03" })));
+    const { container } = render(section(dated({ A: "2016", C: "2021-03" })));
     expect(choice(container, "C").closest("[aria-hidden]")).toBeNull();
+    expect(choice(container, "A").closest("[aria-hidden]")).toBeNull();
     expect([...container.querySelectorAll(".sp-plot > .sp-year")].every((y) => y.getAttribute("aria-hidden") === "true")).toBe(true);
   });
 });

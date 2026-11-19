@@ -293,6 +293,8 @@
 /* One column per year, no wider than a bar needs; bars on one baseline.
    No scrolling box: it would clip the hover card above a bar. */
 [data-brief] .sp-plot {
+  /* The height the bars stand in, from the baseline up. */
+  --sp-slot: 11rem;
   display: grid;
   grid-template-columns: repeat(var(--sp-years), minmax(1.5rem, 7rem));
   justify-content: start;
@@ -325,7 +327,7 @@
 
 [data-brief] .sp-year {
   display: grid;
-  grid-template-rows: 11rem auto auto;
+  grid-template-rows: var(--sp-slot) auto auto;
   min-width: 0;
 }
 
@@ -436,32 +438,125 @@
   text-align: center;
 }
 
-/* The brief's documents under the year each came out, as choices: a title
-   for the row, then each document's code in its year's column. One from
-   before or after the charted years stands at that end of the axis, in a
-   column of its own without a bar, its year beside it. */
-[data-brief] .sp-docs-title {
+/* ── The documents on the chart of the years ───────────────────────── */
+
+/* Over the bars, each of the brief's documents by the year it came out: its
+   code in its year's column, a dashed line down onto that year's bar. Those
+   from before or after the charted years point off the two ends of the
+   chart, with their year. Rows: the ends, the codes, then the years. */
+[data-brief] .sp-plot[data-docs] {
+  /* A line of codes, and the room under the codes for the tallest bar's figure. */
+  --sp-doc-line: 1.25rem;
+  --sp-doc-room: var(--sp-6);
+  padding-top: var(--sp-2);
+}
+
+[data-brief] .sp-plot[data-docs] > .sp-year {
+  grid-row: 3;
+}
+
+[data-brief] .sp-doc-ends {
+  grid-row: 1;
   grid-column: 1 / -1;
-  margin: var(--sp-4) 0 var(--sp-1);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sp-1) var(--sp-6);
+  padding-bottom: var(--sp-2);
   font-size: 0.75rem;
-  line-height: 1.3;
+  line-height: var(--sp-doc-line);
+}
+
+[data-brief] .sp-plot:not([data-tags]) .sp-doc-ends {
+  padding-bottom: var(--sp-doc-room);
+}
+
+[data-brief] .sp-doc-end {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--sp-3);
+}
+
+[data-brief] .sp-doc-end[data-side="after"] {
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+[data-brief] .sp-doc-group {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0 var(--sp-2);
+}
+
+[data-brief] .sp-doc-arrow {
   color: var(--brief-muted);
 }
 
-[data-brief] .sp-docs {
-  display: grid;
-  align-content: start;
-  justify-items: center;
+/* A year's codes, raised by whole lines where its neighbour's stand. A code
+   wider than its column stays centred over it. */
+[data-brief] .sp-doc-cell {
+  grid-row: 2;
+  display: flex;
+  align-self: end;
+  align-items: flex-end;
+  justify-content: center;
   min-width: 0;
+  padding-bottom: calc(var(--lane, 0) * var(--sp-doc-line) + var(--sp-doc-room));
   font-size: 0.75rem;
-  line-height: 1.5;
+  line-height: var(--sp-doc-line);
+}
+
+[data-brief] .sp-doc-tag {
+  position: relative;
+  display: grid;
+  justify-items: center;
   white-space: nowrap;
 }
 
-/* A choice in plain text, as the section's others: a light rule under it
-   at rest, in bold with an ink rule once chosen. */
+/* The line from the codes to the baseline. It runs behind the year's figure
+   and bar, so it shows from the codes down to the figure. */
+[data-brief] .sp-doc-tag::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  height: calc(var(--lane, 0) * var(--sp-doc-line) + var(--sp-doc-room) + var(--sp-slot));
+  border-left: 1px dashed var(--brief-muted);
+  pointer-events: none;
+}
+
+[data-brief] .sp-plot[data-docs] .sp-stack-value,
+[data-brief] .sp-plot[data-docs] .sp-bar-value {
+  position: relative;
+  margin-bottom: 0;
+  padding: 0 0.2rem var(--sp-1);
+  background: #fff;
+}
+
+[data-brief] .sp-plot[data-docs] .sp-stack,
+[data-brief] .sp-plot[data-docs] .sp-bar {
+  position: relative;
+  background-color: #fff;
+}
+
+[data-brief] .sp-plot[data-docs] .sp-bar {
+  background-color: var(--brief-blue);
+}
+
+/* The legend's key for the line. */
+[data-brief] .sp-key-stem {
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(var(--brief-muted), var(--brief-muted)) center / 1px 100% no-repeat;
+  -webkit-mask: repeating-linear-gradient(to bottom, #000 0 3px, transparent 3px 5px);
+  mask: repeating-linear-gradient(to bottom, #000 0 3px, transparent 3px 5px);
+}
+
+/* A code is a choice in plain text, as the section's others: a light rule
+   under it, the pale yellow on the name pointed at, bold once chosen. */
 [data-brief] .sp-doc {
-  padding: 0;
+  padding: 0 0.15rem;
   border: 0;
   background: none;
   font: inherit;
@@ -474,7 +569,7 @@
 }
 
 [data-brief] .sp-doc:hover {
-  text-decoration-color: var(--brief-ink);
+  background: var(--brief-highlight);
 }
 
 [data-brief] .sp-doc[aria-pressed="true"] {
@@ -493,45 +588,61 @@
   color: var(--brief-muted);
 }
 
-[data-brief] .sp-plot[data-lead] {
-  grid-template-columns: max-content repeat(var(--sp-years), minmax(1.5rem, 7rem));
+/* Pointing at a code inks its line; a chosen one's line is solid ink, and the
+   other codes and lines step back. */
+[data-brief] .sp-doc-tag:has(.sp-doc:hover)::after,
+[data-brief] .sp-doc-tag[data-chosen]::after {
+  border-left-color: var(--brief-ink);
 }
 
-[data-brief] .sp-plot[data-trail] {
-  grid-template-columns: repeat(var(--sp-years), minmax(1.5rem, 7rem)) max-content;
+[data-brief] .sp-doc-tag[data-chosen]::after {
+  border-left-style: solid;
 }
 
-[data-brief] .sp-plot[data-lead][data-trail] {
-  grid-template-columns: max-content repeat(var(--sp-years), minmax(1.5rem, 7rem)) max-content;
+[data-brief] .sp-plot[data-chosen] .sp-doc-tag:not([data-chosen])::after {
+  opacity: 0.35;
+}
+
+[data-brief] .sp-plot[data-chosen] .sp-doc:not([aria-pressed="true"]) {
+  color: var(--brief-muted);
 }
 
 /* With a document chosen, the chart's own bars say when the spending came:
    pale in the years before it, hatched in its own year (partly before,
    partly after), their blue in the years after. */
 [data-brief] .sp-year[data-when="before"] .sp-seg,
-[data-brief] .sp-year[data-when="before"] .sp-bar,
+[data-brief] .sp-plot[data-docs] .sp-year[data-when="before"] .sp-bar,
 [data-brief] .sp-key[data-when="before"] {
   background: var(--brief-hairline-strong);
 }
 
 [data-brief] .sp-year[data-when="at"] .sp-seg,
-[data-brief] .sp-year[data-when="at"] .sp-bar,
+[data-brief] .sp-plot[data-docs] .sp-year[data-when="at"] .sp-bar,
 [data-brief] .sp-key[data-when="at"] {
   background: repeating-linear-gradient(135deg, var(--brief-blue) 0 2px, var(--brief-hairline-strong) 2px 5px);
 }
 
 [data-brief] .sp-year[data-when="at"] .sp-seg[data-series="local"],
 [data-brief] .sp-year[data-when="at"] .sp-seg[data-series="other"],
-[data-brief] .sp-year[data-when="at"] .sp-bar[data-series="local"],
-[data-brief] .sp-year[data-when="at"] .sp-bar[data-series="other"] {
+[data-brief] .sp-plot[data-docs] .sp-year[data-when="at"] .sp-bar[data-series="local"],
+[data-brief] .sp-plot[data-docs] .sp-year[data-when="at"] .sp-bar[data-series="other"] {
   background: repeating-linear-gradient(135deg, var(--sp-blue-2) 0 2px, var(--brief-hairline-strong) 2px 5px);
 }
 
-/* Under the plot: the chosen document's line, then those without a date. */
+[data-brief] .sp-plot[data-docs] .sp-bar[data-series="local"],
+[data-brief] .sp-plot[data-docs] .sp-bar[data-series="other"] {
+  background-color: var(--sp-blue-2);
+}
+
+/* Under the chart: the chosen document's line, then those without a date. */
 [data-brief] .sp-docs-foot {
   display: grid;
   gap: var(--sp-2);
-  margin-top: var(--sp-2);
+  margin-top: var(--sp-4);
+}
+
+[data-brief] .sp-docs-foot:empty {
+  display: none;
 }
 
 /* The chosen document and its date, then each amount beside the ink its
@@ -570,7 +681,7 @@
   color: var(--brief-ink);
 }
 
-/* A document without a date: on one grey line, never under a year. */
+/* A document without a date: on one grey line, never set against a year. */
 [data-brief] .sp-docs-undated {
   display: flex;
   flex-wrap: wrap;
@@ -579,46 +690,6 @@
   font-size: 0.75rem;
   line-height: 1.3;
   color: var(--brief-muted);
-}
-
-/* The same choices as a list, for a chart too narrow to hold a name under
-   a year (shown there only). */
-[data-brief] .sp-docs-list {
-  display: none;
-  flex-wrap: wrap;
-  gap: var(--sp-1) var(--sp-4);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: 0.75rem;
-  line-height: 1.5;
-}
-
-/* A narrower chart: every other year's names a line lower, so two
-   neighbouring names never meet. */
-@container sp-chart (max-width: 36rem) {
-  [data-brief] .sp-docs[data-step] {
-    padding-top: 1.5em;
-  }
-}
-
-/* A narrow chart, as on a phone: the years keep the whole width, and the
-   documents are the list under them. */
-@container sp-chart (max-width: 26rem) {
-  [data-brief] .sp-plot[data-lead],
-  [data-brief] .sp-plot[data-trail],
-  [data-brief] .sp-plot[data-lead][data-trail] {
-    grid-template-columns: repeat(var(--sp-years), minmax(1.5rem, 7rem));
-  }
-
-  [data-brief] .sp-plot .sp-docs,
-  [data-brief] .sp-year-end {
-    display: none;
-  }
-
-  [data-brief] .sp-docs-list {
-    display: flex;
-  }
 }
 
 /* The hover card sits above its mark. */

@@ -110,17 +110,20 @@ the review for 2015; from 2016 it is 42-64% of each year's reviewed spending.
 - es: 2015 no se muestra: el Ministerio de Ambiente, creado ese año, no tiene líneas presupuestarias en la revisión para ese año.
 - mn: 2015 оныг харуулаагүй: тэр онд байгуулагдсан Байгаль орчны яамны төсвийн мөр тоймд тухайн онд байхгүй.
 
-**The documents under the years** (19 November 2026, for the biodiversity
-finance expert's ask of 8 October 2026: whether the spending came before or
-after a policy came out). Under the chart's years, each of the brief's
+**The documents on the chart of the years** (19 November 2026, for the
+biodiversity finance expert's ask of 8 October 2026: whether the spending
+came before or after a policy came out). Over the bars, each of the brief's
 documents by the year in `publishedOn`
 (python/data/<country>-country-config.json), entered by hand from the
-free-text `published` beside it and held to it by `pnpm check:configs`. Each
-name is a choice: with one chosen, the chart's own bars turn pale in the
-years before it, hatched in its own year and stay blue after it, and one
-line states the three amounts. No block was added for this (Jonas, 19
-November 2026: "we already have SO many components"). What the chart does
-not say:
+free-text `published` beside it and held to it by `pnpm check:configs`: its
+code in its year's column and a dashed line down onto that year's bar. Those
+from before or after the charted years point off the two ends with their
+year. Each code is a choice: with one chosen, the chart's own bars turn pale
+in the years before it, hatched in its own year and stay blue after it, and
+one line under the chart states the three amounts. No block was added for
+this (Jonas, 19 November 2026: "we already have SO many components"); a
+first version, the codes in a row under the years, did not read as part of
+the timeline. What the chart does not say:
 
 - **The document's own year is neither before nor after.** The spending is
   by year and a date falls inside one, so that year is not split (no share
@@ -144,7 +147,7 @@ not say:
 - Where the config gives a year alone, the month is not known (Panama's ENR,
   PIOTA, HR; Sri Lanka's NEnvP, NWRP, NPWM, NWP; Côte d'Ivoire's LDN).
 - A document whose config states only the period it covers (Panama's PENCYT,
-  "2025-2029") or no date at all stands on the grey line, never under a year.
+  "2025-2029") or no date at all stands on the grey line, never on the chart.
 
 - en: The spending of a document's own year counts neither before nor after it. An amount marked "at least" includes a year whose data lack a part of the budget.
 - es: El gasto del año del propio documento no cuenta ni antes ni después. Un monto con "al menos" incluye un año cuyos datos no contienen una parte del presupuesto.

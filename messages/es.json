@@ -3523,7 +3523,8 @@
         "docs": {
           "before": "Antes",
           "after": "Después",
-          "atLeast": "al menos {amount}"
+          "atLeast": "al menos {amount}",
+          "legend": "Año en que salió un documento"
         }
       },
       "items": {

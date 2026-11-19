@@ -276,12 +276,13 @@ type YearPart = YearRow["parts"][number];
  * the year, never drawn as zero. As shares, each part beside the other, as a
  * share of its own budget.
  *
- * Under the years, each of the brief's documents by the year it came out, as
- * a choice: with one chosen, the chart's own bars say when the spending came.
- * The years before the document turn pale, its own year is hatched, the
- * years after keep their blue, and one line states the three amounts. One
- * from before or after the charted years stands at that end of the axis with
- * its year; those without a date share a grey line.
+ * On the chart, each of the brief's documents by the year it came out: its
+ * code over the bars, a dashed line down onto its year's bar. One from before
+ * the charted years points off the left end, one from after them off the
+ * right end, with its year. Each code is a choice: with one chosen, the
+ * bars say when the spending came (pale in the years before the document,
+ * hatched in its own year, their blue after it), and one line under the
+ * chart states the three amounts. Those without a date share a grey line.
  */
 function YearChart({
   setup,
@@ -307,8 +308,8 @@ function YearChart({
   const around = useMemo(() => (chosen ? spendingAround(record, docYear(chosen.publishedOn) ?? 0) : null), [chosen, record]);
   const dateOf = (d: BriefDocument) => docDateLabel(d.publishedOn ?? "", locale);
   /** A document's code as a choice, its name and date on pointing; its year
-   *  beside it where it does not stand under one. */
-  const docChoice = (d: BriefDocument, withYear = false, yearFirst = false) => (
+   *  beside it where it is not set against the years. */
+  const docChoice = (d: BriefDocument, withYear = false) => (
     <button
       key={d.id}
       type="button"
@@ -317,11 +318,43 @@ function YearChart({
       title={td("hover", { name: d.name, date: dateOf(d) })}
       onClick={() => setChosenId(chosen?.id === d.id ? null : d.id)}
     >
-      {yearFirst && <span className="sp-doc-year">{docYear(d.publishedOn)} </span>}
       {d.code}
       {withYear && <span className="sp-doc-year"> {docYear(d.publishedOn)}</span>}
     </button>
   );
+  // The codes over the bars, a year's own on lines of their own. Where two
+  // neighbouring years both carry codes, the second's stand a line higher,
+  // so the two never meet in narrow columns.
+  const tags = useMemo(() => {
+    const out: { index: number; docs: BriefDocument[]; lane: number }[] = [];
+    if (!marks) return out;
+    record.byYear.forEach((y, index) => {
+      const docs = marks.byYear.get(Number(y.year)) ?? [];
+      if (docs.length === 0) return;
+      const prev = out[out.length - 1];
+      let lane = 0;
+      if (prev && prev.index === index - 1) {
+        while (lane < prev.lane + prev.docs.length && lane + docs.length > prev.lane) lane++;
+      }
+      out.push({ index, docs, lane });
+    });
+    return out;
+  }, [marks, record]);
+  /** Documents from outside the charted years, by year, each year once. */
+  const byYear = (docs: BriefDocument[]) => {
+    const groups = new Map<number, BriefDocument[]>();
+    for (const d of docs) {
+      const year = docYear(d.publishedOn) ?? 0;
+      groups.set(year, [...(groups.get(year) ?? []), d]);
+    }
+    return [...groups].map(([year, list]) => (
+      <span key={year} className="sp-doc-group">
+        <span className="sp-doc-year">{year}</span>
+        {list.map((d) => docChoice(d))}
+      </span>
+    ));
+  };
+  const ends = marks !== null && (marks.before.length > 0 || marks.after.length > 0);
   /** An amount of the chosen document's line; a floor says so. */
   const said = (sum: SpendingSum) => {
     const amount = money.amount(sum.value, sum.usd);
@@ -364,27 +397,61 @@ function YearChart({
             {parts === "levels" ? t("sharesLevels") : t("shares", { scope })}
           </button>
         </div>
-        {setup.series.length > 1 && (
+        {(setup.series.length > 1 || tags.length > 0) && (
           <ul className="sp-legend" aria-hidden="true">
-            {setup.series.map((s) => (
-              <li key={s}>
-                <span className="sp-key" data-series={s} />
-                {t(`series.${s}`)}
+            {setup.series.length > 1 &&
+              setup.series.map((s) => (
+                <li key={s}>
+                  <span className="sp-key" data-series={s} />
+                  {t(`series.${s}`)}
+                </li>
+              ))}
+            {tags.length > 0 && (
+              <li>
+                <span className="sp-key-stem" />
+                {t("docs.legend")}
               </li>
-            ))}
+            )}
           </ul>
         )}
       </div>
       {/* The bars are drawn for the eye (the table below says them); the
-          documents under them are choices, so they are said. */}
+          documents over them are choices, so they are said. */}
       <div
         className="sp-plot"
         data-mode={mode}
-        data-lead={marks && marks.before.length > 0 ? "" : undefined}
-        data-trail={marks && marks.after.length > 0 ? "" : undefined}
+        data-docs={marks ? "" : undefined}
+        data-tags={tags.length > 0 ? "" : undefined}
+        data-chosen={chosen ? "" : undefined}
         style={{ ["--sp-years" as string]: record.byYear.length }}
       >
-        {marks && marks.before.length > 0 && <div className="sp-year sp-year-end" aria-hidden="true" />}
+        {ends && marks && (
+          <div className="sp-doc-ends">
+            {marks.before.length > 0 && (
+              <span className="sp-doc-end" data-side="before">
+                <span className="sp-doc-arrow" aria-hidden="true">
+                  ←
+                </span>
+                {byYear(marks.before)}
+              </span>
+            )}
+            {marks.after.length > 0 && (
+              <span className="sp-doc-end" data-side="after">
+                {byYear(marks.after)}
+                <span className="sp-doc-arrow" aria-hidden="true">
+                  →
+                </span>
+              </span>
+            )}
+          </div>
+        )}
+        {tags.map((tag) => (
+          <span key={tag.index} className="sp-doc-cell" style={{ gridColumn: tag.index + 1, ["--lane" as string]: tag.lane }}>
+            <span className="sp-doc-tag" data-chosen={tag.docs.some((d) => d.id === chosen?.id) ? "" : undefined}>
+              {tag.docs.map((d) => docChoice(d))}
+            </span>
+          </span>
+        ))}
         {record.byYear.map((y, i) => {
           const missing = y.parts.filter((p) => p.reviewed === null);
           const stack = stackWhole(y);
@@ -453,34 +520,10 @@ function YearChart({
             </div>
           );
         })}
-        {marks && marks.after.length > 0 && <div className="sp-year sp-year-end" aria-hidden="true" />}
-        {marks && (
-          <>
-            <span className="sp-docs-title">{td("title")}</span>
-            {/* Every other year's names step down a line where the columns are narrow. */}
-            {marks.before.length > 0 && <span className="sp-docs">{marks.before.map((d) => docChoice(d, true))}</span>}
-            {record.byYear.map((y, i) => (
-              <span key={y.year} className="sp-docs" data-step={i % 2 === 1 ? "" : undefined}>
-                {(marks.byYear.get(Number(y.year)) ?? []).map((d) => docChoice(d))}
-              </span>
-            ))}
-            {marks.after.length > 0 && (
-              <span className="sp-docs" data-step={record.byYear.length % 2 === 1 ? "" : undefined}>
-                {marks.after.map((d) => docChoice(d, true))}
-              </span>
-            )}
-          </>
-        )}
       </div>
       {/* Always there while documents are named, so the chosen one's line is said when it appears. */}
       {marks && (
         <div className="sp-docs-foot" aria-live="polite">
-          {/* A narrow chart: a year's column cannot hold a name, so the same choices as a list. */}
-          <ul className="sp-docs-list">
-            {marks.dated.map((d) => (
-              <li key={d.id}>{docChoice(d, false, true)}</li>
-            ))}
-          </ul>
           {chosen && around && (
             <p className="sp-docs-chosen">
               <span className="sp-docs-name">{td("hover", { name: chosen.name, date: dateOf(chosen) })}</span>

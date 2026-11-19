@@ -3523,7 +3523,8 @@
         "docs": {
           "before": "Өмнө",
           "after": "Дараа",
-          "atLeast": "дор хаяж {amount}"
+          "atLeast": "дор хаяж {amount}",
+          "legend": "Баримт бичиг гарсан он"
         }
       },
       "items": {
