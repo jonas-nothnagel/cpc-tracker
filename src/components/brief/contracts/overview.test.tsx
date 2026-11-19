@@ -415,7 +415,7 @@ describe("Overview", () => {
     renderOverview({ step: "places", setup, focus: { area: "none" } });
     fireEvent.click(within(within(step("places")).getByRole("group", { name: "What the map shows" })).getByRole("button", { name: "Strongly matching" }));
     expect(within(step("places")).getByRole("heading", { level: 2 }).textContent).toBe(
-      "1 tender strongly matches targets with no policy area; 100% name no single place",
+      "1 tender strongly matches targets with no thematic area; 100% name no single place",
     );
   });
 
@@ -423,12 +423,12 @@ describe("Overview", () => {
     renderOverview({ step: "places", focus: { area: "none" } });
     const select = within(step("places")).getByRole("combobox") as HTMLSelectElement;
     expect(select.value).toBe("none");
-    expect(select.selectedOptions[0].textContent).toBe("No policy area");
+    expect(select.selectedOptions[0].textContent).toBe("No thematic area");
   });
 
   it("lets the map change the lens as well", () => {
     const { onFocus } = renderOverview({ step: "places" });
-    const lenses = within(step("places")).getByRole("group", { name: "Policy areas" });
+    const lenses = within(step("places")).getByRole("group", { name: "Thematic areas" });
     fireEvent.click(within(lenses).getByRole("button", { name: "Climate mitigation" }));
     expect(onFocus).toHaveBeenCalledWith({ lens: "ipcc", area: null });
   });
@@ -444,12 +444,12 @@ describe("Overview", () => {
 
   it("shows what the money is for already beside the years, an area a way to the focus", () => {
     const { onFocus } = renderOverview({ step: "purpose" });
-    const areas = within(step("purpose")).getByRole("list", { name: "By policy area" });
+    const areas = within(step("purpose")).getByRole("list", { name: "By thematic area" });
     expect(within(areas).getAllByRole("button").map((b) => b.querySelector(".ct-rank-name")?.textContent)).toEqual([
       "Pollution management",
       "Restoration",
       "Sustainable use",
-      "No policy area",
+      "No thematic area",
     ]);
     fireEvent.click(within(areas).getByRole("button", { name: /Restoration/ }));
     expect(onFocus).toHaveBeenCalledWith({ area: "g_restoration" });

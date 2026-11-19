@@ -125,7 +125,7 @@ describe("ContractsPage", () => {
       </NextIntlClientProvider>,
     );
     const purpose = document.querySelector<HTMLElement>('[data-step="purpose"]')!;
-    const list = within(purpose).getByRole("list", { name: "By policy area" });
+    const list = within(purpose).getByRole("list", { name: "By thematic area" });
     expect(within(list).getAllByRole("button")[0].textContent).toContain("US$2.9 million");
     expect(document.body.textContent).not.toMatch(/₮10 billion/);
   });

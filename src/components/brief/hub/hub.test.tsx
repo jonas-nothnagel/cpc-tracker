@@ -518,6 +518,25 @@ describe("Hub", () => {
     expect(stage()).toBe("map:reinforce:top");
   });
 
+  it("opens the strongest alignments on how few of all the targets carry half of them, as the other side does", () => {
+    const concentrated = {
+      ...DATA,
+      strongConcentration: { ...DATA.strongConcentration, total: 36, share: 0.5, top: ["C1", "C3"], concentrated: true },
+    };
+    renderHub({}, concentrated);
+    const sub = within(step("reinforce")).getByRole("heading", { level: 3 });
+    expect(sub.textContent).toBe(`50% of the 36 strong alignments involve 2 of the ${DATA.scope.commitments.length} targets.`);
+    cleanup();
+    // Spread over many targets, the list keeps its title.
+    renderHub();
+    expect(within(step("reinforce")).getByRole("heading", { level: 3 }).textContent).toBe("Strongest alignments");
+    cleanup();
+    // So it does when the figure would count more targets than the list can show.
+    const nine = Array.from({ length: 9 }, (_, i) => `T${i}`);
+    renderHub({}, { ...DATA, strongConcentration: { ...concentrated.strongConcentration, top: nine } });
+    expect(within(step("reinforce")).getByRole("heading", { level: 3 }).textContent).toBe("Strongest alignments");
+  });
+
   it("lists every target the strong headline names on the map, when it names seven or eight", () => {
     const ids = DATA.strongest.map((r) => r.commitment.id);
     expect(ids.length).toBeGreaterThanOrEqual(8);
@@ -532,13 +551,13 @@ describe("Hub", () => {
     );
     expect(within(step("reinforce")).getAllByTestId("hub-strong-row")).toHaveLength(7);
     unmount();
-    // More than the map names from a headline: the list keeps its six.
+    // More than the map names from a headline: eight rows, as the other side lists.
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
         <Hub data={withTop([...ids.slice(0, 8), "X9"])} />
       </NextIntlClientProvider>,
     );
-    expect(within(step("reinforce")).getAllByTestId("hub-strong-row")).toHaveLength(6);
+    expect(within(step("reinforce")).getAllByTestId("hub-strong-row")).toHaveLength(8);
   });
 
   it("lists every target a concentrated finding names, when they are more than six", () => {

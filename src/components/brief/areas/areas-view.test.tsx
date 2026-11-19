@@ -75,8 +75,11 @@ const row = (id: string) => document.querySelector(`[data-row="${id}"]`) as HTML
 const openSecond = () => fireEvent.click(within(pairRows()[1]).getByRole("button", { expanded: false }));
 /** An area's name on the picture, which picks the area. */
 const areaName = (id: string, name: string) => within(row(id)).getByRole("button", { name });
-const TITLE = "Targets and alignment by policy area";
+const TITLE = "Targets and alignment by thematic area";
 const title = () => screen.getByRole("heading", { level: 2 }).textContent;
+/** The sentence beside the title, opening the list's column; null where there is none. */
+const sentenceEl = () => document.querySelector<HTMLElement>(".brief-av-side > .brief-hub-headline");
+const sentence = () => sentenceEl()?.textContent ?? null;
 /** The way back from a picked area to all pairs of areas. */
 const backAll = () => screen.queryByRole("button", { name: "Back to All pairs of areas" });
 /** Picks what the list beside the picture shows: the targets, or one side's target pairs. */
@@ -90,16 +93,59 @@ function renderPairs(props: Partial<Props> = {}) {
 }
 
 describe("AreasView", () => {
-  it("is titled by what it shows, the same in every view, with no finding in the title", () => {
+  it("is titled top left by what it shows, the same in every view, with no finding in the title", () => {
     renderView();
     const heading = screen.getByRole("heading", { level: 2 });
     expect(heading.textContent).toBe(TITLE);
+    expect(heading.className).toBe("brief-sec-title");
+    // Above the picture's head, which keeps the lens's name.
+    expect(heading.parentElement?.className).toBe("brief-av-picture");
+    expect(heading.nextElementSibling?.className).toBe("brief-av-head");
     expect(within(heading).queryAllByRole("button")).toHaveLength(0);
     for (const view of ["Potential misalignment", "Strong alignment", "Targets"]) {
       show(view);
       expect(title()).toBe(TITLE);
     }
     expect(screen.getByText("9 of the 18 targets fall in one of these areas.")).toBeTruthy();
+  });
+
+  it("states beside the title how few areas or pairs of areas hold half, following the view", () => {
+    renderView();
+    // The sentence opens the column beside the picture, above the choices.
+    const first = document.querySelector(".brief-av-side")!.firstElementChild!;
+    expect(first.textContent).toBe("67% of the 9 targets fall in 2 of the 3 thematic areas.");
+    expect(first.tagName).toBe("P");
+    expect(first.getAttribute("aria-live")).toBe("polite");
+    show("Potential misalignment");
+    expect(sentence()).toBe(
+      "60% of the 15 potential misalignments sit between Agriculture targets and targets outside these areas.",
+    );
+    show("Strong alignment");
+    expect(sentence()).toBe("53% of the 36 strong alignments fall between 2 of the 6 pairs of thematic areas.");
+  });
+
+  it("follows the lens: with fewer than three areas the title stands alone", () => {
+    const { rerender } = renderView();
+    rerender({ lens: "ipcc" as LensId });
+    expect(sentence()).toBeNull();
+    expect(title()).toBe(TITLE);
+  });
+
+  it("opens the pair of areas the sentence names", () => {
+    renderPairs();
+    fireEvent.click(within(sentenceEl()!).getByRole("button", { name: "Agriculture" }));
+    expect(within(pairRows()[0]).getByRole("button", { expanded: true })).toBeTruthy();
+    expect(pairNames()[0]).toBe("Agriculture · targets outside these areas");
+  });
+
+  it("follows a picked area on the side: its share of the side's target pairs, none where it has none", () => {
+    renderPairs();
+    fireEvent.click(areaName("g2", "Agriculture"));
+    expect(sentence()).toBe("80% of the 15 potential misalignments involve Agriculture targets.");
+    fireEvent.click(areaName("g1", "Protected areas"));
+    // The list says none involve it; the sentence gives way.
+    expect(sentence()).toBeNull();
+    expect(screen.getByText("No potential misalignments involve Protected areas targets.")).toBeTruthy();
   });
 
   it("lists the pairs of areas that hold the most, the rest summed", () => {
@@ -238,7 +284,7 @@ describe("AreasView", () => {
   it("says so where the list would stand when no target pair in these areas is on the side", () => {
     renderPairs({ data: buildBriefData(SOURCE, scopeOf(SOURCE, ["A", "C"]), "globe") });
     expect(title()).toBe(TITLE);
-    expect(screen.getByText("No target pairs in these policy areas show potential misalignment.")).toBeTruthy();
+    expect(screen.getByText("No target pairs in these thematic areas show potential misalignment.")).toBeTruthy();
     expect(screen.queryAllByTestId("brief-area-pair")).toHaveLength(0);
     expect(document.querySelector(".brief-av-rest")).toBeNull();
   });
@@ -266,7 +312,7 @@ describe("AreasView", () => {
 
   it("reads each row to screen readers with its number of targets", () => {
     renderPairs();
-    const list = screen.getByRole("list", { name: "Policy areas" });
+    const list = screen.getByRole("list", { name: "Thematic areas" });
     expect(within(list).getAllByRole("listitem")[0].textContent).toContain("3 targets");
   });
 
@@ -562,6 +608,25 @@ describe("AreasView targets", () => {
     expect(within(areaRows()[2]).getByText("33% of the targets")).toBeTruthy();
     expect(screen.queryAllByTestId("brief-area-pair")).toHaveLength(0);
     expect(document.querySelectorAll(".brief-av-of")).toHaveLength(0);
+  });
+
+  it("follows an opened area: where its targets come from", () => {
+    renderView();
+    fireEvent.click(within(areaRows()[2]).getByRole("button", { expanded: false }));
+    expect(sentence()).toBe("The 3 Water targets come from 1 of the 3 documents.");
+    fireEvent.click(within(areaRows()[2]).getByRole("button", { expanded: true }));
+    expect(sentence()).toBe("67% of the 9 targets fall in 2 of the 3 thematic areas.");
+  });
+
+  it("names an area that holds half of the targets on its own, the name opening its targets", () => {
+    const primary = { A1: "g5", A2: "g5", B4: "g5", B5: "g5", A3: "g1", B6: "g2", C1: "g2" };
+    const one: BriefSource = { ...SOURCE, lenses: [{ ...SOURCE.lenses[0], primary }, ...SOURCE.lenses.slice(1)] };
+    renderView({ source: one, data: buildBriefData(one, scopeOf(one, ["A", "B", "C"]), "globe") });
+    expect(sentence()).toBe("57% of the 7 targets are Water targets.");
+    fireEvent.click(within(sentenceEl()!).getByRole("button", { name: "Water" }));
+    expect(listedTargets()).toEqual(["A1", "A2", "B4", "B5"]);
+    // Then the sentence follows the opened area.
+    expect(sentence()).toBe("The 4 Water targets come from 2 of the 3 documents.");
   });
 
   it("opens a policy area to list its targets, and closes it again", () => {

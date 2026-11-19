@@ -15,7 +15,7 @@ import {
   type BriefSelection,
   type SectionId,
 } from "@/lib/brief/selection";
-import type { BriefSource } from "@/lib/brief/source";
+import type { BriefSource, LensId } from "@/lib/brief/source";
 import type { ExploreSetup } from "@/lib/brief/explore/setup";
 import { focusKey } from "@/lib/brief/explore/focus";
 import type { SpendingSetup } from "@/lib/brief/spending";
@@ -192,11 +192,11 @@ export function BriefApp({
     document.getElementById("brief-explore-title")?.focus({ preventScroll: true });
   };
 
-  // A biodiversity area from the spending goes to the ring's centre with the
-  // budget lines shown.
-  const exploreArea = (areaId: string) => {
+  // An area from the spending, in the lens the spending shows, goes to the
+  // ring's centre with the budget lines shown.
+  const exploreArea = (areaId: string, lens: LensId) => {
     dispatchExplore({ type: "layer", layer: "budget", on: true });
-    exploreTarget(focusKey({ kind: "area", lens: "globe", id: areaId }));
+    exploreTarget(focusKey({ kind: "area", lens, id: areaId }));
   };
 
   const readBrief = () =>
@@ -273,6 +273,8 @@ export function BriefApp({
                   setup={spending}
                   source={source}
                   docs={selection.docs}
+                  lens={selection.lens}
+                  onLens={(next) => update({ ...selection, lens: next })}
                   currency={currency}
                   onCurrency={localCurrency ? setCurrency : undefined}
                   onExploreArea={explore?.layers?.items.some((it) => it.layer === "budget") ? exploreArea : undefined}
@@ -340,7 +342,7 @@ export function BriefApp({
           hidden={preview}
           aria-labelledby="brief-explore-title"
         >
-          <h2 id="brief-explore-title" className="brief-explore-title" tabIndex={-1}>
+          <h2 id="brief-explore-title" className="brief-sec-title" tabIndex={-1}>
             {tx("title")}
           </h2>
           <Explore

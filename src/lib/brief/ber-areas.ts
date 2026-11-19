@@ -1,6 +1,7 @@
 /**
- * The policy area of each budget line of a country's expenditure review
- * (step 2 of the BER plan), joined from two files:
+ * The thematic area of each budget line of a country's expenditure review
+ * (step 2 of the BER plan), in each lens its lines are placed in, joined
+ * from two files:
  *
  *   - python/output/{country}/ber_areas_{lens}.json: two AI models' readings
  *     of each line, and the area the line takes until a person checks it:
@@ -14,6 +15,7 @@
 
 import { existsSync, readFileSync, statSync } from "fs";
 import { join } from "path";
+import type { LensId } from "./source";
 
 export type AreaStatus = "checked" | "ai" | "apart";
 
@@ -110,4 +112,25 @@ export function loadBerAreas(countryId: string, lens = "globe"): BerAreas | null
   const value = parseBerAreas(readings, calls, lens);
   cache.set(key, { stamp, value });
   return value;
+}
+
+/** The brief's lenses a budget line is placed in, each with the name of its
+ *  file: the brief's climate mitigation lens is the pipeline's "sector".
+ *  Sri Lanka's own adaptation sectors stand in for the GGA's there. */
+const BER_AREA_FILES: readonly (readonly [LensId, string])[] = [
+  ["globe", "globe"],
+  ["ipcc", "sector"],
+  ["gga", "gga"],
+  ["adaptation", "adaptation"],
+];
+
+/** Server side only: the country's line areas in every lens it has a file for,
+ *  by the brief's lens id. */
+export function loadBerAreasByLens(countryId: string): Partial<Record<LensId, BerAreas>> {
+  const out: Partial<Record<LensId, BerAreas>> = {};
+  for (const [lens, file] of BER_AREA_FILES) {
+    const areas = loadBerAreas(countryId, file);
+    if (areas) out[lens] = areas;
+  }
+  return out;
 }

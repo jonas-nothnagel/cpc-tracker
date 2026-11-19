@@ -81,13 +81,13 @@ function ownLensProblem(lens: OwnLensInput): string | null {
     case undefined:
       return null;
     case "name":
-      return `The policy areas need a name of at most ${L.name} characters.`;
+      return `The thematic areas need a name of at most ${L.name} characters.`;
     case "source":
       return `The source line holds at most ${L.source} characters.`;
     case "count":
-      return `Between 1 and ${L.areas} policy areas are needed.`;
+      return `Between 1 and ${L.areas} thematic areas are needed.`;
     case "areaName":
-      return `Each policy area needs a name of at most ${L.areaName} characters.`;
+      return `Each thematic area needs a name of at most ${L.areaName} characters.`;
     case "description":
       return `"${problem.area}" needs a description of at most ${L.description} characters.`;
     case "duplicate":

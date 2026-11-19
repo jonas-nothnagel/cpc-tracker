@@ -38,7 +38,7 @@ function renderField(overrides: Partial<Props> = {}) {
       inks={new Map()}
       side="apart"
       rowLabel={(id) => `row ${id}`}
-      listLabel="Policy areas"
+      listLabel="Thematic areas"
       marked={new Set()}
       dimmed={new Set()}
       pointed={null}
@@ -125,7 +125,7 @@ describe("AreaField", () => {
 
   it("gives screen readers the rows as a list", () => {
     renderField();
-    const list = screen.getByRole("list", { name: "Policy areas" });
+    const list = screen.getByRole("list", { name: "Thematic areas" });
     expect(within(list).getAllByRole("listitem").map((r) => r.textContent)).toEqual(["row r1", "row r2"]);
   });
 

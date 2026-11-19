@@ -21,3 +21,12 @@ wording:
 - en: machine translation
 - es: traducción automática
 - mn: машин орчуулга
+
+**A target's rating in its country's 7th National Report** (since 18 November
+2026; `RatingTag` in src/components/brief/rating-tag.tsx) is tagged under the
+target's document name in the side column, in the centre's card and on a dot's
+hover card: "7th National Report: Limited progress", a mark and a word in ink.
+Where two national targets of the report map to one NBSAP target, the target
+shows the less advanced rating (`NR7_RANK` in src/lib/brief/explore/layers.ts).
+The tag needs no reported action or budget line: the ratings travel with the
+explorer's layers even where a country has neither.

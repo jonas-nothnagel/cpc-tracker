@@ -67,22 +67,22 @@ describe("AreasStep", () => {
 
   it("opens the own policy areas with visible fields, and says what they need only once something is typed", () => {
     const onChange = step(draft());
-    fireEvent.click(screen.getByRole("button", { name: "Add own policy areas" }));
-    expect(screen.getByRole("heading", { level: 3, name: "Own policy areas" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Add own thematic areas" }));
+    expect(screen.getByRole("heading", { level: 3, name: "Own thematic areas" })).toBeInTheDocument();
     expect(screen.getByLabelText("Area 1")).toHaveClass("up-box");
     expect(screen.getByLabelText("Description of area 1")).toHaveClass("up-box");
     // Left without a word in it, the set is none, and nothing is missing.
     fireEvent.blur(screen.getByLabelText("Name"));
     expect(onChange).toHaveBeenLastCalledWith({ op: "ownLens", value: null });
-    expect(screen.queryByText("The policy areas need a name.")).toBeNull();
+    expect(screen.queryByText("The thematic areas need a name.")).toBeNull();
     fireEvent.change(screen.getByLabelText("Area 1"), { target: { value: "Water" } });
     fireEvent.blur(screen.getByLabelText("Area 1"));
-    expect(screen.getByText("The policy areas need a name.")).toBeInTheDocument();
+    expect(screen.getByText("The thematic areas need a name.")).toBeInTheDocument();
   });
 
   it("adds own policy areas with a name and areas", () => {
     const onChange = step(draft());
-    fireEvent.click(screen.getByRole("button", { name: "Add own policy areas" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add own thematic areas" }));
     fireEvent.change(screen.getByLabelText("Name"), { target: { value: "National priorities" } });
     fireEvent.blur(screen.getByLabelText("Name"));
     expect(onChange).toHaveBeenLastCalledWith({
@@ -118,7 +118,7 @@ describe("AreasStep", () => {
 
   it("removes the own policy areas", () => {
     const onChange = step(draft({ name: "National priorities", areas: [{ name: "Water", description: "Safe water" }] }));
-    fireEvent.click(screen.getByRole("button", { name: "Remove own policy areas" }));
+    fireEvent.click(screen.getByRole("button", { name: "Remove own thematic areas" }));
     expect(onChange).toHaveBeenLastCalledWith({ op: "ownLens", value: null });
   });
 });

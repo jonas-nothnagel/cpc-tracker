@@ -336,6 +336,7 @@ function AllComparisons({
 export function TargetColumn({
   item,
   docName,
+  rating,
   finding,
   counts,
   apart,
@@ -355,6 +356,8 @@ export function TargetColumn({
 }: {
   item: BriefCommitment;
   docName: (id: string) => string;
+  /** The target's rating in its country's 7th National Report (RatingTag), where it has one. */
+  rating?: ReactNode;
   finding: ReactNode;
   counts: ToneCounts;
   apart: PartnerRow[];
@@ -368,7 +371,7 @@ export function TargetColumn({
   previous?: () => void;
   next?: () => void;
   onShare?: () => Promise<boolean>;
-  /** More about the target: its NR7 status, its reported actions and budget lines. */
+  /** More about the target: its reported actions and budget lines. */
   extra?: ReactNode;
   /** Every comparison of the target, by reading. */
   all?: ComparisonGroup[];
@@ -396,6 +399,7 @@ export function TargetColumn({
         onShare={onShare}
       />
       <p className="ex-focus-doc">{docName(item.doc)}</p>
+      {rating && <p className="ex-focus-rating">{rating}</p>}
       <h2 className="ex-focus-title">{commitmentLine(item, 140)}</h2>
       <p className="ex-focus-text" data-clamped={long && !open ? "true" : undefined}>
         {item.text}

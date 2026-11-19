@@ -1,0 +1,1344 @@
+{
+  "_provenance": "Built by python/scripts/place_ber_lines.py on 2026-11-18 from python/data/mongolia-ber.json. AI-estimated: each area is a model's reading of the review's description of the line, to be checked by a person (python/data/<country>-ber-areas.json holds the checks).",
+  "lens": "gga",
+  "promptVersion": 1,
+  "system": "You place one line of a government budget in a climate adaptation (the thematic targets of the UAE Framework for Global Climate Resilience, UNFCCC decision 2/CMA.5) taxonomy. The line comes from the country's Biodiversity Expenditure Review, which counted it as spending relevant to biodiversity. You are given what the review and the budget say about the line: its name, what it is for, what it pays for and who spends it. You are not given its amounts: the size of a line has no bearing on where it belongs.\n\n# TASK\nScore every category for how well it describes what the money of this budget line is spent on, on a 0.0-1.0 scale:\n- 1.0 = the line is spent primarily and explicitly on this category\n- 0.7-0.9 = a major part of what the line pays for falls in this category\n- 0.4-0.6 = the line partly serves this category, as one of several purposes\n- 0.1-0.3 = a weak or indirect connection\n- 0.0 = no connection (omit the category)\n\nJudge the purpose the money serves, from all the information given, not from words in the name alone. Running costs (wages, offices, administration) belong with the purpose of the body or programme they keep running: the wages of protected-area staff serve protected areas. When the information does not say enough to place the line with confidence, give low scores; an empty list is a correct answer.\n\nFor the two highest-scoring categories, give the reason in one short sentence that points to the information it rests on. Do not add facts about the line that you were not given.\n\n# RESPONSE FORMAT\nReturn ONLY a JSON object, no markdown:\n{\"ranked\": [{\"id\": \"<categoryId>\", \"score\": <0.0-1.0>, \"reasoning\": \"<one short sentence>\"}]}\nOrder the array from highest score to lowest.\n\n# CATEGORIES\n- gga_water: Water -- Significantly reducing climate-induced water scarcity and enhancing climate resilience to water-related hazards towards a climate-resilient water supply, climate-resilient sanitation and access to safe and affordable potable water for all\n- gga_agriculture_food: Agriculture and food -- Attaining climate-resilient food and agricultural production and supply and distribution of food, as well as increasing sustainable and regenerative production and equitable access to adequate food and nutrition for all\n- gga_health: Health -- Attaining resilience against climate change related health impacts, promoting climate-resilient health services and significantly reducing climate-related morbidity and mortality, particularly in the most vulnerable communities\n- gga_ecosystems_biodiversity: Ecosystems and biodiversity -- Reducing climate impacts on ecosystems and biodiversity, and accelerating the use of ecosystem-based adaptation and nature-based solutions, including through their management, enhancement, restoration and conservation and the protection of terrestrial, inland water, mountain, marine and coastal ecosystems\n- gga_infrastructure_settlements: Infrastructure and human settlements -- Increasing the resilience of infrastructure and human settlements to climate change impacts to ensure basic and continuous essential services for all, and minimizing climate-related impacts on infrastructure and human settlements\n- gga_livelihoods: Livelihoods -- Substantially reducing the adverse effects of climate change on poverty eradication and livelihoods, in particular by promoting the use of adaptive social protection measures for all\n- gga_cultural_heritage: Cultural heritage -- Protecting cultural heritage from the impacts of climate-related risks by developing adaptive strategies for preserving cultural practices and heritage sites and by designing climate-resilient infrastructure, guided by traditional knowledge, Indigenous Peoples' knowledge and local knowledge systems",
+  "models": {
+    "first": "gpt-5.4",
+    "second": "claude-opus-5-5 (effort high)"
+  },
+  "rule": "The second model (Claude Opus) decides: a line takes its top area at the threshold, else no specific area. The first model is a second opinion.",
+  "threshold": 0.5,
+  "counts": {
+    "second-differs": 2,
+    "second-agrees": 18,
+    "no-clear-area": 8
+  },
+  "lines": [
+    {
+      "code": "71408",
+      "description": "Name: Meteorology\nKind: a programme of Mongolia's national budget (code 71408), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to hydrological and meteorological research and monitoring; dissemination of weather forecasts, early warnings, and information on potential hazards and natural disasters to the public; prevention of weather-related risks and severe environmental pollution; activities influencing weather and climate conditions; and the effective utilization of weather and climate resources.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 74%; Social insurance contributions paid by employers 10%; Furniture, current repair expenses 10%; Fixed expenses related to office building 3%; Work, service payment, fee performed by others 1%\nWho spends it (2021): 7 spending units, among them Center for Water, Meteorology and Environmental Research; Center for Meteorology and Environmental Research; Information And Research Institute Of Meteorology, Hydrology And Environment; Flight meteorological center; Central Laboratory of Environmental Analysis; Investment in the Nature, Environment and Tourism",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_infrastructure_settlements",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.8,
+            "reasoning": "The programme disseminates weather forecasts and early warnings on potential hazards and natural disasters to the public and works on preventing weather-related risks."
+          },
+          {
+            "id": "gga_water",
+            "score": 0.7,
+            "reasoning": "It includes hydrological research and monitoring, and several spending units are meteorology and hydrology institutions."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.5,
+            "reasoning": "The programme covers prevention of severe environmental pollution and is run by environment-sector meteorology and environmental research bodies."
+          },
+          {
+            "id": "gga_health",
+            "score": 0.2,
+            "reasoning": "Early warnings and prevention of severe environmental pollution can indirectly reduce climate-related health risks."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_water",
+        "score": 0.5,
+        "ranked": [
+          {
+            "id": "gga_water",
+            "score": 0.5,
+            "reasoning": "The programme funds hydrological research and monitoring and warnings on natural hazards, which support resilience to water-related hazards."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.4,
+            "reasoning": "Public weather forecasts, early warnings and prevention of weather-related risks help protect settlements and essential services from climate hazards."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.25,
+            "reasoning": "Weather and climate information may indirectly support agriculture."
+          },
+          {
+            "id": "gga_health",
+            "score": 0.2,
+            "reasoning": "Prevention of severe environmental pollution and hazard warnings relate indirectly to health."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.15,
+            "reasoning": "Hazard warnings indirectly protect livelihoods."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.15,
+            "reasoning": "Environmental research and monitoring units link weakly to ecosystems."
+          }
+        ]
+      },
+      "area": "gga_water",
+      "status": "second-differs"
+    },
+    {
+      "code": "71405",
+      "description": "Name: Security of protected areas\nKind: a programme of Mongolia's national budget (code 71405), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to the implementation of policies and protection regimes for protected areas, implementation and monitoring of protected area management plans, promotion and awareness-raising activities related to protected areas, and the establishment and maintenance of protected area information databases.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 61%; Work, service payment, fee performed by others 22%; Social insurance contributions paid by employers 8%; Office supplies and inventory 6%; Fixed expenses related to office building 3%\nWho spends it (2021): 31 spending units, among them Administration of Khan Khentii SSPA's security department; Administration of BogdKhan Mountain SPA; Administration of Khuvsgul SSPA's security department; Ulaan Taiga Strictly Protected Area Administration; Gobi Gurvan Saikhan National park’s administration; Administration of Onon Balj NP's security depatment",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The programme funds implementation and monitoring of protected area management plans and protection regimes through protected area administrations."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.1,
+            "reasoning": "Protected areas can indirectly support local livelihoods, but the line is described as protected area management and administration rather than livelihood support."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The programme funds protection regimes and management plans for protected areas, spent mainly on wages of protected-area administrations such as Khan Khentii SSPA and Gobi Gurvan Saikhan National Park"
+          },
+          {
+            "id": "gga_water",
+            "score": 0.1,
+            "reasoning": "Some of the protected areas, such as Khuvsgul and Onon Balj, cover inland water ecosystems, so any link to water is only indirect."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71404",
+      "description": "Name: Water resource, lake and river management\nKind: a programme of Mongolia's national budget (code 71404), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes expenditures related to the core functions of state institutions responsible for water resources, including the Water Authority, Freshwater Resources and Nature Conservation Center, and River Basin Administrations, covering water resource management, improvement and enforcement of water-related legislation, coordination, regulation, and provision of professional and methodological guidance.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 62%; Work, service payment, fee performed by others 15%; Social insurance contributions paid by employers 8%; Fixed expenses related to office building 5%; Office supplies and inventory 4%\nWho spends it (2021): 23 spending units, among them Water department; Freshwater Resources Conservation Center; Tuul River Basin Administration; Orkhon-Chuluut river basin administration; Onon-Ulz River Basin Administration; Buir Lake-Menen steppe basin administration",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_water",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_water",
+            "score": 0.9,
+            "reasoning": "The programme funds the core functions of water institutions and river basin administrations for water resource management, regulation and enforcement of water-related legislation."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.5,
+            "reasoning": "It also supports freshwater resources conservation bodies and basin administrations managing lakes and rivers, which partly serves ecosystem protection."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_water",
+        "score": 0.85,
+        "ranked": [
+          {
+            "id": "gga_water",
+            "score": 0.85,
+            "reasoning": "The line funds the core functions of the Water Authority and River Basin Administrations for water resource management, regulation and enforcement of water legislation."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.45,
+            "reasoning": "It covers lake and river management and the Freshwater Resources and Nature Conservation Center, which serve inland water ecosystem protection."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.05,
+            "reasoning": "Basin water management may indirectly support agricultural water use, but this is not stated."
+          }
+        ]
+      },
+      "area": "gga_water",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71403",
+      "description": "Name: Afforestation\nKind: a programme of Mongolia's national budget (code 71403), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes expenditures related to the core functions of state institutions responsible for forestry, including the Forestry Agency and inter-Soum forest units, covering the establishment of sustainable forest management systems, improvement and implementation of forest legislation, coordination, regulation, and provision of professional and methodological guidance.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 39%; Wages and salaries, bonuses 35%; Other investments 13%; Social insurance contributions paid by employers 4%; Office supplies and inventory 3%\nWho spends it (2021): 41 spending units, among them Forest Research and Development Center; Um.Forest Department; Ga.Game class; Se.Mandal Forest Department; Za.Game class; Or. Inter-soum forest department",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.8,
+            "reasoning": "It funds forestry institutions to establish sustainable forest management systems and implement forest legislation and guidance."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.1,
+            "reasoning": "Sustainable forest management may indirectly support forest-dependent livelihoods, but this is not stated as a main purpose."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The line funds the Forestry Agency and inter-Soum forest units for sustainable forest management, forest legislation and afforestation, which is the management and restoration of terrestrial ecosystem"
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.15,
+            "reasoning": "Forest management may indirectly support local forest-dependent livelihoods, but the description does not mention this."
+          },
+          {
+            "id": "gga_water",
+            "score": 0.1,
+            "reasoning": "Forest cover may indirectly support watershed protection, though nothing in the description points to water objectives."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71411",
+      "description": "Name: Environment policy and administration\nKind: a programme of Mongolia's national budget (code 71411), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to the core functions of government institutions responsible for environmental governance, including improvement of the legal and regulatory framework, development and implementation of legislation and development policies, budget management and oversight, and ensuring integrated coordination and administration.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 44%; Purchase of other goods and services 27%; Work, service payment, fee performed by others 14%; Social insurance contributions paid by employers 6%; Building and facilities 3%\nWho spends it (2021): 48 spending units, among them Ministry of Nature, Environment and Tourism; Bu.Zasag darga; National Park; Capital City Department of Environment; Za.Nature and tourism department; Khu.Nature and tourism department",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.4,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.4,
+            "reasoning": "It funds the core administration and coordination of environmental institutions, including national parks and environment departments, which partly supports ecosystem management and conservation."
+          },
+          {
+            "id": "gga_water",
+            "score": 0.1,
+            "reasoning": "General environmental governance may indirectly support water-related resilience, but the line is not described as funding water-specific activities."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.5,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.5,
+            "reasoning": "The line funds the running costs (mostly wages and goods/services) of environmental governance bodies such as the Ministry of Nature, Environment and Tourism, aimag nature departments and a National P"
+          },
+          {
+            "id": "gga_water",
+            "score": 0.1,
+            "reasoning": "General environmental policy and regulation may touch water resource governance, but nothing in the description points to water specifically."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-differs"
+    },
+    {
+      "code": "71407",
+      "description": "Name: Air pollution abatement, climate change\nKind: a programme of Mongolia's national budget (code 71407), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for activities related to the implementation of the National Program on Air and Environmental Pollution Reduction and climate change policies and plans, aimed at ensuring a healthy and safe living environment for citizens.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 46%; Purchase of other goods and services 20%; Subsidy to private sector 18%; Office supplies and inventory 16%\nWho spends it (2021): 4 spending units, among them Ministry of Nature, Environment and Tourism; Ub. Air Pollution Control Authority; Hovd. The governor; Ub. Department of housing and infrastructure",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_health",
+        "score": 0.7,
+        "ranked": [
+          {
+            "id": "gga_health",
+            "score": 0.7,
+            "reasoning": "The programme funds air and environmental pollution reduction and climate change policies to ensure a healthy and safe living environment for citizens."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.5,
+            "reasoning": "It is partly implemented by the Ulaanbaatar Department of housing and infrastructure and aims at a safe living environment, linking it to settlement resilience."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.2,
+            "reasoning": "The programme sits in the environment function and includes environmental pollution reduction, but the description does not clearly target ecosystem adaptation outcomes."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_health",
+        "score": 0.4,
+        "ranked": [
+          {
+            "id": "gga_health",
+            "score": 0.4,
+            "reasoning": "The line funds the National Program on Air and Environmental Pollution Reduction aimed at a healthy and safe living environment for citizens, mainly air pollution abatement (e.g. Ulaanbaatar Air Pollu"
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.3,
+            "reasoning": "Spenders include the Ulaanbaatar Department of Housing and Infrastructure and a private-sector subsidy, suggesting partial work on urban settlements, alongside climate change policies and plans."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.15,
+            "reasoning": "Environmental pollution reduction and climate policy under the environment ministry have only an indirect link to ecosystems."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "71412",
+      "description": "Name: R&D Environment\nKind: a programme of Mongolia's national budget (code 71412), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to research activities aimed at preventing environmental pollution and degradation, reducing pollution, and mitigating environmental impacts.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 100%\nWho spends it (2021): 1 spending units, among them Ministry of Nature, Environment and Tourism",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.3,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.3,
+            "reasoning": "The programme funds research to prevent environmental pollution and degradation and reduce environmental impacts, which indirectly supports ecosystem resilience."
+          },
+          {
+            "id": "gga_health",
+            "score": 0.1,
+            "reasoning": "Research aimed at reducing pollution may weakly relate to lowering climate-related health risks, but no health purpose is stated."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.4,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.4,
+            "reasoning": "The programme funds research, contracted out to others, on preventing environmental pollution and degradation, run by the Ministry of Nature, Environment and Tourism."
+          },
+          {
+            "id": "gga_water",
+            "score": 0.1,
+            "reasoning": "Pollution-reduction research may indirectly touch on water quality, but the description does not mention water."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "71406",
+      "description": "Name: Environmental pollution and degradation\nKind: a programme of Mongolia's national budget (code 71406), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to reducing air pollution and conducting quality control; developing alternative products to replace pollution sources; cleaning, collection, transport, disposal, and recycling of waste from public roads, spaces, and facilities; establishment and maintenance of waste recycling services and facilities; and other support measures aimed at reducing environmental pollution.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 85%; Purchase of other goods and services 15%\nWho spends it (2021): 6 spending units, among them Governor's office; Dd. The governor; BU. Nature and tourism department; Bayan-Ulgii Deluun Collateral; BU. Buyant Collateral; BU. Sagsai Collateral",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_health",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "gga_health",
+            "score": 0.6,
+            "reasoning": "The programme funds reducing air pollution and other environmental pollution, which partly supports resilience against climate-related health impacts."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.5,
+            "reasoning": "It pays for waste collection, disposal, recycling, and other measures to reduce environmental pollution, which partly protects ecosystems from degradation."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.2,
+            "reasoning": "Cleaning public roads, spaces, facilities and maintaining waste services has a weak link to resilient settlements and essential services."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_infrastructure_settlements",
+        "score": 0.4,
+        "ranked": [
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.4,
+            "reasoning": "Most of the line pays for contracted collection, transport, disposal and recycling of waste from public roads, spaces and facilities, which are basic services in human settlements."
+          },
+          {
+            "id": "gga_health",
+            "score": 0.3,
+            "reasoning": "The line covers reducing air pollution and quality control, which bears on public health, though not on climate-related health impacts as such."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.2,
+            "reasoning": "The line aims to reduce environmental pollution and degradation, which only indirectly eases pressure on ecosystems."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "71401",
+      "description": "Name: Waste management\nKind: a programme of Mongolia's national budget (code 71401), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for activities related to the implementation of the Law on Waste and national and local waste management programs, aimed at reducing the negative impacts of waste on human health and the environment.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 100%\nWho spends it (2021): 1 spending units, among them Su.Bar-Urt Landscaping Service",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_health",
+        "score": 0.3,
+        "ranked": [
+          {
+            "id": "gga_health",
+            "score": 0.3,
+            "reasoning": "The programme aims to reduce the negative impacts of waste on human health, giving it an indirect health-resilience link."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.2,
+            "reasoning": "It also aims to reduce the negative impacts of waste on the environment, which weakly supports ecosystem protection."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_infrastructure_settlements",
+        "score": 0.4,
+        "ranked": [
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.4,
+            "reasoning": "The line pays for waste management services delivered under national and local programmes by a town landscaping service, which is an essential settlement service."
+          },
+          {
+            "id": "gga_health",
+            "score": 0.3,
+            "reasoning": "Its stated aim includes reducing the negative impacts of waste on human health."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.2,
+            "reasoning": "It also aims to reduce waste impacts on the environment, an indirect link to ecosystems."
+          },
+          {
+            "id": "gga_water",
+            "score": 0.1,
+            "reasoning": "Waste management relates only weakly to sanitation."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "71402",
+      "description": "Name: Biodiversity conservation\nKind: a programme of Mongolia's national budget (code 71402), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for activities related to the implementation of the National Biodiversity Program and related policy documents, aimed at conserving biodiversity at ecosystem, species, and genetic levels, promoting sustainable use, and ensuring fair and equitable sharing of benefits arising from the use of biological resources.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 1.0,
+            "reasoning": "The programme finances implementation of the National Biodiversity Program to conserve biodiversity at ecosystem, species and genetic levels and promote sustainable use of biological resources."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.2,
+            "reasoning": "The fair and equitable sharing of benefits from biological resources gives this programme a weak indirect link to livelihoods."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 1.0,
+            "reasoning": "The programme finances implementation of the National Biodiversity Program to conserve biodiversity at ecosystem, species and genetic levels."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.15,
+            "reasoning": "Sustainable use and fair sharing of benefits from biological resources gives an indirect link to livelihoods."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71409",
+      "description": "Name: Protection of endangered animals, plants and species\nKind: a programme of Mongolia's national budget (code 71409), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for activities related to the implementation of the National Program for the Protection of Endangered and Rare Species, the Program for the Conservation and Sustainable Use of Rare Plants of Mongolia, and objectives of the National Biodiversity Program, covering protection, restoration, and sustainable use of endangered and rare animal and plant species.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 1.0,
+            "reasoning": "The programme finances protection, restoration and sustainable use of endangered and rare animal and plant species under national biodiversity and species conservation programmes."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 1.0,
+            "reasoning": "The line finances national programmes for the protection, restoration and sustainable use of endangered and rare animal and plant species and the National Biodiversity Program."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.1,
+            "reasoning": "The stated sustainable use of rare plants and species may weakly touch livelihoods, but this is not described."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71413",
+      "description": "Name: Environment protection, recovery\nKind: a programme of Mongolia's national budget (code 71413), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to environmental protection and restoration activities, including: prevention of water pollution, sustainable use of water resources, improvement of water supply levels, protection against water scarcity, expansion of water sources, construction of reservoirs; forest protection and restoration activities such as afforestation, reforestation, seedling preparation and propagation, pest control, forest fire prevention and damage compensation, and forest cleaning; protection of plants from diseases, harmful rodents, pests, and chemical or biological impacts, establishment of quarantine measures, studies on plant distribution and resources, ecological and economic valuation, restoration and cultivation of rare plants; wildlife protection, breeding, sustainable use, reintroduction of endangered species, captive breeding, creation of sustainable use reserves, research, training and awareness-raising, biotechnology measures, monitoring of hunting activities, and prevention of illegal hunting; research, documentation, protection, and regulation of traditional knowledge associated with plant and animal genetic resources, promotion of bioprospecting, innovation research and product development related to genetic resources and associated traditional knowledge, and public awareness and legal outreach related to genetic resources.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 48%; Wages and salaries, bonuses 27%; Purchase of other goods and services 17%; Social insurance contributions paid by employers 4%; Office supplies and inventory 1%\nWho spends it (2021): 83 spending units, among them Capital City Department of Environment; Se.Nature and tourism department; Dd.Nature and tourism department; National Park; Khe.Nature and tourism department; Bkh.Nature and tourism department",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The programme funds forest restoration, wildlife protection, rare plant restoration, and other environmental protection and conservation activities."
+          },
+          {
+            "id": "gga_water",
+            "score": 0.6,
+            "reasoning": "It explicitly includes prevention of water pollution, sustainable water use, improving water supply, protection against water scarcity, and reservoir construction."
+          },
+          {
+            "id": "gga_cultural_heritage",
+            "score": 0.2,
+            "reasoning": "It supports protection and regulation of traditional knowledge associated with genetic resources, which is indirectly relevant to preserving local knowledge systems."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "Most listed activities are forest protection and restoration, plant and wildlife protection, endangered species reintroduction and anti-poaching, spent by nature departments and national parks."
+          },
+          {
+            "id": "gga_water",
+            "score": 0.5,
+            "reasoning": "The description explicitly includes protection against water scarcity, sustainable water use, expanding water sources and building reservoirs."
+          },
+          {
+            "id": "gga_cultural_heritage",
+            "score": 0.2,
+            "reasoning": "Includes documentation and protection of traditional knowledge associated with genetic resources."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.15,
+            "reasoning": "Plant protection from pests, rodents and quarantine measures has an indirect link to agricultural production."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.1,
+            "reasoning": "Sustainable use reserves and bioprospecting have a weak link to livelihoods."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "71410",
+      "description": "Name: Reduce land degradation and prevent from desertification\nKind: a programme of Mongolia's national budget (code 71410), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for projects and measures related to the implementation of the National Action Program to Combat Desertification and related policy documents, aimed at protecting soil and land resources from degradation, reducing the spread of desertification, and restoring degraded land.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 70%; Wages and salaries, bonuses 19%; Social insurance contributions paid by employers 3%; Furniture, current repair expenses 2%; Purchase of other goods and services 2%\nWho spends it (2021): 2 spending units, among them Environmental research and analysis center; Ministry of Nature, Environment and Tourism",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The programme funds implementation of the National Action Program to Combat Desertification to protect soil and land resources, reduce desertification, and restore degraded land."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.2,
+            "reasoning": "Protecting soil and land resources from degradation can indirectly support climate-resilient agricultural production, but agriculture is not stated as the programme's main purpose."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The programme implements the National Action Program to Combat Desertification, protecting soil and land from degradation and restoring degraded land, which is ecosystem restoration and conservation."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.3,
+            "reasoning": "Protecting soil and land resources from degradation indirectly supports the productive base for pastures and agriculture."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.15,
+            "reasoning": ""
+          },
+          {
+            "id": "gga_water",
+            "score": 0.1,
+            "reasoning": ""
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81707",
+      "description": "Name: Air pollution reduction\nKind: a purpose code of Mongolia's national budget (81707), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to reducing and preventing air pollution.\nWhat it pays for (2020-2021): Standard cost 100%\nWho spends it (2020): 2 spending units, among them Ministry of Health; Khu. The governor",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_health",
+        "score": 0.7,
+        "ranked": [
+          {
+            "id": "gga_health",
+            "score": 0.7,
+            "reasoning": "The line is for reducing and preventing air pollution, and one of the spending units is the Ministry of Health."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.2,
+            "reasoning": "Air pollution reduction can weakly support more resilient settlements, but the description does not mention infrastructure or settlement adaptation."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_health",
+        "score": 0.4,
+        "ranked": [
+          {
+            "id": "gga_health",
+            "score": 0.4,
+            "reasoning": "The line pays for reducing and preventing air pollution and is partly spent by the Ministry of Health, which points to protecting public health."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.2,
+            "reasoning": "Air pollution reduction spending by a local governor may relate to conditions in human settlements, but this connection is indirect."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.1,
+            "reasoning": "The review counted the line as relevant to biodiversity, but its stated purpose is air pollution, not ecosystems."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "82212",
+      "description": "Name: Solid waste and environmental pollution removal and cleaning services\nKind: a purpose code of Mongolia's national budget (82212), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to environmental cleaning services, cleaning of public roads and areas, and waste removal.\nWhat it pays for (2020-2021): Office supplies and inventory 72%; Work, service payment, fee performed by others 25%; Subsidy to State owned enterprises (SOE) 1%\nWho spends it (2021): 173 spending units, among them CHD.AAT Organization; BZD.AAT Organization; KHUD.Non budgetary organisations; Songinokhairkhan district; SBD.AAT Organization; Bright. Convenient service department",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_health",
+        "score": 0.5,
+        "ranked": [
+          {
+            "id": "gga_health",
+            "score": 0.5,
+            "reasoning": "The line funds environmental cleaning, public road and area cleaning, and waste removal, which partly supports resilience against health risks from polluted and unsanitary conditions."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.4,
+            "reasoning": "Cleaning public roads and areas and removing waste partly helps maintain human settlements and basic urban services."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.2,
+            "reasoning": "Environmental pollution removal has a weak indirect link to protecting ecosystems from degradation."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_infrastructure_settlements",
+        "score": 0.4,
+        "ranked": [
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.4,
+            "reasoning": "The line pays for municipal services such as cleaning public roads and areas and removing waste, spent by district and service organisations, which are essential services in human settlements."
+          },
+          {
+            "id": "gga_health",
+            "score": 0.2,
+            "reasoning": "Waste removal and pollution cleaning only indirectly support public health; the description names no health purpose."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.2,
+            "reasoning": "Environmental pollution removal may reduce pressure on ecosystems, but the line is mainly urban cleaning services."
+          },
+          {
+            "id": "gga_water",
+            "score": 0.1,
+            "reasoning": "Solid waste services relate only weakly to sanitation."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "81708",
+      "description": "Name: Afforestation\nKind: a purpose code of Mongolia's national budget (81708), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to establishing plantation forests and forest funds, forest restoration and propagation, and conducting forest inventories in accordance with the Law on Afforestation. Exclusions: expenditures related to tree planting in urban streets, parks, and green spaces are not recorded under this category and are instead recorded under code 82207.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "It funds plantation forests, forest restoration and propagation, and forest inventories, which directly support the management and restoration of ecosystems."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.1,
+            "reasoning": "Afforestation can weakly support settlement resilience, but the description focuses on forests rather than infrastructure or human settlements."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The code funds establishing plantation forests, forest restoration and propagation, and forest inventories under the Law on Afforestation, which is restoration and management of terrestrial ecosystems"
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.1,
+            "reasoning": "Forest funds and plantations may indirectly support forest-based livelihoods, but the description does not say so."
+          },
+          {
+            "id": "gga_water",
+            "score": 0.1,
+            "reasoning": "Forest restoration can indirectly support watershed functions, though water is not mentioned in the description."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81709",
+      "description": "Name: Control of forest pests and harmful insects\nKind: a purpose code of Mongolia's national budget (81709), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to controlling forest pests and harmful insects.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.8,
+            "reasoning": "The line is explicitly for controlling forest pests and harmful insects, which protects forest ecosystems and biodiversity from damage."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.2,
+            "reasoning": "Controlling forest pests may indirectly support forest-related production, but the description only mentions protecting forests from pests."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.8,
+            "reasoning": "The line pays for controlling forest pests and harmful insects, which protects forest ecosystems."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.2,
+            "reasoning": "Pest control in forests has only an indirect link to production systems such as forestry and pasture."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81702",
+      "description": "Name: Forest fire prevention and damage mitigation\nKind: a purpose code of Mongolia's national budget (81702), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to forest fire prevention, fire suppression, and mitigation of damage caused by forest fires.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The line explicitly funds forest fire prevention, suppression, and damage mitigation, which directly protects forest ecosystems and biodiversity from climate-related impacts."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.2,
+            "reasoning": "Forest fire prevention and suppression can indirectly reduce wildfire damage to nearby infrastructure and settlements, but that is not the stated primary purpose."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.8,
+            "reasoning": "The line pays for forest fire prevention, suppression and mitigation of fire damage, protecting forest ecosystems from a climate-sensitive hazard."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.2,
+            "reasoning": "Fire suppression and damage mitigation may indirectly reduce hazard impacts on nearby settlements, though this is not stated."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.1,
+            "reasoning": "Weak indirect link through protecting forest resources people may depend on."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81705",
+      "description": "Name: Forest inventory\nKind: a purpose code of Mongolia's national budget (81705), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to conducting forest inventories in accordance with forest legislation.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.8,
+            "reasoning": "The line funds forest inventories under forest legislation, directly supporting the management and conservation of forest ecosystems and biodiversity."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.1,
+            "reasoning": "Forest inventories may indirectly support livelihoods where people depend on forests, but this is not stated as the purpose of the spending."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.8,
+            "reasoning": "The line funds forest inventories conducted under forest legislation, which supports the management and conservation of terrestrial forest ecosystems."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.1,
+            "reasoning": "Forest inventories may indirectly inform forest resource use that supports local livelihoods, but nothing in the information given states this."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81703",
+      "description": "Name: Plant protection and restoration\nKind: a purpose code of Mongolia's national budget (81703), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to the protection and restoration of natural vegetation.\nWhat it pays for (2020-2021): Purchase of other goods and services 100%\nWho spends it (2020): 1 spending units, among them Dd. Bayantumen Soum Development Fund",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.6,
+            "reasoning": "The review says this code covers expenditures for the protection and restoration of natural vegetation."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.8,
+            "reasoning": "The purpose code covers protection and restoration of natural vegetation, which is ecosystem conservation and restoration."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.15,
+            "reasoning": "Spent by a rural soum development fund, where vegetation restoration may indirectly support pasture, but this is not stated."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81710",
+      "description": "Name: Hydrological and meteorological research\nKind: a purpose code of Mongolia's national budget (81710), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to hydrological and meteorological research and analysis activities.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_water",
+        "score": 0.7,
+        "ranked": [
+          {
+            "id": "gga_water",
+            "score": 0.7,
+            "reasoning": "Hydrological research and analysis directly support understanding and managing water availability and water-related hazards."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.4,
+            "reasoning": "Meteorological and hydrological analysis can inform resilience planning for infrastructure and settlements exposed to climate hazards."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.3,
+            "reasoning": "Meteorological research can indirectly support climate-resilient agriculture through weather and climate information."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.2,
+            "reasoning": "Hydrological and meteorological analysis can indirectly inform management of ecosystems affected by climate and water conditions."
+          },
+          {
+            "id": "gga_health",
+            "score": 0.1,
+            "reasoning": "Meteorological information has a weak indirect link to managing climate-related health risks such as extreme weather."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.1,
+            "reasoning": "Weather and hydrological research can weakly support livelihoods by improving information on climate-related risks."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_water",
+        "score": 0.5,
+        "ranked": [
+          {
+            "id": "gga_water",
+            "score": 0.5,
+            "reasoning": "The line funds hydrological and meteorological research and analysis, which underpins understanding of water resources and water-related hazards."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.2,
+            "reasoning": "Meteorological research and analysis can indirectly inform resilience to weather-related hazards affecting settlements, though no such use is stated."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.2,
+            "reasoning": "The review counted it as biodiversity-relevant, but the description only mentions hydrological and meteorological research."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.15,
+            "reasoning": "Meteorological information may indirectly support agriculture."
+          }
+        ]
+      },
+      "area": "gga_water",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81713",
+      "description": "Name: Waste processing\nKind: a purpose code of Mongolia's national budget (81713), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to waste separation and processing.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.3,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.3,
+            "reasoning": "Waste separation and processing can indirectly reduce pollution pressures on ecosystems and biodiversity."
+          },
+          {
+            "id": "gga_health",
+            "score": 0.2,
+            "reasoning": "Waste processing can weakly support resilience to climate-related health risks by improving sanitation-related conditions."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.1,
+            "reasoning": "Waste processing is a basic municipal service, but the description does not mention climate-resilient infrastructure or settlements."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_infrastructure_settlements",
+        "score": 0.3,
+        "ranked": [
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.3,
+            "reasoning": "Waste separation and processing is a basic municipal service in human settlements, though the description shows no climate-resilience focus."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.2,
+            "reasoning": "The review counted it as biodiversity-relevant, presumably for reducing pollution pressure on ecosystems, but the description covers only waste separation and processing."
+          },
+          {
+            "id": "gga_health",
+            "score": 0.1,
+            "reasoning": "Handling waste may indirectly reduce health risks."
+          },
+          {
+            "id": "gga_water",
+            "score": 0.1,
+            "reasoning": "Waste processing may indirectly reduce water contamination."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "81714",
+      "description": "Name: Support for substitute pollution sources and green product producers\nKind: a purpose code of Mongolia's national budget (81714), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes budgetary support and incentives provided to producers of products aimed at reducing air and environmental pollution.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.2,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.2,
+            "reasoning": "It supports producers of products that reduce air and environmental pollution, which can indirectly lessen pressure on ecosystems and biodiversity."
+          },
+          {
+            "id": "gga_health",
+            "score": 0.2,
+            "reasoning": "Support for products aimed at reducing air pollution has an indirect link to lowering climate-related health risks from poor air quality."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.1,
+            "reasoning": "If the supported green products are used in homes or settlements, they may weakly contribute to cleaner and more resilient living environments."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_health",
+        "score": 0.2,
+        "ranked": [
+          {
+            "id": "gga_health",
+            "score": 0.2,
+            "reasoning": "The line supports producers of products meant to reduce air pollution, which has only an indirect link to health resilience and is not framed around climate impacts."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.15,
+            "reasoning": "Reducing environmental pollution may indirectly ease pressure on ecosystems, but the line funds producer incentives rather than ecosystem management or restoration."
+          }
+        ]
+      },
+      "area": null,
+      "status": "no-clear-area"
+    },
+    {
+      "code": "81715",
+      "description": "Name: Protection, use, and restoration of water and mineral water resources\nKind: a purpose code of Mongolia's national budget (81715), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to protection and restoration of water and mineral water resources, construction of reservoirs, sustainable use of water resources, and wastewater recycling and treatment.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_water",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "gga_water",
+            "score": 1.0,
+            "reasoning": "The line explicitly funds protection and restoration of water resources, reservoir construction, sustainable water use, and wastewater recycling and treatment."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.6,
+            "reasoning": "Protection and restoration of water resources can partly support inland water ecosystems and biodiversity."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.4,
+            "reasoning": "Construction of reservoirs and wastewater treatment are water-related infrastructure that can improve resilience of services and settlements."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_water",
+        "score": 0.85,
+        "ranked": [
+          {
+            "id": "gga_water",
+            "score": 0.85,
+            "reasoning": "The line pays for protection and sustainable use of water resources, construction of reservoirs, and wastewater recycling and treatment, which are water supply and sanitation measures."
+          },
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.45,
+            "reasoning": "It also covers protection and restoration of water and mineral water resources, which partly serves inland water ecosystems."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.25,
+            "reasoning": "Reservoir construction and wastewater treatment involve water infrastructure."
+          },
+          {
+            "id": "gga_health",
+            "score": 0.1,
+            "reasoning": "Wastewater treatment has an indirect sanitation-related health benefit."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.1,
+            "reasoning": "Reservoirs may indirectly support agricultural water use."
+          }
+        ]
+      },
+      "area": "gga_water",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81716",
+      "description": "Name: Reduction of land degradation and desertification prevention\nKind: a purpose code of Mongolia's national budget (81716), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to restoration of degraded land, mitigation of desertification, protection against sand movement, fencing and protection of pastureland, and restoration of vegetation cover.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The line funds restoration of degraded land, pasture protection, and restoration of vegetation cover, which directly support ecosystem conservation and restoration."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.5,
+            "reasoning": "Fencing and protection of pastureland can partly support climate-resilient livestock and agricultural production."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The line funds restoration of degraded land, desertification mitigation and restoration of vegetation cover, which is terrestrial ecosystem restoration and protection."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.4,
+            "reasoning": "Fencing and protection of pastureland supports the resilience of livestock grazing land."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.2,
+            "reasoning": "Pasture protection indirectly supports herder livelihoods."
+          },
+          {
+            "id": "gga_infrastructure_settlements",
+            "score": 0.1,
+            "reasoning": "Protection against sand movement may indirectly shield settlements and infrastructure."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81717",
+      "description": "Name: Protection and restoration of wildlife resources\nKind: a purpose code of Mongolia's national budget (81717), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to wildlife protection, captive breeding and reintroduction of endangered and rare species, and implementation of biotechnological measures.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 1.0,
+            "reasoning": "The line funds wildlife protection, captive breeding, reintroduction of endangered and rare species, and related biotechnological measures."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.1,
+            "reasoning": "Protecting wildlife resources may indirectly support livelihoods, but the description does not state any livelihood purpose."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The line pays for wildlife protection, captive breeding and reintroduction of endangered and rare species, which is direct biodiversity conservation and restoration."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.1,
+            "reasoning": "Wildlife resources may weakly support livelihoods, but the description gives no explicit link."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81718",
+      "description": "Name: Genetic resources of wild plants and animals\nKind: a purpose code of Mongolia's national budget (81718), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to research, assessment, registration, and conservation of genetic resources of wild plants and animals.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The line funds research, assessment, registration, and conservation of genetic resources of wild plants and animals, which directly supports conserving biodiversity and ecosystems."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.2,
+            "reasoning": "Genetic resources of wild plants and animals can indirectly support resilient food and agriculture, but the description does not say the spending is for agricultural production or food systems."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The line pays for research, assessment, registration and conservation of genetic resources of wild plants and animals, which is biodiversity conservation."
+          },
+          {
+            "id": "gga_agriculture_food",
+            "score": 0.15,
+            "reasoning": "Wild plant and animal genetic resources can indirectly support crop and livestock resilience, but the description does not mention agriculture."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    },
+    {
+      "code": "81719",
+      "description": "Name: Forest restoration\nKind: a purpose code of Mongolia's national budget (81719), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to forest restoration activities aimed at increasing forest resources, including preparation and propagation of seedlings and plantation forest establishment, in accordance with the Law on Afforestation.",
+      "first": {
+        "model": "gpt-5.4",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 1.0,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 1.0,
+            "reasoning": "The line funds forest restoration, including seedlings and plantation establishment, to increase forest resources under the Law on Afforestation."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.1,
+            "reasoning": "Increasing forest resources could indirectly support livelihoods, but the description focuses on restoration activities rather than livelihood measures."
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "area": "gga_ecosystems_biodiversity",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "gga_ecosystems_biodiversity",
+            "score": 0.9,
+            "reasoning": "The line funds forest restoration, seedling propagation and plantation establishment to increase forest resources, which is restoration of terrestrial ecosystems."
+          },
+          {
+            "id": "gga_water",
+            "score": 0.1,
+            "reasoning": "Forest cover can indirectly support watershed functions, but nothing in the description mentions water."
+          },
+          {
+            "id": "gga_livelihoods",
+            "score": 0.05,
+            "reasoning": "Increasing forest resources may indirectly support forest-based livelihoods, though this is not stated."
+          }
+        ]
+      },
+      "area": "gga_ecosystems_biodiversity",
+      "status": "second-agrees"
+    }
+  ]
+}

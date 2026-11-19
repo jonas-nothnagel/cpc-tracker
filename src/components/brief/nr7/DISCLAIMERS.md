@@ -1,4 +1,10 @@
-# Disclaimers: the brief's national biodiversity targets
+# Disclaimers: the brief's Implementation section
+
+The section on the national biodiversity targets as the country's 7th National
+Report rates them is named "Implementation" since 18 November 2026 (title
+"Implementation of the national biodiversity targets"); its id stays `nr7`.
+The table is not offered for other documents: the BTR gives no rating,
+indicators or narrative per target, so it cannot fill the same view.
 
 The section's visuals carry no fine print (see the spending section's file for
 the rule). What the section knows but does not say is kept here, in case it has

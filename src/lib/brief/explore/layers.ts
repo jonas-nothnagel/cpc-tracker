@@ -203,7 +203,19 @@ export function buildExploreLayers(
       spend: { total: Math.round(values.reduce((s, v) => s + v, 0) * 1000) / 1000, years: values.length },
     });
   }
-  if (items.length === 0) return null;
+  // The national report's ratings tag its targets whether or not the country
+  // has reported actions or budget lines.
+  let nr7: Record<string, Nr7Status> | undefined;
+  const progress = (asRecord(data.nr7Data)?.progressItems as Record<string, unknown>[]) ?? [];
+  for (const p of progress) {
+    const target = p.nbsapTargetId ? String(p.nbsapTargetId) : null;
+    const status = String(p.progressStatus ?? "unknown") as Nr7Status;
+    if (!target || !NR7_RANK.includes(status)) continue;
+    nr7 = nr7 ?? {};
+    const current = nr7[target];
+    if (!current || NR7_RANK.indexOf(status) < NR7_RANK.indexOf(current)) nr7[target] = status;
+  }
+  if (items.length === 0) return nr7 ? { items, links: packLinks([], source, 0), nr7 } : null;
 
   const known = new Set(source.commitments.map((c) => c.id));
   const item = new Map(items.map((it, i) => [it.id, i]));
@@ -246,17 +258,6 @@ export function buildExploreLayers(
           end: Number(period.end),
         }
       : undefined;
-
-  let nr7: Record<string, Nr7Status> | undefined;
-  const progress = (asRecord(data.nr7Data)?.progressItems as Record<string, unknown>[]) ?? [];
-  for (const p of progress) {
-    const target = p.nbsapTargetId ? String(p.nbsapTargetId) : null;
-    const status = String(p.progressStatus ?? "unknown") as Nr7Status;
-    if (!target || !NR7_RANK.includes(status)) continue;
-    nr7 = nr7 ?? {};
-    const current = nr7[target];
-    if (!current || NR7_RANK.indexOf(status) < NR7_RANK.indexOf(current)) nr7[target] = status;
-  }
 
   const links = packLinks(read, source, items.length);
   return { items, links, ...(budget ? { budget } : {}), ...(nr7 ? { nr7 } : {}) };
