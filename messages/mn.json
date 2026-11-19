@@ -3519,7 +3519,12 @@
         "inAll": "Нийт {amount}",
         "tableCaption": "Хянасан зарцуулалт, оноор, {unit}",
         "year": "Он",
-        "partNotInData": "{part}: өгөгдөлд байхгүй"
+        "partNotInData": "{part}: өгөгдөлд байхгүй",
+        "docs": {
+          "before": "Өмнө",
+          "after": "Дараа",
+          "atLeast": "дор хаяж {amount}"
+        }
       },
       "items": {
         "title": "{years} оны хянасан зарцуулалт, {unit, select, institution {байгууллагаар} line {төсвийн мөрөөр} both {байгууллага ба хөтөлбөрөөр} other {хөтөлбөрөөр}}",

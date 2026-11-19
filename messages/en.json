@@ -3519,7 +3519,12 @@
         "inAll": "{amount} in all",
         "tableCaption": "Reviewed spending by year, {unit}",
         "year": "Year",
-        "partNotInData": "{part} not in the data"
+        "partNotInData": "{part} not in the data",
+        "docs": {
+          "before": "Before",
+          "after": "After",
+          "atLeast": "at least {amount}"
+        }
       },
       "items": {
         "title": "Reviewed spending by {unit, select, institution {institution} line {budget line} both {institution and programme} other {programme}}, {years}",

@@ -40,9 +40,10 @@ entered by hand from the free-text `published` beside it and held to it by
   it; the first and last years hold part of a year only (the record starts
   in 2018 and was read in February 2026).
 
-The reviewed-spending chart carries no such row: its first version (the same
-names under its years) did not show the link to the spending, and what
-replaces it there is open (19 November 2026).
+The reviewed-spending chart names the documents under its years the same
+way, and there each name is a choice that re-inks the chart's bars
+(../spending/DISCLAIMERS.md, "The documents under the years"). Here the
+names are not choices: the page's own focus already takes a document.
 
 ## A contract's panel
 
