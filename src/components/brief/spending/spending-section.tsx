@@ -379,7 +379,7 @@ function YearChart({
         )}
       </div>
       {/* The same documents as a list: read out in place of the plot, and shown
-          on a narrow screen, where a year's column is too narrow for a name. */}
+          on a phone, where a year's column is too narrow for a name. */}
       {marks && (
         <div className="sp-docs-text">
           <p className="sp-docs-title">{td("title")}</p>

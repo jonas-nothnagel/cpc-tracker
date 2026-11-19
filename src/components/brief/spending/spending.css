@@ -424,17 +424,24 @@
   line-height: 1.4;
 }
 
-@media (min-width: 821px) {
+/* From 601px a year's column holds a name: the documents stand under their
+   years, a column at either end for one from outside the charted years (as
+   wide as the years' own columns allow at this width). Below, a list. */
+@media (min-width: 601px) {
+  [data-brief] .sp-plot {
+    --sp-track: minmax(2.75rem, 7rem);
+  }
+
   [data-brief] .sp-plot[data-lead] {
-    grid-template-columns: max-content repeat(var(--sp-years), minmax(2.75rem, 7rem));
+    grid-template-columns: max-content repeat(var(--sp-years), var(--sp-track));
   }
 
   [data-brief] .sp-plot[data-trail] {
-    grid-template-columns: repeat(var(--sp-years), minmax(2.75rem, 7rem)) max-content;
+    grid-template-columns: repeat(var(--sp-years), var(--sp-track)) max-content;
   }
 
   [data-brief] .sp-plot[data-lead][data-trail] {
-    grid-template-columns: max-content repeat(var(--sp-years), minmax(2.75rem, 7rem)) max-content;
+    grid-template-columns: max-content repeat(var(--sp-years), var(--sp-track)) max-content;
   }
 
   /* The list says the same in words: read out, not shown beside the plot. */
@@ -726,8 +733,17 @@
   [data-brief] .sp-year-label {
     font-size: 0.75rem;
   }
+}
 
-  /* A year's column is too narrow for a name: the documents as a list. */
+/* The years share the width here, with or without a column at either end. */
+@media (min-width: 601px) and (max-width: 820px) {
+  [data-brief] .sp-plot {
+    --sp-track: minmax(1.5rem, 1fr);
+  }
+}
+
+/* A phone: a year's column is too narrow for a name, so the documents are a list. */
+@media (max-width: 600px) {
   [data-brief] .sp-plot .sp-docs-title,
   [data-brief] .sp-plot .sp-docs,
   [data-brief] .sp-plot .sp-docs-undated,
