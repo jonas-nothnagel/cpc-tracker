@@ -129,7 +129,7 @@ def test_a_sheet_of_another_lens_stops_the_import_before_anything_is_written(tmp
     import ber_review_sheet as sheet
 
     monkeypatch.setattr(sheet, "calls_path", lambda country: tmp_path / f"{country}-ber-areas.json")
-    monkeypatch.setattr(sheet, "import_type_calls", lambda wb, by: None)
+    monkeypatch.setattr(sheet, "read_type_calls", lambda wb, by: [])
     path = tmp_path / "sheet.xlsx"
     # A climate mitigation sheet read as GLOBE's: its areas are not GLOBE's.
     _filled_sheet(path, "Land use, land-use change and forestry (LULUCF)", call="None fits")
@@ -142,7 +142,7 @@ def test_a_sheet_of_the_lens_named_imports_its_calls_under_that_lens(tmp_path, m
     import ber_review_sheet as sheet
 
     monkeypatch.setattr(sheet, "calls_path", lambda country: tmp_path / f"{country}-ber-areas.json")
-    monkeypatch.setattr(sheet, "import_type_calls", lambda wb, by: None)
+    monkeypatch.setattr(sheet, "read_type_calls", lambda wb, by: [])
     path = tmp_path / "sheet.xlsx"
     lulucf = sheet.area_names("sector", "mongolia")
     name = next(v for v in lulucf.values() if "LULUCF" in v)
@@ -152,3 +152,51 @@ def test_a_sheet_of_the_lens_named_imports_its_calls_under_that_lens(tmp_path, m
     assert list(stored) == ["_provenance", "sector"]
     assert stored["sector"]["71405"]["call"] == "accept"
     assert stored["sector"]["71405"]["area"] == next(k for k, v in lulucf.items() if v == name)
+
+
+def test_a_bad_row_on_a_type_sheet_stops_the_import_before_any_file_is_written(
+    tmp_path, monkeypatch
+):
+    import ber_review_sheet as sheet
+    from openpyxl import load_workbook
+
+    monkeypatch.setattr(sheet, "calls_path", lambda country: tmp_path / f"{country}-ber-areas.json")
+    monkeypatch.setattr(
+        sheet, "type_calls_path", lambda country: tmp_path / f"{country}-ber-types.json"
+    )
+    path = tmp_path / "sheet.xlsx"
+    # A good call on the areas sheet, an unknown one on the type sheet.
+    _filled_sheet(path, next(iter(sheet.area_names("globe", "mongolia").values())))
+    wb = load_workbook(path)
+    types = wb.create_sheet(sheet.type_sheet_title("Mongolia"))
+    types.append([c for c, _ in sheet.TYPE_COLUMNS])
+    row = [""] * max(15, len(sheet.TYPE_COLUMNS))
+    row[0], row[12] = "71405", "Maybe"
+    types.append(row)
+    wb.save(path)
+    with pytest.raises(SystemExit, match="unknown call"):
+        sheet.import_calls(path, "globe", "A reviewer")
+    assert list(tmp_path.glob("*.json")) == []
+
+
+def test_a_lens_that_does_not_serve_the_country_builds_no_workbook(tmp_path, monkeypatch):
+    import ber_review_sheet as sheet
+
+    out = tmp_path / "gga.xlsx"
+    argv = ["ber_review_sheet.py", "build", "--lens", "gga", "--country", "sri-lanka"]
+    monkeypatch.setattr(sys, "argv", [*argv, "--out", str(out)])
+    with pytest.raises(SystemExit, match="serves"):
+        sheet.main()
+    assert not out.exists()
+
+
+def test_the_guide_of_a_climate_workbook_says_a_line_has_no_area_of_its_lens(tmp_path):
+    import ber_review_sheet as sheet
+    from openpyxl import load_workbook
+
+    out = tmp_path / "sector.xlsx"
+    sheet.build("sector", out, ("mongolia",), types=False)
+    rows = load_workbook(out)["How to use"].iter_rows(values_only=True)
+    guide = " ".join(str(r[0]) for r in rows if r[0])
+    assert "has no area of the climate mitigation lens" in guide
+    assert "general biodiversity spending" not in guide

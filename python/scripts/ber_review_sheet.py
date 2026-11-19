@@ -158,7 +158,16 @@ def build(lens: str, out: Path, countries: tuple[str, ...] = tuple(COUNTRIES), t
             f"Two AI models placed each line in an area of the {SHEET_LENS[lens]} lens "
             "from the review's own description of it, without its amounts."
         ],
-        ["Model 1 (Claude Opus) decides: a line takes its area at a score of 0.5 or more, else it is general biodiversity spending with no specific area. Model 2 (GPT-5.4) is a second opinion."],
+        [
+            "Model 1 (Claude Opus) decides: a line takes its area at a score of 0.5 "
+            "or more, else it "
+            + (
+                "is general biodiversity spending with no specific area."
+                if lens == "globe"
+                else f"has no area of the {SHEET_LENS[lens]} lens."
+            )
+            + " Model 2 (GPT-5.4) is a second opinion."
+        ],
         ["The review's call that a line is biodiversity spending stands in every case: the question here is only which area it serves."],
         ["Rows where model 2 reads the line differently, or no area is clear, come first, largest money first; then the rest."],
         ["Your call: Accept (the line's area as shown: model 1's area, or no specific area where none is clear), Change (pick the area in the next column) or None fits (no specific area)."],
@@ -393,8 +402,17 @@ def kept(earlier: dict[str, Any] | None, entry: dict[str, Any]) -> dict[str, Any
     return earlier if earlier and decision(earlier) == decision(entry) else entry
 
 
-def import_type_calls(wb: Any, by: str) -> None:
+def write_calls(writes: list[tuple[str, Path, dict[str, Any], int, int]]) -> None:
+    for title, target, stored, changed, count in writes:
+        target.write_text(json.dumps(stored, indent=2, ensure_ascii=False) + "\n")
+        print(f"{title}: {changed} calls new or changed, {count} in all -> {target}")
+
+
+def read_type_calls(wb: Any, by: str) -> list[tuple[str, Path, dict[str, Any], int, int]]:
+    """The type sheets' calls, each country's file as it is to be written;
+    nothing is written here, so a row that stops the import stops it whole."""
     types = {t["id"] for t in json.loads((DATA_DIR / "globe-expenditure-types.json").read_text())["types"]}
+    writes: list[tuple[str, Path, dict[str, Any], int, int]] = []
     for country, title in COUNTRIES.items():
         sheet = type_sheet_title(title)
         if sheet not in wb.sheetnames:
@@ -437,8 +455,8 @@ def import_type_calls(wb: Any, by: str) -> None:
             "plan, the official chain); written by python/scripts/ber_review_sheet.py import. Only these count as checked."
         )
         stored["types"] = dict(sorted(calls.items()))
-        target.write_text(json.dumps(stored, indent=2, ensure_ascii=False) + "\n")
-        print(f"{sheet}: {changed} calls new or changed, {len(calls)} in all -> {target}")
+        writes.append((sheet, target, stored, changed, len(calls)))
+    return writes
 
 
 def calls_path(country: str) -> Path:
@@ -455,8 +473,8 @@ def load_calls(country: str, lens: str) -> dict[str, dict[str, Any]]:
 def import_calls(path: Path, lens: str | None, by: str) -> None:
     wb = load_workbook(path, data_only=True)
     lens = sheet_lens(wb, lens)
-    # Every sheet is read before any file is written, so a sheet that stops
-    # the import leaves every country's calls as they were.
+    # Every sheet, the type sheets too, is read before any file is written,
+    # so a sheet that stops the import leaves every country's calls as they were.
     writes: list[tuple[str, Path, dict[str, Any], int, int]] = []
     for country, title in COUNTRIES.items():
         if title not in wb.sheetnames or country not in BER_LENSES[lens]["countries"]:
@@ -517,10 +535,9 @@ def import_calls(path: Path, lens: str | None, by: str) -> None:
         )
         stored[lens] = dict(sorted(calls.items()))
         writes.append((title, target, stored, changed, len(calls)))
-    for title, target, stored, changed, count in writes:
-        target.write_text(json.dumps(stored, indent=2, ensure_ascii=False) + "\n")
-        print(f"{title}: {changed} calls new or changed, {count} in all -> {target}")
-    import_type_calls(wb, by)
+    type_writes = read_type_calls(wb, by)
+    write_calls(writes)
+    write_calls(type_writes)
 
 
 def main() -> None:
@@ -539,6 +556,9 @@ def main() -> None:
     i.add_argument("--by", required=True, help="Who made the calls, as the brief should name them")
     args = parser.parse_args()
     if args.command == "build":
+        if args.country != "all" and args.country not in BER_LENSES[args.lens]["countries"]:
+            serves = ", ".join(BER_LENSES[args.lens]["countries"])
+            raise SystemExit(f"The {args.lens} lens serves {serves}, not {args.country}.")
         out = args.out or default_out(args.lens)
         build(args.lens, out, tuple(COUNTRIES) if args.country == "all" else (args.country,), types=not args.areas_only)
     else:

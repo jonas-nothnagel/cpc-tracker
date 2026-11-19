@@ -496,6 +496,49 @@ describe("the areas in a climate lens", () => {
     expect(reading.areas.reduce((s, a) => s + a.spend, 0) + reading.apart.spend).toBe(10);
   });
 
+  /** Climate mitigation with a fourth area, Industrial processes, that holds
+   *  71405's spending (7 of the 10) and no target. */
+  function withSpendOnly(primary: Record<string, string>) {
+    const base = briefFixture();
+    const ipcc = {
+      id: "ipcc" as const,
+      taxonomyType: "sector",
+      categories: [
+        { id: "s1", name: "Energy" },
+        { id: "s2", name: "Agriculture, forestry and other land use" },
+        { id: "s3", name: "Waste" },
+        { id: "s4", name: "Industrial processes" },
+      ],
+      primary,
+    };
+    const source = { ...base, lenses: [...base.lenses, ipcc] };
+    const setup = spendingSetup(mongoliaLike(), source, {
+      areas: { globe: placed("globe", [["71405", "g1"], ["82212", null]]), ipcc: placed("sector", [["71405", "s4"], ["82212", "s2"]]) },
+    })!;
+    return { source, setup };
+  }
+
+  it("counts the areas holding targets, as the thematic areas do: an area with spending and no target is none of them", () => {
+    const { source, setup } = withSpendOnly({ A1: "s1", A2: "s1", B4: "s2", B5: "s2", B6: "s2", C1: "s3" });
+    const docs = ["A", "B", "C"];
+    const reading = spendingAreas(setup, source, docs, "ipcc");
+    expect(reading.areas.map((a) => [a.id, a.targets.length])).toEqual([
+      ["s2", 3],
+      ["s1", 2],
+      ["s3", 1],
+      ["s4", 0],
+    ]);
+    expect(reading.half?.of).toBe(3);
+    expect(reading.half?.of).toBe(lensAreas(source, scopeOf(source, docs), "ipcc").areas.length);
+  });
+
+  it("says nothing where fewer than three areas hold targets, an area with spending alone beside them", () => {
+    const { source, setup } = withSpendOnly({ A1: "s1", A2: "s1", B4: "s2", B5: "s2", B6: "s2" });
+    const docs = ["A", "B", "C"];
+    expect(spendingAreas(setup, source, docs, "ipcc").half).toBeNull();
+    expect(targetsHeadline(lensAreas(source, scopeOf(source, docs), "ipcc")).kind).toBe("none");
+  });
+
   it("shows the brief's lens where the lines are placed in it, else Biodiversity", () => {
     const source = withMitigation();
     const setup = spendingSetup(mongoliaLike(), source, { areas: { ipcc: placed("sector", [["71405", "s2"]]) } })!;

@@ -26,8 +26,10 @@ import "./spending.css";
 
 /** Squares in the record's field: one per unit of every hundred. */
 const FIELD = 100;
-/** Budget lines listed under an opened area, and review lines before "show all". */
+/** Budget lines listed under an opened area. */
 const LINES_MAX = 8;
+/** The review's own lines before "show all". */
+const ITEMS_MAX = 6;
 
 /** What the lines with no area lack, as the copy names it: in a climate lens
  *  an area of climate mitigation or adaptation, in Biodiversity a specific one. */
@@ -36,7 +38,6 @@ type ApartIn = "mitigation" | "adaptation" | "other";
 function apartIn(lens: LensId): ApartIn {
   return lens === "ipcc" ? "mitigation" : lens === "gga" || lens === "adaptation" ? "adaptation" : "other";
 }
-const ITEMS_MAX = 6;
 
 /**
  * Reviewed public biodiversity spending in the brief, as the country's

@@ -884,9 +884,12 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
   const apartLines = lines.filter((l) => l.area === null).sort(byTotal);
   const apartSpend = apartLines.reduce((s, l) => s + l.total, 0);
   // The areas come most targets first (ties: more spending first), so the
-  // fewest holding half are the table's first rows.
+  // fewest holding half are the table's first rows. Only the areas holding
+  // targets are counted, as the thematic areas count them (`targetsHeadline`):
+  // an area with spending and no target is no unit of the targets' share.
+  const withTargets = areas.filter((a) => a.targets.length > 0);
   const half = insightHalf(
-    areas.map((a) => a.targets.length),
+    withTargets.map((a) => a.targets.length),
     placed,
   );
   const lead = half ? areas.slice(0, half.units) : [];
@@ -901,7 +904,7 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
     },
     half: half && {
       areas: half.units,
-      of: areas.length,
+      of: withTargets.length,
       targetShare: half.count / placed,
       spendShare: lead.reduce((s, a) => s + a.spendShare, 0),
     },
