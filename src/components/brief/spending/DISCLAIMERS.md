@@ -110,28 +110,6 @@ the review for 2015; from 2016 it is 42-64% of each year's reviewed spending.
 - es: 2015 no se muestra: el Ministerio de Ambiente, creado ese año, no tiene líneas presupuestarias en la revisión para ese año.
 - mn: 2015 оныг харуулаагүй: тэр онд байгуулагдсан Байгаль орчны яамны төсвийн мөр тоймд тухайн онд байхгүй.
 
-**The documents under the years** (added 16 November 2026, for the
-biodiversity finance expert's ask of 8 October 2026: whether the spending came
-before or after a policy came out). Each of the brief's documents stands
-under the year in `publishedOn` (python/data/<country>-country-config.json),
-entered by hand from the free-text `published` beside it and held to it by
-`pnpm check:configs`; the same row stands under the years of Mongolia's
-public contracts. What the row does not say:
-
-- A date is the one the config states, which is not always a publication:
-  Panama's PNSH (2016) and PNRF (May 2021) are dates of adoption.
-- Where the config gives a year alone, the month is not known (Panama's ENR,
-  PIOTA, HR; Sri Lanka's NEnvP, NWRP, NPWM, NWP; Côte d'Ivoire's LDN).
-- A document whose config states only the period it covers (Panama's PENCYT,
-  "2025-2029") or no date at all stands on the grey line, never under a year.
-- The spending is by year, so a document from within a year stands under the
-  whole year: the row does not say which part of that year's spending came
-  after it.
-
-- en: A document stands under the year its date falls in; the date is the one the country's configuration states.
-- es: Cada documento figura bajo el año de su fecha; la fecha es la que consta en la configuración del país.
-- mn: Баримт бичиг бүр огнооных нь оны дор байна; огноо нь тухайн улсын тохиргоонд заасан огноо.
-
 ## What it is for (areas)
 
 **Review status of the areas.** Each line's area is AI-suggested (step 2)

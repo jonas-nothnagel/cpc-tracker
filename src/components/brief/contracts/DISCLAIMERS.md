@@ -23,14 +23,26 @@ carries its twin in the other currency. Neither shows elsewhere. Their wording:
 
 ## The years
 
-**The documents under the years** (added 16 November 2026). Each document
-stands under the year it came out, as on the reviewed-spending chart: the
-date, what it rests on and what the row does not say are in
-../spending/DISCLAIMERS.md ("Spending by year"). Here a contract counts in
-the year the record files it under, so a document from within a year stands
-beside contracts signed both before and after it; the first and last years
-hold part of a year only (the record starts in 2018 and was read in February
-2026).
+**The documents under the years** (added 16 November 2026, for the
+biodiversity finance expert's ask of 8 October 2026: whether the money came
+before or after a policy came out). Each document's short name stands under
+the year in `publishedOn` (python/data/<country>-country-config.json),
+entered by hand from the free-text `published` beside it and held to it by
+`pnpm check:configs`. What the row does not say:
+
+- A date is the one the config states, which is not always a publication
+  (in Panama's config, PNSH 2016 and PNRF May 2021 are dates of adoption).
+- Where the config gives a year alone, the month is not known.
+- A document whose config states only the period it covers, or no date,
+  stands on the grey line, never under a year (Mongolia: ILDN).
+- A contract counts in the year the record files it under, so a document
+  from within a year stands beside contracts signed both before and after
+  it; the first and last years hold part of a year only (the record starts
+  in 2018 and was read in February 2026).
+
+The reviewed-spending chart carries no such row: its first version (the same
+names under its years) did not show the link to the spending, and what
+replaces it there is open (19 November 2026).
 
 ## A contract's panel
 
