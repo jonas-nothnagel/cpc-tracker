@@ -121,7 +121,8 @@ total (the review's call that it is biodiversity spending stands). GPT-5.4's
 reading is a second opinion that orders the review sheet. The row tags say this
 line by line ("Area reviewed", "AI-suggested, not yet reviewed", "No specific
 area"); the leftover row is named "General biodiversity spending, no specific
-area". A reviewer may change or reject an area, so the tags say "reviewed",
+area" in Biodiversity, and after the lens in a climate lens (below). A
+reviewer may change or reject an area, so the tags say "reviewed",
 never "confirmed" (copy.test.ts). The step-wide tag beside the title
 ("AI-suggested" / "Sugerido por IA" / "Хиймэл оюуны санал") came off on
 23 October 2026 (Jonas: "remove AI suggested"); the row tags carry it.
@@ -140,8 +141,11 @@ choice of lens shows only where they are placed in more than one, and it moves
 the brief's lens with it, as in the thematic areas. The review counts
 biodiversity spending only: under a climate lens an area without a line has no
 reviewed biodiversity spending, which says nothing of its climate spending, and
-a line with no specific area is still biodiversity spending, counted in every
-total under the same leftover row. Money left with no specific area in the run
+a line with no area of the lens is still biodiversity spending, counted in every
+total under the leftover row, which names the lens (since 19 November 2026):
+"Biodiversity spending with no climate mitigation area" (or "climate
+adaptation area"), each of its lines tagged "No climate mitigation area" (or
+adaptation). Money left with no specific area in the run
 of 18 November 2026: climate mitigation 14% in Mongolia (and the project-defined
 catch-all "Other / Cross-cutting" a further 53%), 62% in Panama, 29% in Sri
 Lanka; climate adaptation 61% in Mongolia, 23% in Panama, 1% in Sri Lanka.
@@ -149,6 +153,17 @@ Lanka; climate adaptation 61% in Mongolia, 23% in Panama, 1% in Sri Lanka.
 - en: Under a climate lens, an area without a budget line has no reviewed biodiversity spending; its climate spending is not in the review.
 - es: Con una perspectiva climática, un área sin línea presupuestaria no tiene gasto revisado en biodiversidad; su gasto climático no está en la revisión.
 - mn: Уур амьсгалын харагдацаар төсвийн мөргүй чиглэлд хянасан биологийн олон янз байдлын зарцуулалт байхгүй гэсэн үг; түүний уур амьсгалын зарцуулалт тоймд ороогүй.
+
+**The targets' shares are read over the targets placed in an area of the
+lens** (since 19 November 2026), as the thematic areas read them, so the same
+areas hold the same share in both sections; the sentence states that count ("of
+the 99 targets"). A target with no area in the lens counts in neither section;
+the thematic areas say how many have one, in the brief's `areaView.scope`
+wording:
+
+- en: {placed, number} of the {total, number} targets fall in one of these areas.
+- es: {placed, number} de las {total, number} metas se encuentran en una de estas áreas.
+- mn: {total, number} зорилтын {placed, number} нь эдгээр чиглэлийн аль нэгэнд хамаарна.
 
 **The review's own words on a Panama line.** An opened line in an area shows
 the review's tag (Directo / Indirecto, per year in the record) and BIOFIN

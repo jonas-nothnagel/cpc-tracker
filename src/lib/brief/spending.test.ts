@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { briefFixture } from "./test-fixture";
+import { lensAreas, targetsHeadline } from "./areas";
+import { scopeOf } from "./compute";
 import { parseBerAreas } from "./ber-areas";
 import { parseBerNames } from "./ber-names-shared";
 import {
@@ -9,7 +11,7 @@ import {
   levelsPayload as mongoliaLike,
   sameNamePayload as sameName,
 } from "./spending-fixture";
-import { itemOpens, percentLabel, spendingAreas, spendingLens, spendingRecord, spendingSetup, type SpendingItem } from "./spending";
+import { itemOpens, spendingAreas, spendingLens, spendingRecord, spendingSetup, type SpendingItem } from "./spending";
 
 describe("spendingSetup from Country X's file", () => {
   it("keeps the lines with spending, their area and their strong matches", () => {
@@ -329,9 +331,10 @@ describe("spendingAreas", () => {
       ["g1", 3, 3],
       ["g5", 3, 0],
     ]);
-    expect(reading.areas[0].targetShare).toBeCloseTo(3 / 18);
-    // The shares' denominator: every target in the brief's documents.
-    expect(reading.total).toBe(18);
+    // The targets' shares are read over the targets placed in an area of the
+    // lens, as the thematic areas read them: 9 of the brief's 18.
+    expect(reading.areas[0].targetShare).toBeCloseTo(3 / 9);
+    expect(reading.placed).toBe(9);
     expect(reading.areas[0].spendShare).toBeCloseTo(0.7);
     expect(reading.areas[1].matched).toEqual(["A1", "A2"]);
     expect(reading.apart.lines).toEqual([]);
@@ -341,7 +344,7 @@ describe("spendingAreas", () => {
     const source = briefFixture();
     const reading = spendingAreas(spendingSetup(legacy(), source)!, source, ["A", "B"]);
     expect(reading.areas.map((r) => r.id)).toEqual(["g2", "g1"]);
-    expect(reading.areas[0].targetShare).toBeCloseTo(3 / 12);
+    expect(reading.areas[0].targetShare).toBeCloseTo(3 / 6);
   });
 
   it("sets each area's coherence beside its money, rated from the brief's floor", () => {
@@ -358,23 +361,38 @@ describe("spendingAreas", () => {
     expect(two.coherence.rated).toBe(false);
   });
 
-  it("says how few areas, most targets first, hold half of the targets, with their share of the spending", () => {
+  /** Agriculture (g2) holds 5 of the 12 targets placed in an area, Protected
+   *  areas (g1) 4, Water (g5) 3; B4-B6 and C4-C6 have no area. */
+  function twelvePlaced() {
     const base = briefFixture();
-    // Agriculture (g2) holds 8 of the 18 targets: with Protected areas' 2 it reaches half.
-    const primary: Record<string, string> = { B3: "g1", B4: "g1", C1: "g5", C2: "g5" };
-    for (const id of ["A1", "A2", "A3", "A4", "A5", "A6", "B1", "B2"]) primary[id] = "g2";
-    const source = { ...base, lenses: [{ ...base.lenses[0], primary }] };
+    const primary: Record<string, string> = { A6: "g1", B1: "g1", B2: "g1", B3: "g1", C1: "g5", C2: "g5", C3: "g5" };
+    for (const id of ["A1", "A2", "A3", "A4", "A5"]) primary[id] = "g2";
+    return { ...base, lenses: [{ ...base.lenses[0], primary }] };
+  }
+
+  it("says how few areas, most targets first, hold half of the targets, with their share of the spending", () => {
+    const source = twelvePlaced();
     const half = spendingAreas(spendingSetup(legacy(), source)!, source, ["A", "B", "C"]).half!;
+    // Agriculture's 5 and Protected areas' 4 of the 12 placed.
     expect([half.areas, half.of]).toEqual([2, 3]);
-    expect(half.targetShare).toBeCloseTo(10 / 18);
+    expect(half.targetShare).toBeCloseTo(9 / 12);
     // Agriculture's 7 and Protected areas' 3 of the 10 reviewed.
     expect(half.spendShare).toBeCloseTo(1);
   });
 
-  it("says nothing when it takes every area to reach half, or with fewer than three", () => {
+  it("counts the targets as the thematic areas do: the same denominator, the same share for the same areas", () => {
+    const source = twelvePlaced();
+    const docs = ["A", "B", "C"];
+    const reading = spendingAreas(spendingSetup(legacy(), source)!, source, docs);
+    const head = targetsHeadline(lensAreas(source, scopeOf(source, docs), "globe"));
+    if (head.kind !== "top") throw new Error(`expected a sentence over several areas, got ${head.kind}`);
+    expect(reading.placed).toBe(head.placed);
+    expect(reading.half?.areas).toBe(head.areas);
+    expect(reading.half?.targetShare).toBeCloseTo(head.share);
+  });
+
+  it("says nothing with fewer than three areas holding targets", () => {
     const source = briefFixture();
-    // Three areas of 3 targets each: all three hold 9 of the 18.
-    expect(spendingAreas(spendingSetup(legacy(), source)!, source, ["A", "B", "C"]).half).toBeNull();
     expect(spendingAreas(spendingSetup(legacy(), source)!, source, ["A", "B"]).half).toBeNull();
   });
 
@@ -405,14 +423,6 @@ describe("itemOpens", () => {
     expect(
       itemOpens({ ...bare, bodies: { year: "2021", count: 1, names: [{ name: "An administration", amount: 1, amountUsd: null }] } }),
     ).toBe(true);
-  });
-});
-
-describe("percentLabel", () => {
-  it("rounds to whole percentages and keeps a small share visible", () => {
-    expect(percentLabel(0.613)).toBe("61%");
-    expect(percentLabel(0.004)).toBe("<1%");
-    expect(percentLabel(0)).toBe("0%");
   });
 });
 
@@ -462,6 +472,9 @@ describe("the areas in a climate lens", () => {
       ["s2", 4, 7],
       ["s1", 2, 0],
     ]);
+    // Its targets' share over the 6 targets placed in a climate mitigation area.
+    expect(reading.placed).toBe(6);
+    expect(reading.areas[0].targetShare).toBeCloseTo(4 / 6);
     expect(reading.areas[0].lines.map((l) => [l.code, l.area, l.areaStatus])).toEqual([["71405", "s2", "ai"]]);
     expect(reading.apart.lines.map((l) => [l.code, l.area, l.areaStatus])).toEqual([["82212", null, "apart"]]);
     expect(reading.apart.spendShare).toBeCloseTo(3 / 10);

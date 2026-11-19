@@ -783,7 +783,7 @@ export interface SpendingArea {
   name: string;
   /** Targets in the brief's documents whose primary area this is. */
   targets: string[];
-  /** Their share of the targets in the brief's documents, 0..1. */
+  /** Their share of the targets placed in an area of the lens, 0..1. */
   targetShare: number;
   /** Spending on lines whose area this is, over the complete years. */
   spend: number;
@@ -803,14 +803,15 @@ export interface SpendingArea {
 
 export interface SpendingAreas {
   areas: SpendingArea[];
-  /** The targets in the brief's documents: the denominator of every share
-   *  of the targets, stated in the sentences. */
-  total: number;
+  /** The targets in the brief's documents placed in an area of the lens:
+   *  the denominator of every share of the targets, stated in the
+   *  sentences, as the thematic areas count them (`lensAreas`). */
+  placed: number;
   /** The lines kept apart: not yet placed in any area. */
   apart: { spend: number; spendUsd: number | null; spendShare: number; lines: SpendingLine[] };
   /** How few areas, the table's first rows, hold at least half of the targets
-   *  in the brief's documents, with their share of the targets and of the
-   *  reviewed spending; null where a sentence would say nothing. */
+   *  placed in an area, with their share of the targets and of the reviewed
+   *  spending; null where a sentence would say nothing. */
   half: { areas: number; of: number; targetShare: number; spendShare: number } | null;
 }
 
@@ -840,9 +841,11 @@ function linesIn(setup: SpendingSetup, lens: LensId, listed: ReadonlySet<string>
  * Every area of the lens shown (Biodiversity's unless the lines are placed in
  * the brief's lens) with its share of the targets beside its share of the
  * reviewed spending, and the coherence of its targets, the targets read from
- * the brief's documents. Areas with neither targets nor spending stay out; the
- * rest come with the most targets first, then the most spending. Lines not
- * placed in an area are counted apart.
+ * the brief's documents. The targets' shares are read over those placed in an
+ * area of the lens, so the same areas hold the same share as in the thematic
+ * areas. Areas with neither targets nor spending stay out; the rest come with
+ * the most targets first, then the most spending. Lines not placed in an area
+ * are counted apart.
  */
 export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: readonly string[], wanted: LensId | null = "globe"): SpendingAreas {
   const shown = spendingLens(setup, wanted);
@@ -851,14 +854,15 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
   const lines = linesIn(setup, shown, new Set(categories.map((c) => c.id)));
   const scope = scopeOf(source, [...docs]);
   const ids = scope.commitments.map((c) => c.id);
-  const total = ids.length;
   const tones = areaTones(lensAreas(source, scope, shown), scope);
   const reviewed = lines.reduce((s, l) => s + l.total, 0);
   const matchedAll = new Set(lines.flatMap((l) => l.matches));
   const byTotal = (x: SpendingLine, y: SpendingLine) => y.total - x.total || x.code.localeCompare(y.code);
+  const targetsOf = new Map(categories.map((a) => [a.id, ids.filter((id) => lens?.primary[id] === a.id)]));
+  const placed = [...targetsOf.values()].reduce((s, t) => s + t.length, 0);
   const areas = categories
     .map((a) => {
-      const targets = ids.filter((id) => lens?.primary[id] === a.id);
+      const targets = targetsOf.get(a.id) ?? [];
       const inArea = lines.filter((l) => l.area === a.id).sort(byTotal);
       const spend = inArea.reduce((s, l) => s + l.total, 0);
       const counts = tones.get(a.id) ?? { reinforce: 0, partial: 0, apart: 0, none: 0, total: 0 };
@@ -866,7 +870,7 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
         id: a.id,
         name: a.name,
         targets,
-        targetShare: total > 0 ? targets.length / total : 0,
+        targetShare: placed > 0 ? targets.length / placed : 0,
         spend,
         spendUsd: inArea.length ? usdOf(inArea) : setup.currency === "US$" ? null : 0,
         spendShare: reviewed > 0 ? spend / reviewed : 0,
@@ -883,12 +887,12 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
   // fewest holding half are the table's first rows.
   const half = insightHalf(
     areas.map((a) => a.targets.length),
-    total,
+    placed,
   );
   const lead = half ? areas.slice(0, half.units) : [];
   return {
     areas,
-    total,
+    placed,
     apart: {
       spend: apartSpend,
       spendUsd: apartLines.length ? usdOf(apartLines) : setup.currency === "US$" ? null : 0,
@@ -898,7 +902,7 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
     half: half && {
       areas: half.units,
       of: areas.length,
-      targetShare: half.count / total,
+      targetShare: half.count / placed,
       spendShare: lead.reduce((s, a) => s + a.spendShare, 0),
     },
   };
@@ -916,11 +920,4 @@ export function itemOpens(item: SpendingItem): boolean {
     (item.pays?.length ?? 0) > 0 ||
     (item.parts?.length ?? 0) > 0
   );
-}
-
-/** A share as a whole percentage for labels: "<1%" for a small one above zero. */
-export function percentLabel(share: number): string {
-  if (!(share > 0)) return "0%";
-  const pct = Math.round(share * 100);
-  return pct < 1 ? "<1%" : `${pct}%`;
 }

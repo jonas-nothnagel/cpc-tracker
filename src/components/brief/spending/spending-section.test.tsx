@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../messages/en.json";
+import es from "../../../../messages/es.json";
 import type { Currency } from "@/components/brief/contracts/money";
 import { parseBerAreas } from "@/lib/brief/ber-areas";
 import { parseBerNames } from "@/lib/brief/ber-names-shared";
@@ -55,6 +56,31 @@ const BOTH = spendingSetup(levelsPayload(), CLIMATE, {
   },
 })!;
 
+/** The fixture with a climate adaptation lens beside Biodiversity (the
+ *  GGA's, or a country's own), the rebuilt record placed in it: 71405 in
+ *  Water and sanitation, 82212 in no area of it. */
+function adaptation(id: "gga" | "adaptation") {
+  const source = {
+    ...SOURCE,
+    lenses: [...SOURCE.lenses, { id, taxonomyType: id, categories: [{ id: "w", name: "Water and sanitation" }], primary: { A1: "w" } as Record<string, string> }],
+  };
+  const setup = spendingSetup(levelsPayload(), source, {
+    areas: {
+      globe: parseBerAreas({ lines: [{ code: "71405", area: "g1", status: "second-agrees" }, { code: "82212", area: null, status: "no-clear-area" }] }, null, "globe"),
+      [id]: parseBerAreas({ lines: [{ code: "71405", area: "w", status: "second-agrees" }, { code: "82212", area: null, status: "no-clear-area" }] }, null, id),
+    },
+  })!;
+  return { source, setup };
+}
+
+/** Agriculture (g2) holds 5 of the 12 targets placed in an area, Protected
+ *  areas (g1) 4 and 30% of the spending, Water (g5) 3; six targets have no area. */
+function twelvePlaced(): BriefSource {
+  const primary: Record<string, string> = { A6: "g1", B1: "g1", B2: "g1", B3: "g1", C1: "g5", C2: "g5", C3: "g5" };
+  for (const id of ["A1", "A2", "A3", "A4", "A5"]) primary[id] = "g2";
+  return { ...SOURCE, lenses: [{ ...SOURCE.lenses[0], primary }, ...SOURCE.lenses.slice(1)] };
+}
+
 afterEach(cleanup);
 
 function renderSection(
@@ -67,6 +93,7 @@ function renderSection(
     source = SOURCE,
     lens = null,
     onLens,
+    locale = "en",
   }: {
     onExploreArea?: (id: string, lens: LensId) => void;
     docs?: string[];
@@ -75,10 +102,11 @@ function renderSection(
     source?: BriefSource;
     lens?: LensId | null;
     onLens?: (next: LensId) => void;
+    locale?: "en" | "es";
   } = {},
 ) {
   return render(
-    <NextIntlClientProvider locale="en" messages={en}>
+    <NextIntlClientProvider locale={locale} messages={locale === "es" ? es : en}>
       <SpendingSection
         setup={setup}
         source={source}
@@ -149,18 +177,16 @@ describe("SpendingSection, in two components", () => {
   });
 
   it("states how few areas hold half of the targets, and an opened area's own shares", () => {
-    // Agriculture (g2) holds 8 of the 18 targets; Protected areas (g1) 2 and 30% of the spending.
-    const primary: Record<string, string> = { B3: "g1", B4: "g1", C1: "g5", C2: "g5" };
-    for (const id of ["A1", "A2", "A3", "A4", "A5", "A6", "B1", "B2"]) primary[id] = "g2";
-    const source = { ...SOURCE, lenses: [{ ...SOURCE.lenses[0], primary }, ...SOURCE.lenses.slice(1)] };
+    const source = twelvePlaced();
     const { container } = renderSection(spendingSetup(legacyPayload(), source)!, { source });
     const sentence = () => container.querySelector(".sp-pair-side > .brief-hub-headline")?.textContent ?? null;
-    expect(sentence()).toBe("2 of the 3 thematic areas hold 56% of the 18 targets and 100% of the reviewed biodiversity spending.");
+    // Over the 12 targets placed in an area, as the thematic areas count them.
+    expect(sentence()).toBe("2 of the 3 thematic areas hold 75% of the 12 targets and 100% of the reviewed biodiversity spending.");
     const row = () => within(screen.getByRole("list", { name: /Thematic areas/ })).getByRole("button", { name: /^Protected areas/ });
     fireEvent.click(row());
-    expect(sentence()).toBe("Protected areas holds 30% of the reviewed biodiversity spending and 11% of the 18 targets.");
+    expect(sentence()).toBe("Protected areas holds 30% of the reviewed biodiversity spending and 33% of the 12 targets.");
     fireEvent.click(row());
-    expect(sentence()).toBe("2 of the 3 thematic areas hold 56% of the 18 targets and 100% of the reviewed biodiversity spending.");
+    expect(sentence()).toBe("2 of the 3 thematic areas hold 75% of the 12 targets and 100% of the reviewed biodiversity spending.");
   });
 
   it("lists six of the review's lines, the rest on request", () => {
@@ -220,7 +246,8 @@ describe("SpendingSection, Country X's illustrative file", () => {
     expect(screen.getByRole("heading", { level: 3, name: "Targets and reviewed spending by thematic area" })).toBeTruthy();
     const rows = within(screen.getByRole("list", { name: /Thematic areas/ })).getAllByRole("button");
     expect(rows.map((r) => r.textContent?.split(/\d/)[0])).toEqual(["Agriculture", "Protected areas", "Water"]);
-    expect(rows[0].textContent).toContain("17%");
+    // 3 of the 9 targets placed in an area, 7 of the 10 reviewed.
+    expect(rows[0].textContent).toContain("33%");
     expect(rows[0].textContent).toContain("70%");
     expect(rows[2].textContent).toContain("None");
   });
@@ -452,7 +479,8 @@ describe("SpendingSection, a rebuilt record", () => {
     const row = () => within(screen.getByRole("list", { name: /Thematic areas/ })).getByRole("button", { name: /^Protected areas/ });
     const widths = () => [...row().querySelectorAll(".sp-bar-line > span")].map((s) => (s as HTMLElement).style.width);
     const before = widths();
-    expect(row().textContent).toContain("17%");
+    // 3 of the 9 targets placed in an area.
+    expect(row().textContent).toContain("33%");
     expect(row().textContent).toContain("70%");
     fireEvent.click(within(screen.getByRole("group", { name: "Show shares or amounts" })).getByRole("button", { name: "Amount" }));
     expect(row().textContent).toContain("3 targets");
@@ -486,7 +514,7 @@ describe("SpendingSection, in the climate lenses", () => {
 
   it("reads the areas in the lens shown, the area column named after it", () => {
     const { container } = renderSection(BOTH, { source: CLIMATE, lens: "ipcc", onLens: () => {} });
-    expect(rowNames()).toEqual(["Agriculture, forestry and other land use", "Energy", "General biodiversity spending, no specific area"]);
+    expect(rowNames()).toEqual(["Agriculture, forestry and other land use", "Energy", "Biodiversity spending with no climate mitigation area"]);
     expect(container.querySelector(".sp-row-head")?.firstElementChild?.textContent).toBe("Climate mitigation");
     expect(container.querySelector(".sp-pair-side > .brief-hub-headline")).toBeNull();
   });
@@ -508,8 +536,26 @@ describe("SpendingSection, in the climate lenses", () => {
     fireEvent.click(screen.getByRole("button", { name: /^Energy/ }));
     expect(screen.getByText("No reviewed biodiversity spending in this area.")).toBeTruthy();
     expect(container.querySelector(".sp-pair-side > .brief-hub-headline")?.textContent).toBe(
-      "Energy holds 0% of the reviewed biodiversity spending and 11% of the 18 targets.",
+      "Energy holds 0% of the reviewed biodiversity spending and 33% of the 6 targets.",
     );
+  });
+
+  it("names the money with no area of a climate lens as biodiversity spending with no area of that lens, line by line too", () => {
+    renderSection(BOTH, { source: CLIMATE, lens: "ipcc", onLens: () => {} });
+    const row = screen.getByRole("button", { name: /^Biodiversity spending with no climate mitigation area/ });
+    expect(within(row).getByText("30% of the reviewed biodiversity spending has no climate mitigation area")).toBeTruthy();
+    fireEvent.click(row);
+    expect(within(screen.getByRole("list", { name: "Budget lines in this area" })).getByText("No climate mitigation area")).toBeTruthy();
+    expect(screen.queryByText(/General biodiversity spending|No specific area/)).toBeNull();
+  });
+
+  it.each(["gga", "adaptation"] as const)("names the money with no area of the %s lens after climate adaptation", (id) => {
+    const { source, setup } = adaptation(id);
+    renderSection(setup, { source, lens: id, onLens: () => {} });
+    const row = screen.getByRole("button", { name: /^Biodiversity spending with no climate adaptation area/ });
+    expect(within(row).getByText("30% of the reviewed biodiversity spending has no climate adaptation area")).toBeTruthy();
+    fireEvent.click(row);
+    expect(within(screen.getByRole("list", { name: "Budget lines in this area" })).getByText("No climate adaptation area")).toBeTruthy();
   });
 
   it("offers no choice where the lines are placed in Biodiversity only", () => {
@@ -529,5 +575,22 @@ describe("SpendingSection, in the climate lenses", () => {
       </NextIntlClientProvider>,
     );
     expect(screen.queryByRole("list", { name: "Budget lines in this area" })).toBeNull();
+  });
+});
+
+describe("SpendingSection, in Spanish", () => {
+  /** A whole percentage as the page's language writes it: "75 %" in Spanish. */
+  const pct = (share: number) => new Intl.NumberFormat("es", { style: "percent", maximumFractionDigits: 0 }).format(share);
+
+  it("writes its percentages as the page's language does, as the brief's other sections do", () => {
+    const source = twelvePlaced();
+    const { container } = renderSection(spendingSetup(legacyPayload(), source)!, { source, locale: "es" });
+    expect(pct(0.75)).not.toBe("75%");
+    expect(container.querySelector(".sp-pair-side > .brief-hub-headline")?.textContent).toBe(
+      `2 de las 3 áreas temáticas concentran ${pct(0.75)} de las 12 metas y ${pct(1)} del gasto revisado en biodiversidad.`,
+    );
+    const row = within(screen.getByRole("list", { name: /Áreas temáticas/ })).getByRole("button", { name: /^Protected areas/ });
+    expect([...row.querySelectorAll(".sp-pct")].map((c) => c.textContent)).toEqual([pct(4 / 12), pct(0.3)]);
+    expect(container.querySelector(".sp-areas")?.textContent).not.toMatch(/\d%/);
   });
 });

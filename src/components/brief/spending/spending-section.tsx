@@ -8,7 +8,6 @@ import { moneyParts, per100 } from "@/lib/brief/contracts/money";
 import type { BriefSource, LensId } from "@/lib/brief/source";
 import {
   itemOpens,
-  percentLabel,
   spendingAreas,
   spendingLens,
   spendingRecord,
@@ -20,6 +19,7 @@ import {
   type SpendingRecord,
   type SpendingSetup,
 } from "@/lib/brief/spending";
+import { useNumbers } from "../ink";
 import { lensNameOf, lensTooltip } from "../lens-tooltip";
 import { SectionHead } from "../section-head";
 import "./spending.css";
@@ -28,6 +28,14 @@ import "./spending.css";
 const FIELD = 100;
 /** Budget lines listed under an opened area, and review lines before "show all". */
 const LINES_MAX = 8;
+
+/** What the lines with no area lack, as the copy names it: in a climate lens
+ *  an area of climate mitigation or adaptation, in Biodiversity a specific one. */
+type ApartIn = "mitigation" | "adaptation" | "other";
+
+function apartIn(lens: LensId): ApartIn {
+  return lens === "ipcc" ? "mitigation" : lens === "gga" || lens === "adaptation" ? "adaptation" : "other";
+}
 const ITEMS_MAX = 6;
 
 /**
@@ -70,6 +78,7 @@ export function SpendingSection({
   const t = useTranslations("brief.spending");
   const tl = useTranslations("briefing.lens");
   const money = useMoney(setup, currency);
+  const { pct } = useNumbers();
   const record = useMemo(() => spendingRecord(setup), [setup]);
   const shownLens = spendingLens(setup, lens);
   const reading = useMemo(() => spendingAreas(setup, source, docs, shownLens), [setup, source, docs, shownLens]);
@@ -90,17 +99,17 @@ export function SpendingSection({
   const areasSentence = opened
     ? t("areas.insightArea", {
         area: opened.name,
-        spend: percentLabel(opened.spendShare),
-        targets: percentLabel(opened.targetShare),
-        total: reading.total,
+        spend: pct(opened.spendShare),
+        targets: pct(opened.targetShare),
+        total: reading.placed,
       })
     : reading.half
       ? t("areas.insight", {
           count: reading.half.areas,
           of: reading.half.of,
-          targets: percentLabel(reading.half.targetShare),
-          total: reading.total,
-          spend: percentLabel(reading.half.spendShare),
+          targets: pct(reading.half.targetShare),
+          total: reading.placed,
+          spend: pct(reading.half.spendShare),
         })
       : null;
 
@@ -561,6 +570,7 @@ function itemSub(item: SpendingItem, t: ReturnType<typeof useTranslations>): str
 
 function ItemDetail({ item, money }: { item: SpendingItem; money: Money }) {
   const t = useTranslations("brief.spending.items");
+  const { pct } = useNumbers();
   return (
     <>
       {item.rates && item.rates.length > 0 && (
@@ -604,7 +614,7 @@ function ItemDetail({ item, money }: { item: SpendingItem; money: Money }) {
       )}
       {item.pays && item.pays.length > 0 && (
         <p className="sp-open-line">
-          {t("pays", { list: item.pays.map((p) => `${inSentence(p.name)} ${percentLabel(p.share)}`).join("; ") })}
+          {t("pays", { list: item.pays.map((p) => `${inSentence(p.name)} ${pct(p.share)}`).join("; ") })}
         </p>
       )}
       {item.parts && item.parts.length > 0 && (
@@ -660,7 +670,11 @@ function AreasStep({
   onExploreArea?: (areaId: string) => void;
 }) {
   const t = useTranslations("brief.spending.areas");
+  const { pct } = useNumbers();
   const setOpen = (toggle: (cur: string | null) => string | null) => onOpen(toggle(open));
+  // The lines with no area are named after the lens: in a climate lens,
+  // biodiversity spending with no area of that lens.
+  const lacking = apartIn(shownLens);
   // Shares by default; amounts on request, the bars still drawn by share so
   // both columns stay on one scale.
   const [mode, setMode] = useState<"share" | "amount">("share");
@@ -705,6 +719,7 @@ function AreasStep({
             open={open === a.id}
             onToggle={() => setOpen((cur) => (cur === a.id ? null : a.id))}
             money={money}
+            lacking={lacking}
             showMatches={setup.showMatches}
             // The ring centres an area on its targets: none here, nothing to centre.
             onExplore={onExploreArea && a.targets.length > 0 ? () => onExploreArea(a.id) : undefined}
@@ -719,19 +734,19 @@ function AreasStep({
               aria-controls="sp-area-apart"
               onClick={() => setOpen((cur) => (cur === "apart" ? null : "apart"))}
             >
-              <span className="sp-area-name">{t("apartRow")}</span>
+              <span className="sp-area-name">{t("apartRow", { lens: lacking })}</span>
               <span className="sp-cell" aria-hidden="true" />
               <Bar
                 share={apart.spendShare}
                 max={maxShare}
                 ink="apart"
-                label={mode === "amount" ? money.amount(apart.spend, apart.spendUsd) : percentLabel(apart.spendShare)}
+                label={mode === "amount" ? money.amount(apart.spend, apart.spendUsd) : pct(apart.spendShare)}
               />
-              <span className="brief-sr-only">{t("apartLabel", { spend: percentLabel(apart.spendShare) })}</span>
+              <span className="brief-sr-only">{t("apartLabel", { spend: pct(apart.spendShare), lens: lacking })}</span>
             </button>
             {open === "apart" && (
               <div className="sp-open" id="sp-area-apart">
-                <LineList lines={apart.lines} money={money} label={t("linesLabel")} />
+                <LineList lines={apart.lines} money={money} lacking={lacking} label={t("linesLabel")} />
               </div>
             )}
           </li>
@@ -748,6 +763,7 @@ function AreaRow({
   open,
   onToggle,
   money,
+  lacking,
   showMatches,
   onExplore,
 }: {
@@ -757,13 +773,15 @@ function AreaRow({
   open: boolean;
   onToggle: () => void;
   money: Money;
+  lacking: ApartIn;
   showMatches: boolean;
   onExplore?: () => void;
 }) {
   const t = useTranslations("brief.spending.areas");
+  const { pct } = useNumbers();
   const panel = `sp-area-${area.id}`;
-  const targetsLabel = mode === "amount" ? t("targetsCount", { count: area.targets.length }) : percentLabel(area.targetShare);
-  const spendLabel = area.spend > 0 ? (mode === "amount" ? money.amount(area.spend, area.spendUsd) : percentLabel(area.spendShare)) : t("noSpend");
+  const targetsLabel = mode === "amount" ? t("targetsCount", { count: area.targets.length }) : pct(area.targetShare);
+  const spendLabel = area.spend > 0 ? (mode === "amount" ? money.amount(area.spend, area.spendUsd) : pct(area.spendShare)) : t("noSpend");
   return (
     <li className="sp-area" data-open={open ? "true" : undefined}>
       <button type="button" className="sp-row" aria-expanded={open} aria-controls={panel} onClick={onToggle}>
@@ -788,15 +806,15 @@ function AreaRow({
             <p className="sp-open-line">
               {area.coherence.rated
                 ? t("coherence", {
-                    aligned: percentLabel(area.coherence.reinforce / area.coherence.total),
-                    apart: percentLabel(area.coherence.apart / area.coherence.total),
+                    aligned: pct(area.coherence.reinforce / area.coherence.total),
+                    apart: pct(area.coherence.apart / area.coherence.total),
                     total: area.coherence.total,
                   })
                 : t("coherenceFew", { total: area.coherence.total })}
             </p>
           )}
           {area.lines.length > 0 ? (
-            <LineList lines={area.lines} money={money} label={t("linesLabel")} />
+            <LineList lines={area.lines} money={money} lacking={lacking} label={t("linesLabel")} />
           ) : (
             <p className="sp-open-line">{t("noLines")}</p>
           )}
@@ -811,7 +829,7 @@ function AreaRow({
   );
 }
 
-function LineList({ lines, money, label }: { lines: SpendingLine[]; money: Money; label: string }) {
+function LineList({ lines, money, lacking, label }: { lines: SpendingLine[]; money: Money; lacking: ApartIn; label: string }) {
   const t = useTranslations("brief.spending.areas");
   // A line the review describes opens to its own words: its tag and its description.
   const [open, setOpen] = useState<string | null>(null);
@@ -834,7 +852,7 @@ function LineList({ lines, money, label }: { lines: SpendingLine[]; money: Money
                     <span title={l.original}>{l.name}</span>
                   )}
                   <span className="sp-line-status" data-status={l.areaStatus}>
-                    {l.areaStatus === "checked" ? t("checked") : l.areaStatus === "ai" ? t("aiSuggested") : t("apartWhy")}
+                    {l.areaStatus === "checked" ? t("checked") : l.areaStatus === "ai" ? t("aiSuggested") : t("apartWhy", { lens: lacking })}
                   </span>
                   {isOpen && l.reviewTag && <span className="sp-line-detail">{t(`reviewTag.${l.reviewTag}`)}</span>}
                   {isOpen && l.description && <span className="sp-line-detail sp-quote">{t("reviewDescription", { text: l.description })}</span>}
