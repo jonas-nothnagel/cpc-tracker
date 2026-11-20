@@ -81,7 +81,7 @@ def published_on_problem(entry: dict) -> str | None:
     year, month = match.group(1), match.group(2)
     if not re.search(rf"(?<!\d){year}(?!\d)", stated):
         return f"year {year} is not a date `published` states ({published!r})"
-    if month is not None and MONTHS[int(month) - 1] not in published.lower():
+    if month is not None and not re.search(rf"\b{MONTHS[int(month) - 1]}\b", published.lower()):
         return f"month {month} ({MONTHS[int(month) - 1].title()}) is not in `published` ({published!r})"
     return None
 

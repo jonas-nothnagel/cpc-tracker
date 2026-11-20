@@ -293,8 +293,6 @@
 /* One column per year, no wider than a bar needs; bars on one baseline.
    No scrolling box: it would clip the hover card above a bar. */
 [data-brief] .sp-plot {
-  /* The height the bars stand in, from the baseline up. */
-  --sp-slot: 11rem;
   display: grid;
   grid-template-columns: repeat(var(--sp-years), minmax(1.5rem, 7rem));
   justify-content: start;
@@ -327,7 +325,7 @@
 
 [data-brief] .sp-year {
   display: grid;
-  grid-template-rows: var(--sp-slot) auto auto;
+  grid-template-rows: 11rem auto auto;
   min-width: 0;
 }
 

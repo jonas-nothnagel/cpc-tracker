@@ -52,12 +52,14 @@ describe("the documents by when they came out", () => {
 
   it("gives a document's full name and date on pointing, the month where its config states one", () => {
     const { container } = render(section(dated({ A: "2020-05", B: "2016" })));
-    expect([...container.querySelectorAll<HTMLElement>(".sp-doc-name")].map((n) => n.title)).toEqual(["Document B, 2016", "Document A, May 2020"]);
+    expect([...container.querySelectorAll<HTMLElement>(".sp-doc-name")].map((n) => n.title)).toEqual(["Document B, 2016", "Document A, May 2020", "Document C"]);
   });
 
   it("names the documents without a date on a line of their own, and reads only the documents in the brief", () => {
     const all = render(section(dated({ A: "2021" })));
     expect(foot(all.container)).toEqual(["Documents from 2020–2022: A (2021)", "Documents without a date: B, C"]);
+    // An undated code still gives its full name on pointing.
+    expect([...all.container.querySelectorAll<HTMLElement>(".sp-doc-name")].map((n) => n.title)).toEqual(["Document A, 2021", "Document B", "Document C"]);
     cleanup();
     const some = render(section(dated({ A: "2021", B: "2016" }), { docs: ["A"] }));
     expect(foot(some.container)).toEqual(["Documents from 2020–2022: A (2021)"]);

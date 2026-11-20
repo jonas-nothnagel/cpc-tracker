@@ -321,7 +321,7 @@ function YearChart({
       </span>
     ));
   };
-  const during = marks ? [...marks.byYear.values()].flat().concat(marks.between).sort((a, b) => (a.publishedOn ?? "").localeCompare(b.publishedOn ?? "")) : [];
+  const during = marks ? marks.dated.filter((d) => !marks.before.includes(d) && !marks.after.includes(d)) : [];
   const span = marks ? (marks.first === marks.last ? String(marks.first) : `${marks.first}–${marks.last}`) : "";
   const [mode, setMode] = useState<"amount" | "share">("amount");
   const [hover, setHover] = useState<{ year: string; series: SeriesId } | null>(null);
@@ -459,7 +459,15 @@ function YearChart({
           )}
           {marks.undated.length > 0 && (
             <p className="sp-docs-out">
-              {t("docs.undated")} {marks.undated.map((d) => d.code).join(", ")}
+              {t("docs.undated")}{" "}
+              {marks.undated.map((d, i) => (
+                <span key={d.id}>
+                  {i > 0 && ", "}
+                  <span className="sp-doc-name" title={d.name}>
+                    {d.code}
+                  </span>
+                </span>
+              ))}
             </p>
           )}
         </div>

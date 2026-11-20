@@ -48,6 +48,8 @@ def test_an_entry_without_the_field_holds() -> None:
         ({"published": "September 2025", "publishedOn": "2024-09"}, "year 2024"),
         ({"published": "September 2025", "publishedOn": "2025-08"}, "month 08"),
         ({"published": "2022", "publishedOn": "2022-06"}, "month 06"),
+        # A month name inside another word states no month.
+        ({"published": "Maybe adopted 2021", "publishedOn": "2021-05"}, "month 05"),
     ],
 )
 def test_a_date_the_text_does_not_state_is_named(entry: dict, why: str) -> None:
