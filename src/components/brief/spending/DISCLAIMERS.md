@@ -110,48 +110,33 @@ the review for 2015; from 2016 it is 42-64% of each year's reviewed spending.
 - es: 2015 no se muestra: el Ministerio de Ambiente, creado ese año, no tiene líneas presupuestarias en la revisión para ese año.
 - mn: 2015 оныг харуулаагүй: тэр онд байгуулагдсан Байгаль орчны яамны төсвийн мөр тоймд тухайн онд байхгүй.
 
-**The documents on the chart of the years** (19 November 2026, for the
+**The documents on the chart of the years** (20 November 2026, for the
 biodiversity finance expert's ask of 8 October 2026: whether the spending
-came before or after a policy came out). Over the bars, each of the brief's
-documents by the year in `publishedOn`
-(python/data/<country>-country-config.json), entered by hand from the
-free-text `published` beside it and held to it by `pnpm check:configs`: its
-code in its year's column and a dashed line down onto that year's bar. Those
-from before or after the charted years point off the two ends with their
-year. Each code is a choice: with one chosen, the chart's own bars turn pale
-in the years before it, hatched in its own year and stay blue after it, and
-one line under the chart states the three amounts. No block was added for
-this (Jonas, 19 November 2026: "we already have SO many components"); a
-first version, the codes in a row under the years, did not read as part of
-the timeline. What the chart does not say:
+came before or after a policy came out). A thin line at the date each of the
+brief's documents came out, down across the bars, its code on top; the date
+is `publishedOn` (python/data/<country>-country-config.json), entered by hand
+from the free-text `published` beside it and held to it by
+`pnpm check:configs`. Documents from before or after the charted years, and
+those without a date, are named in a line each under the chart. Earlier
+versions were dropped as confusing (Jonas, 19 and 20 November 2026): the
+codes in a row under the years, a separate block per document ("we already
+have SO many components"), and codes with dashed drops, end arrows and a
+click that re-inked the bars. What the chart does not say:
 
-- **The document's own year is neither before nor after.** The spending is
-  by year and a date falls inside one, so that year is not split (no share
-  of a year is assumed to come after a month). It is hatched and stated on
-  its own, under its year.
-- **"at least"** stands before an amount that includes a year whose data
-  lack a part of the budget (Mongolia: 2022 and 2024 hold the local budgets
-  only, 2023 the State budget only). The amount is what the review's data
-  hold for those years, so the true figure is higher: a year with both
-  budgets is US$74-80 million (2020, 2021), against US$32-64 million held
-  for each of 2022 to 2024.
-- **A side with no charted year is not stated** (a document from before the
-  review's first year has no "before", one from after its last year no
-  "after"). It is not zero: spending outside the review's years is not in
-  the review.
-- The amounts are sums over the charted years, where the section's headline
-  figure counts the complete years only (Mongolia: US$155 million for
-  2020-2021).
+- **A line's place within its year** is the month the config states; where
+  it states the year alone, the line stands in the middle of the year. The
+  spending is by year, so a line through a bar does not split that year's
+  spending.
 - A date is the one the config states, which is not always a publication:
   Panama's PNSH (2016) and PNRF (May 2021) are dates of adoption.
 - Where the config gives a year alone, the month is not known (Panama's ENR,
   PIOTA, HR; Sri Lanka's NEnvP, NWRP, NPWM, NWP; Côte d'Ivoire's LDN).
 - A document whose config states only the period it covers (Panama's PENCYT,
-  "2025-2029") or no date at all stands on the grey line, never on the chart.
+  "2025-2029") or no date at all is named under the chart, never on it.
 
-- en: The spending of a document's own year counts neither before nor after it. An amount marked "at least" includes a year whose data lack a part of the budget.
-- es: El gasto del año del propio documento no cuenta ni antes ni después. Un monto con "al menos" incluye un año cuyos datos no contienen una parte del presupuesto.
-- mn: Баримт бичгийн өөрийн оны зарцуулалтыг өмнөх, дараахын алинд нь ч тооцоогүй. "Дор хаяж" гэсэн дүнд төсвийн нэг хэсэг нь өгөгдөлд байхгүй жил орсон.
+- en: A line stands at the month a document came out, or in the middle of its year where only the year is known.
+- es: Cada línea está en el mes en que salió el documento, o a mitad del año cuando solo se conoce el año.
+- mn: Шугам нь баримт бичиг гарсан сард, зөвхөн он нь мэдэгдэж байвал оны дунд байрлана.
 
 ## What it is for (areas)
 

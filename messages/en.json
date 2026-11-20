@@ -3521,10 +3521,10 @@
         "year": "Year",
         "partNotInData": "{part} not in the data",
         "docs": {
-          "before": "Before",
-          "after": "After",
-          "atLeast": "at least {amount}",
-          "legend": "Year a document came out"
+          "legend": "Document came out",
+          "before": "Came out before {year}:",
+          "after": "Came out after {year}:",
+          "notCharted": "Came out in a year the review does not hold:"
         }
       },
       "items": {

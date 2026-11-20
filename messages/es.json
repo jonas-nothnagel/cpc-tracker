@@ -3521,10 +3521,10 @@
         "year": "Año",
         "partNotInData": "{part}: no está en los datos",
         "docs": {
-          "before": "Antes",
-          "after": "Después",
-          "atLeast": "al menos {amount}",
-          "legend": "Año en que salió un documento"
+          "legend": "Salida de un documento",
+          "before": "Salieron antes de {year}:",
+          "after": "Salieron después de {year}:",
+          "notCharted": "Salieron en un año que la revisión no contiene:"
         }
       },
       "items": {
