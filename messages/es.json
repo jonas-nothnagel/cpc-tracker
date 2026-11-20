@@ -3519,7 +3519,13 @@
         "inAll": "{amount} en total",
         "tableCaption": "Gasto revisado por año, {unit}",
         "year": "Año",
-        "partNotInData": "{part}: no está en los datos"
+        "partNotInData": "{part}: no está en los datos",
+        "docs": {
+          "before": "Documentos de antes de {year}:",
+          "during": "Documentos de {years}:",
+          "after": "Documentos de después de {year}:",
+          "undated": "Documentos sin fecha:"
+        }
       },
       "items": {
         "title": "Gasto revisado por {unit, select, institution {institución} line {línea presupuestaria} both {institución y programa} other {programa}}, {years}",
@@ -3690,6 +3696,9 @@
       "linesTitle": "Líneas presupuestarias con fuerte coincidencia",
       "actionsTitle": "Acciones reportadas con fuerte alineación",
       "explore": "Explorar esta meta"
+    },
+    "docDates": {
+      "hover": "{name}, {date}"
     }
   }
 }

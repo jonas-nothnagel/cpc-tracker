@@ -1,11 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { keepCurrencyInLink } from "@/components/brief/contracts/currency-switch";
 import type { Currency } from "@/components/brief/contracts/money";
 import { moneyParts, per100 } from "@/lib/brief/contracts/money";
-import type { BriefSource, LensId } from "@/lib/brief/source";
+import { docDateLabel, docYear, markDocuments } from "@/lib/brief/doc-dates";
+import type { BriefDocument, BriefSource, LensId } from "@/lib/brief/source";
 import {
   itemOpens,
   spendingAreas,
@@ -83,6 +84,8 @@ export function SpendingSection({
   const record = useMemo(() => spendingRecord(setup), [setup]);
   const shownLens = spendingLens(setup, lens);
   const reading = useMemo(() => spendingAreas(setup, source, docs, shownLens), [setup, source, docs, shownLens]);
+  // The brief's documents, named under the chart's years.
+  const documents = useMemo(() => source.documents.filter((d) => docs.includes(d.id)), [source, docs]);
   // The area row open in the table, in the lens it was opened in: the
   // sentence beside it follows it, and another lens closes it.
   const [openIn, setOpenIn] = useState<{ lens: LensId; id: string } | null>(null);
@@ -166,7 +169,7 @@ export function SpendingSection({
             </div>
           </dl>
         </div>
-        <YearChart setup={setup} record={record} money={money} scope={scope} />
+        <YearChart setup={setup} record={record} money={money} scope={scope} documents={documents} />
       </div>
 
       <div className="sp-pair">
@@ -271,9 +274,55 @@ type YearPart = YearRow["parts"][number];
  * year holds every part; a part the year's data do not hold is named under
  * the year, never drawn as zero. As shares, each part beside the other, as a
  * share of its own budget.
+ *
+ * Under the chart, the brief's documents by when they came out against the
+ * charted years: before them, during them, after them, and those without a
+ * date, a line each. Nothing is drawn on the bars: yearly spending cannot
+ * show what a document did, and a mark on a bar would say it does.
  */
-function YearChart({ setup, record, money, scope }: { setup: SpendingSetup; record: SpendingRecord; money: Money; scope: string }) {
+function YearChart({
+  setup,
+  record,
+  money,
+  scope,
+  documents,
+}: {
+  setup: SpendingSetup;
+  record: SpendingRecord;
+  money: Money;
+  scope: string;
+  /** The brief's documents. */
+  documents: BriefDocument[];
+}) {
   const t = useTranslations("brief.spending.chart");
+  const td = useTranslations("brief.docDates");
+  const locale = useLocale();
+  const marks = useMemo(() => markDocuments(documents, record.byYear.map((y) => y.year)), [documents, record]);
+  const dateOf = (d: BriefDocument) => docDateLabel(d.publishedOn ?? "", locale);
+  /** Documents named in words, each year once: "NAP, NDC (2025), NBSAP (2026)". */
+  const named = (docs: BriefDocument[]) => {
+    const groups = new Map<number, BriefDocument[]>();
+    for (const d of docs) {
+      const year = docYear(d.publishedOn) ?? 0;
+      groups.set(year, [...(groups.get(year) ?? []), d]);
+    }
+    return [...groups].map(([year, list], g) => (
+      <span key={year}>
+        {g > 0 && ", "}
+        {list.map((d, i) => (
+          <span key={d.id}>
+            {i > 0 && ", "}
+            <span className="sp-doc-name" title={td("hover", { name: d.name, date: dateOf(d) })}>
+              {d.code}
+            </span>
+          </span>
+        ))}{" "}
+        ({year})
+      </span>
+    ));
+  };
+  const during = marks ? marks.dated.filter((d) => !marks.before.includes(d) && !marks.after.includes(d)) : [];
+  const span = marks ? (marks.first === marks.last ? String(marks.first) : `${marks.first}–${marks.last}`) : "";
   const [mode, setMode] = useState<"amount" | "share">("amount");
   const [hover, setHover] = useState<{ year: string; series: SeriesId } | null>(null);
   const parts = setup.series.length > 1 ? (setup.series.includes("central") ? "levels" : "groups") : null;
@@ -391,6 +440,38 @@ function YearChart({ setup, record, money, scope }: { setup: SpendingSetup; reco
           );
         })}
       </div>
+      {marks && (
+        <div className="sp-docs-foot">
+          {marks.before.length > 0 && (
+            <p className="sp-docs-out">
+              {t("docs.before", { year: marks.first })} {named(marks.before)}
+            </p>
+          )}
+          {during.length > 0 && (
+            <p className="sp-docs-out">
+              {t("docs.during", { years: span })} {named(during)}
+            </p>
+          )}
+          {marks.after.length > 0 && (
+            <p className="sp-docs-out">
+              {t("docs.after", { year: marks.last })} {named(marks.after)}
+            </p>
+          )}
+          {marks.undated.length > 0 && (
+            <p className="sp-docs-out">
+              {t("docs.undated")}{" "}
+              {marks.undated.map((d, i) => (
+                <span key={d.id}>
+                  {i > 0 && ", "}
+                  <span className="sp-doc-name" title={d.name}>
+                    {d.code}
+                  </span>
+                </span>
+              ))}
+            </p>
+          )}
+        </div>
+      )}
       <table className="brief-sr-only">
         <caption>{t("tableCaption", { unit: unitLabel })}</caption>
         <thead>

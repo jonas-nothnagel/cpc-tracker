@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { briefDate, fitLines, mongolianDate } from "./sheet";
+import { briefDate, briefMonth, fitLines, mongolianDate } from "./sheet";
 
 describe("briefDate", () => {
   const iso = "2026-09-23T10:00:00.000Z";
@@ -14,6 +14,19 @@ describe("briefDate", () => {
 
   it("spells the Mongolian date itself, the same in every browser", () => {
     expect(briefDate(iso, "mn")).toBe("2026 оны 9-р сарын 23");
+  });
+});
+
+describe("briefMonth", () => {
+  it("writes a month in the page's language, Mongolian spelled by the brief itself", () => {
+    expect(briefMonth("2024-12", "en")).toBe("December 2024");
+    expect(briefMonth("2024-12", "es")).toBe("diciembre de 2024");
+    expect(briefMonth("2024-12", "mn")).toBe("2024 оны 12-р сар");
+  });
+
+  it("shows a value that is not a month as it came", () => {
+    expect(briefMonth("2024", "en")).toBe("2024");
+    expect(briefMonth("2024-13", "mn")).toBe("2024-13");
   });
 });
 

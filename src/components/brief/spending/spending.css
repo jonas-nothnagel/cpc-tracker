@@ -436,6 +436,28 @@
   text-align: center;
 }
 
+/* ── The documents by when they came out ──────────────────────────── */
+
+/* Under the chart: the brief's documents before, during and after the
+   charted years, and those without a date, one line each. Nothing is drawn
+   on the bars. A code gives its name and date on pointing. */
+[data-brief] .sp-docs-foot {
+  display: grid;
+  gap: var(--sp-1);
+  margin-top: var(--sp-3);
+}
+
+[data-brief] .sp-docs-out {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--brief-muted);
+}
+
+[data-brief] .sp-doc-name {
+  color: var(--brief-ink);
+}
+
 /* The hover card sits above its mark. */
 [data-brief] .sp-card {
   position: absolute;

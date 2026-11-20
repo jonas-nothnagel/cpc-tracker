@@ -19,6 +19,7 @@
       "docTier": 2,
       "docKind": "Nationally Determined Contribution (UNFCCC)",
       "published": "October 2025",
+      "publishedOn": "2025-10",
       "author": "Government of Côte d'Ivoire",
       "url": "https://unfccc.int/sites/default/files/2025-10/CDN%203.0%20COTE%20D'IVOIRE.pdf"
     },
@@ -46,6 +47,7 @@
       "docTier": 2,
       "docKind": "UNCCD Land Degradation Neutrality country targets",
       "published": "2018",
+      "publishedOn": "2018",
       "author": "Government of Côte d'Ivoire (UNCCD LDN Target Setting Programme)",
       "url": "https://www.unccd.int/commitment/ldn-country-commitments-5"
     }

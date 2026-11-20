@@ -1030,6 +1030,15 @@ export interface DocumentTypeEntry {
   docTier?: number;
   /** When it was developed/issued, e.g. "November 2025", "2025", "2025-2029". */
   published?: string;
+  /**
+   * When it came out, in a form the brief can set on a year axis: a year
+   * ("2016") or a year and a month ("2024-12"). Entered by hand, and only
+   * from what `published` states: "2025-2029 (published December 2024)" gives
+   * "2024-12"; a bare period such as "2025-2029" states no date, so the field
+   * stays unset. `pnpm check:configs` holds it to that. Display only, never
+   * fed into a pipeline prompt.
+   */
+  publishedOn?: string;
   /** Issuing body / author, e.g. "Government of Panama", "SENACYT". */
   author?: string;
   /** Main goal, verbatim or closely quoted from the source. Optional. */

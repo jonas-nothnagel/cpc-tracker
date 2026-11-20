@@ -3519,7 +3519,13 @@
         "inAll": "{amount} in all",
         "tableCaption": "Reviewed spending by year, {unit}",
         "year": "Year",
-        "partNotInData": "{part} not in the data"
+        "partNotInData": "{part} not in the data",
+        "docs": {
+          "before": "Documents from before {year}:",
+          "during": "Documents from {years}:",
+          "after": "Documents from after {year}:",
+          "undated": "Documents without a date:"
+        }
       },
       "items": {
         "title": "Reviewed spending by {unit, select, institution {institution} line {budget line} both {institution and programme} other {programme}}, {years}",
@@ -3690,6 +3696,9 @@
       "linesTitle": "Budget lines strongly matching",
       "actionsTitle": "Reported actions strongly aligned",
       "explore": "Explore this target"
+    },
+    "docDates": {
+      "hover": "{name}, {date}"
     }
   }
 }

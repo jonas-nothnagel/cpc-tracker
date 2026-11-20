@@ -110,6 +110,29 @@ the review for 2015; from 2016 it is 42-64% of each year's reviewed spending.
 - es: 2015 no se muestra: el Ministerio de Ambiente, creado ese año, no tiene líneas presupuestarias en la revisión para ese año.
 - mn: 2015 оныг харуулаагүй: тэр онд байгуулагдсан Байгаль орчны яамны төсвийн мөр тоймд тухайн онд байхгүй.
 
+**The documents by when they came out** (20 November 2026, for the
+biodiversity finance expert's ask of 8 October 2026: whether the spending
+came before or after a policy came out). Under the chart of the years, the
+brief's documents in one line each: from before the charted years, during
+them, after them, and without a date. The date is `publishedOn`
+(python/data/<country>-country-config.json), entered by hand from the
+free-text `published` beside it and held to it by `pnpm check:configs`.
+Nothing is drawn on the bars: yearly spending cannot show what a document
+did, and every mark tried on the chart read as a link between a document
+and that year's spending (Jonas, 19 and 20 November 2026: names under the
+years, a separate block per document, codes with dashed drops and a click
+that re-inked the bars, a thin line at each date). What the lines do not
+say:
+
+- A document "from 2020-2024" came out during the charted years; the lines
+  do not say which of that spending came after it.
+- A date is the one the config states, which is not always a publication:
+  Panama's PNSH (2016) and PNRF (May 2021) are dates of adoption.
+- Where the config gives a year alone, the month is not known (Panama's ENR,
+  PIOTA, HR; Sri Lanka's NEnvP, NWRP, NPWM, NWP; Côte d'Ivoire's LDN).
+- A document whose config states only the period it covers (Panama's PENCYT,
+  "2025-2029") or no date at all is among those without a date.
+
 ## What it is for (areas)
 
 **Review status of the areas.** Each line's area is AI-suggested (step 2)

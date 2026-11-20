@@ -34,6 +34,23 @@ export function briefDate(iso: string, locale: string): string {
   }).format(date);
 }
 
+/**
+ * A month as the brief writes it, from "2024-12": "December 2024",
+ * "diciembre de 2024", "2024 оны 12-р сар" (spelled by `mongolianDate`, for
+ * the same reason as a day). A value that is not a month is shown as it came.
+ */
+export function briefMonth(yearMonth: string, locale: string): string {
+  const match = /^(\d{4})-(0[1-9]|1[0-2])$/.exec(yearMonth);
+  if (!match) return yearMonth;
+  const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, 1));
+  if (locale === "mn") return mongolianDate(date, { day: false });
+  return new Intl.DateTimeFormat(locale === "en" ? "en-GB" : locale, {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}
+
 /** Whole lines of text that fit a height, at least one so the text never
  *  disappears, at most `max`. */
 export function fitLines(available: number, lineHeight: number, max: number): number {

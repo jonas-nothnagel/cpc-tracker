@@ -1,5 +1,6 @@
 import { normalizeTarget } from "@/lib/normalize-target";
 import { shortName } from "./abbreviate";
+import { parseDocDate } from "./doc-dates";
 import { loadDocPairSyntheses, type CorpusThemesPayload } from "@/lib/coherence-briefing";
 import { OWN_LENS_TYPE } from "@/lib/own-lens";
 import type {
@@ -57,6 +58,9 @@ export interface BriefDocument {
   count: number;
   /** In the standard brief (not hidden or secondary in the country config). */
   defaultOn: boolean;
+  /** When the document came out, where its config states it: a year ("2016")
+   *  or a year and a month ("2024-12"). The year views set it on their axis. */
+  publishedOn?: string;
 }
 
 export interface BriefLens {
@@ -247,6 +251,8 @@ export function buildBriefSource(args: {
       mapLabel: mapLabelOf(entry, id, locale),
       count: counts.get(id) ?? 0,
       defaultOn: !offByDefault.has(id),
+      // Only a value the brief can read as a date travels to the page.
+      ...(parseDocDate(entry?.publishedOn) ? { publishedOn: entry!.publishedOn } : {}),
     };
   });
 

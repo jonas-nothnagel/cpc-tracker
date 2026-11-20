@@ -18,6 +18,7 @@
       "docTier": 2,
       "docKind": "Nationally Determined Contribution (UNFCCC)",
       "published": "September 2025",
+      "publishedOn": "2025-09",
       "author": "Climate Change Secretariat, Ministry of Environment, Sri Lanka",
       "url": "https://unfccc.int/sites/default/files/2025-09/Sri%20Lankas%20Nationally%20Determined%20Contributions%203.0%20(2026-2035)%20submitted%2022.09.2025%20(1).pdf",
       "objective": "A low-carbon, climate-resilient future, aligned with the national target of carbon neutrality by 2050 (covering 2026-2035)."
@@ -69,6 +70,7 @@
       "docTier": 3,
       "docKind": "National sectoral policy (environment), approved by the Cabinet of Ministers on 20 June 2022",
       "published": "2022",
+      "publishedOn": "2022",
       "author": "Policy Planning and Monitoring Division, Ministry of Environment, Sri Lanka",
       "objective": "Safeguarding the Environment while ensuring ecological sustainability for the Present and the Future."
     },
@@ -83,6 +85,7 @@
       "docTier": 3,
       "docKind": "National Energy Policy and Strategies of Sri Lanka, published in Gazette Extraordinary No. 2135/61",
       "published": "August 2019",
+      "publishedOn": "2019-08",
       "author": "Ministry of Power, Energy and Business Development, Sri Lanka",
       "objective": "Present how Sri Lanka plans to meet the challenge of developing and managing the energy sector to ensure delivery of reliable, cost-effective, and competitively priced energy services from diverse sources to fuel the social market economy."
     },
@@ -97,6 +100,7 @@
       "docTier": 3,
       "docKind": "National sectoral policy (water resources), 2023 edition",
       "published": "2023",
+      "publishedOn": "2023",
       "objective": "A State and a Society that values the sustainable use of Water Resources and recognizes the goal of a balanced Environment which is conducive to National Development."
     },
     {
@@ -122,6 +126,7 @@
       "docTier": 3,
       "docKind": "National sectoral policy (tourism), approved by the Cabinet of Ministers on 26 February 2024",
       "published": "February 2024",
+      "publishedOn": "2024-02",
       "author": "Tourism Section, Ministry of Tourism and Lands, Sri Lanka"
     },
     {
@@ -135,6 +140,7 @@
       "docTier": 3,
       "docKind": "National Policy on Waste Management, approved by the Cabinet of Ministers on 01 October 2019",
       "published": "2020",
+      "publishedOn": "2020",
       "author": "Environment Pollution Control and Chemical Management Division, Ministry of Environment, Sri Lanka",
       "objective": "Managing waste sustainably for a healthy life and a cleaner environment for all."
     },
@@ -149,6 +155,7 @@
       "docTier": 3,
       "docKind": "National sectoral policy (wildlife); redesign of the 1990 National Policy on Wildlife Conservation, approved by the Cabinet of Ministers in 2000",
       "published": "2000",
+      "publishedOn": "2000",
       "author": "Department of Wildlife Conservation, Sri Lanka"
     },
     {
