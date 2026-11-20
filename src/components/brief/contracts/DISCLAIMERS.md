@@ -40,9 +40,10 @@ entered by hand from the free-text `published` beside it and held to it by
   it; the first and last years hold part of a year only (the record starts
   in 2018 and was read in February 2026).
 
-The reviewed-spending chart draws the same documents as a line at their
-date across its bars (../spending/DISCLAIMERS.md, "The documents on the
-chart of the years"). Here they are still plain names under the years.
+The reviewed-spending chart draws nothing on its bars: it names the same
+documents under the chart by period (../spending/DISCLAIMERS.md, "The
+documents by when they came out"). Here they are still plain names under
+the years.
 
 ## A contract's panel
 

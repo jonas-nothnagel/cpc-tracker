@@ -110,33 +110,28 @@ the review for 2015; from 2016 it is 42-64% of each year's reviewed spending.
 - es: 2015 no se muestra: el Ministerio de Ambiente, creado ese año, no tiene líneas presupuestarias en la revisión para ese año.
 - mn: 2015 оныг харуулаагүй: тэр онд байгуулагдсан Байгаль орчны яамны төсвийн мөр тоймд тухайн онд байхгүй.
 
-**The documents on the chart of the years** (20 November 2026, for the
+**The documents by when they came out** (20 November 2026, for the
 biodiversity finance expert's ask of 8 October 2026: whether the spending
-came before or after a policy came out). A thin line at the date each of the
-brief's documents came out, down across the bars, its code on top; the date
-is `publishedOn` (python/data/<country>-country-config.json), entered by hand
-from the free-text `published` beside it and held to it by
-`pnpm check:configs`. Documents from before or after the charted years, and
-those without a date, are named in a line each under the chart. Earlier
-versions were dropped as confusing (Jonas, 19 and 20 November 2026): the
-codes in a row under the years, a separate block per document ("we already
-have SO many components"), and codes with dashed drops, end arrows and a
-click that re-inked the bars. What the chart does not say:
+came before or after a policy came out). Under the chart of the years, the
+brief's documents in one line each: from before the charted years, during
+them, after them, and without a date. The date is `publishedOn`
+(python/data/<country>-country-config.json), entered by hand from the
+free-text `published` beside it and held to it by `pnpm check:configs`.
+Nothing is drawn on the bars: yearly spending cannot show what a document
+did, and every mark tried on the chart read as a link between a document
+and that year's spending (Jonas, 19 and 20 November 2026: names under the
+years, a separate block per document, codes with dashed drops and a click
+that re-inked the bars, a thin line at each date). What the lines do not
+say:
 
-- **A line's place within its year** is the month the config states; where
-  it states the year alone, the line stands in the middle of the year. The
-  spending is by year, so a line through a bar does not split that year's
-  spending.
+- A document "from 2020-2024" came out during the charted years; the lines
+  do not say which of that spending came after it.
 - A date is the one the config states, which is not always a publication:
   Panama's PNSH (2016) and PNRF (May 2021) are dates of adoption.
 - Where the config gives a year alone, the month is not known (Panama's ENR,
   PIOTA, HR; Sri Lanka's NEnvP, NWRP, NPWM, NWP; Côte d'Ivoire's LDN).
 - A document whose config states only the period it covers (Panama's PENCYT,
-  "2025-2029") or no date at all is named under the chart, never on it.
-
-- en: A line stands at the month a document came out, or in the middle of its year where only the year is known.
-- es: Cada línea está en el mes en que salió el documento, o a mitad del año cuando solo se conoce el año.
-- mn: Шугам нь баримт бичиг гарсан сард, зөвхөн он нь мэдэгдэж байвал оны дунд байрлана.
+  "2025-2029") or no date at all is among those without a date.
 
 ## What it is for (areas)
 

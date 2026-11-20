@@ -438,65 +438,11 @@
   text-align: center;
 }
 
-/* ── The documents on the chart of the years ───────────────────────── */
+/* ── The documents by when they came out ──────────────────────────── */
 
-/* Each of the brief's documents at the date it came out: a thin line from
-   its code down across the bars to the baseline, at the month's place in
-   its year's column. The codes stand over the bars, one above another
-   where two lines are close. */
-[data-brief] .sp-plot[data-docs] {
-  --sp-doc-line: 1.25rem;
-  /* Under the codes: room for the tallest bar's figure. */
-  --sp-doc-room: var(--sp-6);
-  padding-top: calc(var(--sp-doc-lanes, 1) * var(--sp-doc-line) + var(--sp-doc-room) + var(--sp-4));
-}
-
-[data-brief] .sp-plot[data-docs] .sp-year {
-  position: relative;
-}
-
-[data-brief] .sp-docline {
-  position: absolute;
-  top: calc(-1 * (var(--lane, 0) * var(--sp-doc-line) + var(--sp-doc-room)));
-  z-index: 1;
-  height: calc(var(--lane, 0) * var(--sp-doc-line) + var(--sp-doc-room) + var(--sp-slot));
-  border-left: 1px solid var(--brief-ink);
-  pointer-events: none;
-}
-
-[data-brief] .sp-docline-code {
-  position: absolute;
-  bottom: 100%;
-  left: 0;
-  padding: 0 0.15rem;
-  transform: translateX(-50%);
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: var(--sp-doc-line);
-  color: var(--brief-ink);
-  white-space: nowrap;
-  background: #fff;
-  pointer-events: auto;
-}
-
-/* A bar's figure stays readable where a line runs through it. */
-[data-brief] .sp-plot[data-docs] .sp-stack-value,
-[data-brief] .sp-plot[data-docs] .sp-bar-value {
-  position: relative;
-  z-index: 2;
-  justify-self: center;
-  padding: 0 0.2rem;
-  background: #fff;
-}
-
-[data-brief] .sp-key-line {
-  width: 12px;
-  height: 12px;
-  background: linear-gradient(var(--brief-ink), var(--brief-ink)) center / 1px 100% no-repeat;
-}
-
-/* Under the chart: those that came out outside the charted years, and those
-   without a date, one line each. A code gives its name and date on pointing. */
+/* Under the chart: the brief's documents before, during and after the
+   charted years, and those without a date, one line each. Nothing is drawn
+   on the bars. A code gives its name and date on pointing. */
 [data-brief] .sp-docs-foot {
   display: grid;
   gap: var(--sp-1);

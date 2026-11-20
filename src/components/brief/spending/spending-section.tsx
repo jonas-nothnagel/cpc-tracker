@@ -5,7 +5,7 @@ import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { keepCurrencyInLink } from "@/components/brief/contracts/currency-switch";
 import type { Currency } from "@/components/brief/contracts/money";
 import { moneyParts, per100 } from "@/lib/brief/contracts/money";
-import { docDateLabel, docYear, markDocuments, parseDocDate } from "@/lib/brief/doc-dates";
+import { docDateLabel, docYear, markDocuments } from "@/lib/brief/doc-dates";
 import type { BriefDocument, BriefSource, LensId } from "@/lib/brief/source";
 import {
   itemOpens,
@@ -275,11 +275,10 @@ type YearPart = YearRow["parts"][number];
  * the year, never drawn as zero. As shares, each part beside the other, as a
  * share of its own budget.
  *
- * On the chart, each of the brief's documents at the date it came out: a thin
- * line down across the bars, its code on top, at the month's place in its
- * year (the middle of the year where only the year is known). Documents from
- * before or after the charted years, and those without a date, are named in
- * a line each under the chart.
+ * Under the chart, the brief's documents by when they came out against the
+ * charted years: before them, during them, after them, and those without a
+ * date, a line each. Nothing is drawn on the bars: yearly spending cannot
+ * show what a document did, and a mark on a bar would say it does.
  */
 function YearChart({
   setup,
@@ -300,24 +299,6 @@ function YearChart({
   const locale = useLocale();
   const marks = useMemo(() => markDocuments(documents, record.byYear.map((y) => y.year)), [documents, record]);
   const dateOf = (d: BriefDocument) => docDateLabel(d.publishedOn ?? "", locale);
-  // A line per document at its date, as a share of its year's column. A code
-  // within a column and a half of another's stands a line higher.
-  const lines = useMemo(() => {
-    const out: { index: number; doc: BriefDocument; at: number; lane: number }[] = [];
-    if (!marks) return out;
-    record.byYear.forEach((y, index) => {
-      for (const doc of marks.byYear.get(Number(y.year)) ?? []) {
-        const month = parseDocDate(doc.publishedOn)?.month ?? null;
-        const at = month === null ? 0.5 : (month - 0.5) / 12;
-        const near = out.filter((o) => index + at - (o.index + o.at) < 1.5).map((o) => o.lane);
-        let lane = 0;
-        while (near.includes(lane)) lane++;
-        out.push({ index, doc, at, lane });
-      }
-    });
-    return out;
-  }, [marks, record]);
-  const lanes = lines.length > 0 ? Math.max(...lines.map((l) => l.lane)) + 1 : 0;
   /** Documents named in words, each year once: "NAP, NDC (2025), NBSAP (2026)". */
   const named = (docs: BriefDocument[]) => {
     const groups = new Map<number, BriefDocument[]>();
@@ -340,7 +321,8 @@ function YearChart({
       </span>
     ));
   };
-  const undated = marks && marks.undated.length > 0 ? td("undated", { list: marks.undated.map((d) => d.code).join(", ") }) : null;
+  const during = marks ? [...marks.byYear.values()].flat().concat(marks.between).sort((a, b) => (a.publishedOn ?? "").localeCompare(b.publishedOn ?? "")) : [];
+  const span = marks ? (marks.first === marks.last ? String(marks.first) : `${marks.first}–${marks.last}`) : "";
   const [mode, setMode] = useState<"amount" | "share">("amount");
   const [hover, setHover] = useState<{ year: string; series: SeriesId } | null>(null);
   const parts = setup.series.length > 1 ? (setup.series.includes("central") ? "levels" : "groups") : null;
@@ -377,33 +359,18 @@ function YearChart({
             {parts === "levels" ? t("sharesLevels") : t("shares", { scope })}
           </button>
         </div>
-        {(setup.series.length > 1 || lines.length > 0) && (
+        {setup.series.length > 1 && (
           <ul className="sp-legend" aria-hidden="true">
-            {setup.series.length > 1 &&
-              setup.series.map((s) => (
-                <li key={s}>
-                  <span className="sp-key" data-series={s} />
-                  {t(`series.${s}`)}
-                </li>
-              ))}
-            {lines.length > 0 && (
-              <li>
-                <span className="sp-key-line" />
-                {t("docs.legend")}
+            {setup.series.map((s) => (
+              <li key={s}>
+                <span className="sp-key" data-series={s} />
+                {t(`series.${s}`)}
               </li>
-            )}
+            ))}
           </ul>
         )}
       </div>
-      {/* Drawn for the eye: the table below says the bars, the line under the
-          chart the documents. */}
-      <div
-        className="sp-plot"
-        data-mode={mode}
-        data-docs={lines.length > 0 ? "" : undefined}
-        style={{ ["--sp-years" as string]: record.byYear.length, ["--sp-doc-lanes" as string]: lanes }}
-        aria-hidden="true"
-      >
+      <div className="sp-plot" data-mode={mode} style={{ ["--sp-years" as string]: record.byYear.length }} aria-hidden="true">
         {record.byYear.map((y, i) => {
           const missing = y.parts.filter((p) => p.reviewed === null);
           const stack = stackWhole(y);
@@ -463,15 +430,6 @@ function YearChart({
                   })}
                 </div>
               )}
-              {lines
-                .filter((l) => l.index === i)
-                .map((l) => (
-                  <span key={l.doc.id} className="sp-docline" style={{ left: `${l.at * 100}%`, ["--lane" as string]: l.lane }}>
-                    <span className="sp-docline-code" title={td("hover", { name: l.doc.name, date: dateOf(l.doc) })}>
-                      {l.doc.code}
-                    </span>
-                  </span>
-                ))}
               <span className="sp-year-label">{y.year}</span>
               {missing.length > 0 && (
                 <span className="sp-year-missing" title={t("notInDataLong", { year: y.year, held: t(`held.${heldBy(y.parts)}`) })}>
@@ -484,16 +442,14 @@ function YearChart({
       </div>
       {marks && (
         <div className="sp-docs-foot">
-          {lines.length > 0 && (
-            <ul className="brief-sr-only">
-              {lines.map((l) => (
-                <li key={l.doc.id}>{td("hover", { name: l.doc.name, date: dateOf(l.doc) })}</li>
-              ))}
-            </ul>
-          )}
           {marks.before.length > 0 && (
             <p className="sp-docs-out">
               {t("docs.before", { year: marks.first })} {named(marks.before)}
+            </p>
+          )}
+          {during.length > 0 && (
+            <p className="sp-docs-out">
+              {t("docs.during", { years: span })} {named(during)}
             </p>
           )}
           {marks.after.length > 0 && (
@@ -501,12 +457,11 @@ function YearChart({
               {t("docs.after", { year: marks.last })} {named(marks.after)}
             </p>
           )}
-          {marks.between.length > 0 && (
+          {marks.undated.length > 0 && (
             <p className="sp-docs-out">
-              {t("docs.notCharted")} {named(marks.between)}
+              {t("docs.undated")} {marks.undated.map((d) => d.code).join(", ")}
             </p>
           )}
-          {undated && <p className="sp-docs-out">{undated}</p>}
         </div>
       )}
       <table className="brief-sr-only">
