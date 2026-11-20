@@ -3698,8 +3698,6 @@
       "explore": "Explorar esta meta"
     },
     "docDates": {
-      "title": "Documentos por año de publicación",
-      "undated": "La fecha no está en los datos: {list}",
       "hover": "{name}, {date}"
     }
   }

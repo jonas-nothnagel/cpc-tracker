@@ -182,54 +182,6 @@ describe("while the page scrolls", () => {
   });
 });
 
-describe("the documents under the years", () => {
-  // The fixture's record charts 2024 and 2025.
-  const withDates = (dates: Record<string, string>) => {
-    const setup = setupFixture();
-    return { ...setup, documents: setup.documents.map((d) => (dates[d.id] ? { ...d, publishedOn: dates[d.id] } : d)) };
-  };
-  const docs = () => [...document.querySelectorAll<HTMLElement>('.ct-label[data-kind="docs"]')];
-
-  it("names each document under the year it came out, on the record and on its share for nature or climate", () => {
-    for (const at of ["record", "purpose"] as Step[]) {
-      renderOverview({ setup: withDates({ A: "2024-03", B: "2025-09", C: "2024-01" }), step: at });
-      expect(docs().map((n) => n.textContent)).toEqual(["Documents by year published", "C", "A", "B"]);
-      const year = (y: string) => [...document.querySelectorAll<HTMLElement>('.ct-label[data-kind="year"]')].find((n) => n.textContent === y)!;
-      // Each in its year's column; a year's second document a line below its first.
-      const [, c, a, b] = docs();
-      expect(c.style.left).toBe(year("2024").style.left);
-      expect(a.style.left).toBe(year("2024").style.left);
-      expect(b.style.left).toBe(year("2025").style.left);
-      expect(parseFloat(a.style.top)).toBeGreaterThan(parseFloat(c.style.top));
-      cleanup();
-    }
-  });
-
-  it("names a document's full name and date on pointing", () => {
-    renderOverview({ setup: withDates({ A: "2024-03", B: "2025" }) });
-    expect([...document.querySelectorAll<HTMLElement>(".ct-doc")].map((n) => n.title)).toEqual(["Document A, March 2024", "Document B, 2025"]);
-  });
-
-  it("names those from before and after the record's years with their year, those without a date on a grey line", () => {
-    renderOverview({ setup: withDates({ A: "2019-06", B: "2027" }) });
-    expect(docs().map((n) => n.textContent)).toEqual(["Documents by year published", "A 2019", "B 2027", "Date not in the data: C"]);
-    expect(docs().map((n) => n.dataset.align)).toEqual(["start", "start", "end", "start"]);
-  });
-
-  it("draws no row where no document states a date", () => {
-    renderOverview();
-    expect(docs()).toEqual([]);
-  });
-
-  it("leaves the documents off the map and the policy areas", () => {
-    for (const at of ["places", "areas"] as Step[]) {
-      renderOverview({ setup: withDates({ A: "2024-03" }), step: at });
-      expect(docs()).toEqual([]);
-      cleanup();
-    }
-  });
-});
-
 describe("Overview", () => {
   it("walks from the record to where it lands, then what the money is for", () => {
     renderOverview();

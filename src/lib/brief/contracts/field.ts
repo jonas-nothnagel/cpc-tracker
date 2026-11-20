@@ -80,8 +80,7 @@ export type LabelKind =
   | "rowTargets"
   | "rowValue"
   | "place"
-  | "band"
-  | "docs";
+  | "band";
 
 export interface FieldLabel {
   key: string;
@@ -175,26 +174,12 @@ export interface LabelSize {
   name?: number;
 }
 
-/**
- * The brief's documents under the years, as the page has them: each charted
- * year's names (the width of each as written, in pixels), and whether any
- * came out before the first charted year, after the last, or without a date.
- */
-export interface YearDocs {
-  columns: number[][];
-  before: boolean;
-  after: boolean;
-  undated: boolean;
-}
-
 export interface LayoutContext {
   rows?: AreaRowB[];
   geo?: GeoFile | null;
   overlay?: OverlaySpec | null;
   /** The money in focus in each year, as squares and as money, in year order. */
   yearFocus?: { squares: number[]; values: number[] } | null;
-  /** The documents named under the years they came out in. */
-  yearDocs?: YearDocs | null;
   /** A place's name on the map as the page writes it, measured: `w` and `h`
    *  for a name over its figure, `line` for "name · figure" in the band below
    *  the map, `name` for the name alone. */
@@ -205,45 +190,12 @@ export interface LayoutContext {
 
 const COLUMN_TOP = 26;
 const COLUMN_BOTTOM = 24;
-/** Under the years: a title for the documents' row, then a line per name. */
-const DOCS_TITLE = 20;
-const DOCS_LINE = 15;
-/** Two names on one line stay this far apart. */
-const DOCS_CLEAR = 3;
 
-/**
- * Each year's names under its column, a year's second name a line below its
- * first. A name stays inside the field, and steps down a line where it would
- * touch one already there (narrow columns, long names).
- */
-function placeYearDocs(docs: YearDocs, centre: (column: number) => number, width: number) {
-  const taken: { x0: number; x1: number }[][] = [];
-  const names: { column: number; index: number; x: number; line: number }[] = [];
-  docs.columns.forEach((widths, column) => {
-    let line = 0;
-    widths.forEach((w, index) => {
-      const x = Math.max(w / 2, Math.min(width - w / 2, centre(column)));
-      const x0 = x - w / 2;
-      const x1 = x + w / 2;
-      while ((taken[line] ?? []).some((r) => x0 < r.x1 + DOCS_CLEAR && r.x0 < x1 + DOCS_CLEAR)) line++;
-      (taken[line] ??= []).push({ x0, x1 });
-      names.push({ column, index, x, line });
-      line++;
-    });
-  });
-  return { names, lines: taken.length };
-}
-
-function yearLayout(model: FieldModel, file: ContractsFile, box: { w: number; h: number }, purpose: boolean, focus: LayoutContext["yearFocus"], docs: YearDocs | null = null): FieldLayout {
+function yearLayout(model: FieldModel, file: ContractsFile, box: { w: number; h: number }, purpose: boolean, focus: LayoutContext["yearFocus"]): FieldLayout {
   const n = Math.max(1, model.columns.length);
   const gap = Math.min(14, Math.max(4, box.w * 0.015));
   const cw = (box.w - gap * (n - 1)) / n;
-  const centre = (column: number) => column * (cw + gap) + cw / 2;
-  // The documents' lines stand below the years, so the columns end higher.
-  const placed = docs ? placeYearDocs(docs, centre, box.w) : null;
-  const ends = docs && (docs.before || docs.after) ? 1 : 0;
-  const below = docs && placed ? DOCS_TITLE + (placed.lines + ends + (docs.undated ? 1 : 0)) * DOCS_LINE : 0;
-  const plotH = box.h - COLUMN_TOP - COLUMN_BOTTOM - below;
+  const plotH = box.h - COLUMN_TOP - COLUMN_BOTTOM;
   const counts = model.columns.map((c) => c.principal + c.significant + c.rest);
   let pitch = 1.2;
   for (let p = 12; p >= 1.2; p -= 0.05) {
@@ -255,7 +207,7 @@ function yearLayout(model: FieldModel, file: ContractsFile, box: { w: number; h:
     }
   }
   const per = Math.max(1, Math.floor(cw / pitch));
-  const base = box.h - COLUMN_BOTTOM - below;
+  const base = box.h - COLUMN_BOTTOM;
   const colOf = new Map(model.yearOrder.map((y, i) => [y, i]));
   const next = new Map<number, number>();
   const greenSeen = new Map<number, number>();
@@ -286,27 +238,14 @@ function yearLayout(model: FieldModel, file: ContractsFile, box: { w: number; h:
   if (purpose && focus) labels.push({ key: "unit", kind: "unit", x: 0, y: 2, align: "start", values: { of: "years" } });
   model.columns.forEach((c, i) => {
     const y = file.years[i];
-    const cx = centre(i);
+    const cx = i * (cw + gap) + cw / 2;
     const thin = y.contracts < median * 0.2;
-    labels.push({ key: `year:${c.year}`, kind: "year", x: cx, y: box.h - 6 - below, align: "middle", values: { year: c.year, thin } });
+    labels.push({ key: `year:${c.year}`, kind: "year", x: cx, y: box.h - 6, align: "middle", values: { year: c.year, thin } });
     const top = base - Math.ceil(counts[i] / per) * pitch - 8;
     if (!purpose) labels.push({ key: `value:${c.year}`, kind: "columnValue", x: cx, y: top, align: "middle", values: { year: c.year, value: y.value, thin } });
     else if (focus) labels.push({ key: `focus:${c.year}`, kind: "columnFocus", x: cx, y: top, align: "middle", values: { year: c.year, value: focus.values[i] ?? 0, thin } });
     else labels.push({ key: `share:${c.year}`, kind: "columnShare", x: cx, y: top, align: "middle", values: { year: c.year, share: y.value > 0 ? y.principal.value / y.value : 0, thin } });
   });
-  if (docs && placed) {
-    const top = box.h - 6 - below + DOCS_TITLE;
-    labels.push({ key: "docs:title", kind: "docs", x: 0, y: top, align: "start", values: { slot: "title" } });
-    for (const d of placed.names) {
-      const year = model.columns[d.column]?.year ?? 0;
-      labels.push({ key: `docs:${year}:${d.index}`, kind: "docs", x: d.x, y: top + (d.line + 1) * DOCS_LINE, align: "middle", values: { slot: "year", year, index: d.index } });
-    }
-    // Those from before and after the charted years, at the two ends of the axis.
-    const endsY = top + (placed.lines + 1) * DOCS_LINE;
-    if (docs.before) labels.push({ key: "docs:before", kind: "docs", x: 0, y: endsY, align: "start", values: { slot: "before" } });
-    if (docs.after) labels.push({ key: "docs:after", kind: "docs", x: box.w, y: endsY, align: "end", values: { slot: "after" } });
-    if (docs.undated) labels.push({ key: "docs:undated", kind: "docs", x: 0, y: top + (placed.lines + ends + 1) * DOCS_LINE, align: "start", values: { slot: "undated" } });
-  }
   return { squares, pitch, labels, targets: [], outlines: null, map: null, bands: [], blocks: [], leaders: [], overlay: null };
 }
 
@@ -752,7 +691,7 @@ function areaLayout(model: FieldModel, file: ContractsFile, stage: Extract<Stage
 
 export function layoutField(model: FieldModel, file: ContractsFile, stage: Stage, box: { w: number; h: number }, ctx: LayoutContext = {}): FieldLayout {
   const purpose = stage.kind !== "record";
-  const years = yearLayout(model, file, box, purpose, stage.kind === "purpose" ? ctx.yearFocus ?? null : null, ctx.yearDocs ?? null);
+  const years = yearLayout(model, file, box, purpose, stage.kind === "purpose" ? ctx.yearFocus ?? null : null);
   if (stage.kind === "record" || stage.kind === "purpose") return years;
   if (stage.kind === "areas" && ctx.rows) return areaLayout(model, file, stage, box, ctx, years);
   if (stage.kind === "places" && ctx.geo) return placeLayout(model, file, stage, box, ctx, years);

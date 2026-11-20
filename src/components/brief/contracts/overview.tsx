@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { useFormatter, useLocale, useTranslations } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 import {
   alsoServed,
   areaSynergy,
@@ -20,7 +20,7 @@ import {
   type TenderDot,
 } from "@/lib/brief/contracts/angles";
 import { MIN_GAP, MIN_TARGET_SHARE, NO_AREA } from "@/lib/brief/contracts/areas";
-import { buildField, type AreaRowB, type FieldLabel, type LabelSize, type LayoutContext, type OverlaySpec, type Stage, type YearDocs } from "@/lib/brief/contracts/field";
+import { buildField, type AreaRowB, type FieldLabel, type LabelSize, type LayoutContext, type OverlaySpec, type Stage } from "@/lib/brief/contracts/field";
 import {
   contractArea,
   contractInFocus,
@@ -36,8 +36,6 @@ import { LEAD_LINE, leadingStep } from "@/lib/brief/contracts/lead";
 import { NO_PLACE, type Contract, type LensKey } from "@/lib/brief/contracts/model";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
 import { largestRemainder, squaresFor, UNIT } from "@/lib/brief/contracts/units";
-import { docDateLabel, docYear, markDocuments } from "@/lib/brief/doc-dates";
-import type { BriefDocument } from "@/lib/brief/source";
 import { targetLine } from "@/lib/brief/text";
 import { MoneyField, type FieldPoint } from "./money-field";
 import { useMoney } from "./money";
@@ -69,14 +67,6 @@ const SYNERGY_MIN = 20;
 
 const byValue = (a: Contract, b: Contract) => b.value - a.value || a.id.localeCompare(b.id);
 
-/** A text's length in Latin letters: a Cyrillic letter runs about 15% wider
- *  (Source Sans 3), so a Mongolian name counts its letters by their width. */
-const letters = (text: string) => [...text].reduce((n, ch) => n + (/\p{Script=Cyrillic}/u.test(ch) ? 1.15 : 1), 0);
-/** A document's code as the field writes it at 12px, in pixels and a little
- *  generous: capitals run wide, small letters and figures narrower. */
-const codeWidth = (code: string) =>
-  [...code].reduce((w, ch) => w + (/\p{Lu}/u.test(ch) ? 7.4 : /\p{Ll}/u.test(ch) ? 5.6 : /\d/.test(ch) ? 6.2 : 3) * letters(ch), 0) + 2;
-
 /**
  * The overview: the whole public contract record as squares of equal money
  * beside four steps, each a level deeper. The record by year; its share for
@@ -84,8 +74,7 @@ const codeWidth = (code: string) =>
  * policy area beside the areas' targets. The squares re-form as each step
  * crosses the middle of the window. The page's focus (a policy area, a
  * document, a place) is answered by every step, and chosen in the steps.
- * The brief shows the steps up to the map. Under the years, each document by
- * the year it came out.
+ * The brief shows the steps up to the map.
  */
 export function Overview({
   setup,
@@ -113,8 +102,6 @@ export function Overview({
 }) {
   const t = useTranslations("brief.contracts");
   const tl = useTranslations("briefing.lens");
-  const td = useTranslations("brief.docDates");
-  const locale = useLocale();
   const format = useFormatter();
   const m = useMoney();
   const file = setup.file;
@@ -219,18 +206,6 @@ export function Overview({
     return { squares: largestRemainder(values, squaresFor(total)), values };
   }, [yearValues, file]);
   const full = useMemo(() => fullYears(file.years), [file]);
-  // The documents by the year each came out, named under the years.
-  const marks = useMemo(() => markDocuments(setup.documents, file.years.map((y) => y.year)), [setup.documents, file]);
-  const yearDocs = useMemo<YearDocs | null>(
-    () =>
-      marks && {
-        columns: file.years.map((y) => (marks.byYear.get(y.year) ?? []).map((d) => codeWidth(d.code))),
-        before: marks.before.length > 0,
-        after: marks.after.length > 0,
-        undated: marks.undated.length > 0 || marks.between.length > 0,
-      },
-    [marks, file],
-  );
 
   // ── Step 3: the map ────────────────────────────────────────────────
   const principalByPlace = useMemo(() => moneyByPlace(file.contracts, () => true), [file]);
@@ -321,6 +296,9 @@ export function Overview({
   }, [active, focus.lens, focus.area, focus.doc, focus.place, showAll, layer, lensKey]);
   const nameSizes = useMemo(() => {
     const sizes = new Map<string, LabelSize>();
+    // A Cyrillic letter runs about 15% wider than a Latin one (Source Sans 3),
+    // so a Mongolian name counts its letters by their width.
+    const letters = (text: string) => [...text].reduce((n, ch) => n + (/\p{Script=Cyrillic}/u.test(ch) ? 1.15 : 1), 0);
     for (const code of placeCodes) {
       const name = letters(placeName(code));
       const value = placeValueText(code);
@@ -335,42 +313,16 @@ export function Overview({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [placeCodes, tenderList, focusMoney, showAll, rates, m.currency]);
   const ctx = useMemo<LayoutContext>(() => {
-    // Every step starts from the years, so each lays them out the same.
-    if (stage.kind === "purpose") return { yearDocs, yearFocus: yearCtx };
-    if (stage.kind === "places") return { yearDocs, geo, overlay: mapOverlay, labelSize: (code) => nameSizes.get(code) ?? { w: 72, h: 27, line: 180, name: 90 } };
-    if (stage.kind === "areas") return { yearDocs, rows, overlay: areaOverlay };
-    return { yearDocs };
-  }, [stage.kind, yearDocs, yearCtx, geo, mapOverlay, nameSizes, rows, areaOverlay]);
+    if (stage.kind === "purpose") return { yearFocus: yearCtx };
+    if (stage.kind === "places") return { geo, overlay: mapOverlay, labelSize: (code) => nameSizes.get(code) ?? { w: 72, h: 27, line: 180, name: 90 } };
+    if (stage.kind === "areas") return { rows, overlay: areaOverlay };
+    return {};
+  }, [stage.kind, yearCtx, geo, mapOverlay, nameSizes, rows, areaOverlay]);
 
   const pct1 = (share: number) => format.number(share, { style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  /** A document's code, its name and date on pointing; its year beside it
-   *  where it does not stand under one. */
-  const docMark = (d: BriefDocument, withYear = false): ReactNode => (
-    <span key={d.id} className="ct-doc" title={td("hover", { name: d.name, date: docDateLabel(d.publishedOn ?? "", locale) })}>
-      {d.code}
-      {withYear && <small> {docYear(d.publishedOn)}</small>}
-    </span>
-  );
-  const docsLabel = (v: FieldLabel["values"]): ReactNode => {
-    if (!marks) return null;
-    if (v.slot === "title") return <span className="ct-docs-quiet">{td("title")}</span>;
-    if (v.slot === "before") return marks.before.map((d) => docMark(d, true));
-    if (v.slot === "after") return marks.after.map((d) => docMark(d, true));
-    if (v.slot === "undated")
-      return (
-        <span className="ct-docs-quiet">
-          {marks.between.map((d) => docMark(d, true))}
-          {marks.undated.length > 0 && td("undated", { list: marks.undated.map((d) => d.code).join(", ") })}
-        </span>
-      );
-    const d = marks.byYear.get(Number(v.year))?.[Number(v.index)];
-    return d ? docMark(d) : null;
-  };
   const label = (l: FieldLabel): ReactNode => {
     const v = l.values;
     switch (l.kind) {
-      case "docs":
-        return docsLabel(v);
       case "year":
         return String(v.year);
       case "columnValue":
